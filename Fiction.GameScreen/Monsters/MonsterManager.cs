@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.ObjectModel;
 
 namespace Fiction.GameScreen.Monsters
 {
@@ -42,7 +38,7 @@ namespace Fiction.GameScreen.Monsters
         /// <summary>
         /// Gets a collection of monster types
         /// </summary>
-        public ObservableCollection<String> Types { get; private set; }
+        public ObservableCollection<string> Types { get; private set; }
         /// <summary>
         /// Gets a collection of monster subtypes
         /// </summary>
@@ -59,33 +55,36 @@ namespace Fiction.GameScreen.Monsters
         public void Reconcile()
         {
             Types.Clear();
-            foreach (string type in Monsters
+            foreach (string? type in Monsters
                 .Select(p => p.Stats["type"]?.Value as string)
                 .Where(p => !string.IsNullOrWhiteSpace(p))
                 .Distinct(StringComparer.CurrentCultureIgnoreCase)
                 .ToObservableCollection())
             {
-                Types.Add(type);
+                if (type != null)
+                    Types.Add(type);
             }
 
             SubTypes.Clear();
-            foreach (string type in Monsters
+            foreach (string? type in Monsters
                 .SelectMany(p => p.Stats["subType"]?.Value as IEnumerable<string> ?? Array.Empty<string>())
                 .Where(p => !string.IsNullOrWhiteSpace(p))
                 .Distinct(StringComparer.CurrentCultureIgnoreCase)
                 .ToObservableCollection())
             {
-                SubTypes.Add(type);
+                if (type != null)
+                    SubTypes.Add(type);
             }
 
             Groups.Clear();
-            foreach (string group in Monsters
+            foreach (string? group in Monsters
                 .Select(p => p.Stats["group"]?.Value as string)
                 .Where(p => !string.IsNullOrWhiteSpace(p))
                 .Distinct()
                 .ToObservableCollection())
             {
-                Groups.Add(group);
+                if (group != null)
+                    Groups.Add(group);
             }
         }
 
