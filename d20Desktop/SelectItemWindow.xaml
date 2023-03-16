@@ -1,0 +1,40 @@
+﻿<Window x:Class="Fiction.GameScreen.SelectItemWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:Fiction.GameScreen"
+        xmlns:resources="clr-namespace:Fiction.GameScreen.Resources"
+        xmlns:windows="clr-namespace:Fiction.Windows;assembly=Fiction.Windows"
+        x:Name="View"
+        Title="{Binding Source={x:Static resources:Resources.SelectItemWindowTitle}}"
+        MinWidth="300"
+        SizeToContent="Height"
+        WindowStartupLocation="CenterOwner">
+    <Window.CommandBindings>
+        <CommandBinding Command="windows:Commands.Ok"
+                        x:Name="OkCommand"
+                        CanExecute="OkCommand_CanExecute"
+                        Executed="OkCommand_Executed" />
+        <CommandBinding Command="windows:Commands.Cancel"
+                        x:Name="CancelCommand"
+                        CanExecute="CancelCommand_CanExecute"
+                        Executed="CancelCommand_Executed" />
+    </Window.CommandBindings>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Label Content="{Binding Source={x:Static resources:Resources.SelectItemWindowText}}" />
+            <ComboBox Grid.Row="1"
+                      ItemsSource="{Binding ElementName=View, Path=ItemsSource}"
+                      SelectedValue="{Binding ElementName=View, Path=SelectedItem}"
+                      DisplayMemberPath="{Binding ElementName=View, Path=DisplayMemberPath}" />
+        </Grid>
+        <windows:OkCancel Grid.Row="1" />
+    </Grid>
+</Window>

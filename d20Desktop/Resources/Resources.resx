@@ -1,0 +1,1346 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AboutToImportMagicItemsLabel" xml:space="preserve">
+    <value>The following magic items will be imported into this campaign.  Click Finish to complete the import.</value>
+    <comment>Label shown to the user to give them a chance to select magic items to import</comment>
+  </data>
+  <data name="AboutToImportMonstersLabel" xml:space="preserve">
+    <value>The following monsters will be imported into this campaign.  Click Finish to complete the import.</value>
+    <comment>Label shown to the user to allow them one last chance to view monsters before they are imported.</comment>
+  </data>
+  <data name="AboutToImportSpellsLabel" xml:space="preserve">
+    <value>The following spells will be imported into the campaign.  Click Finish to complete the import.</value>
+    <comment>Label for importing spells into a campaign</comment>
+  </data>
+  <data name="ActiveCombatMenuHeader" xml:space="preserve">
+    <value>Active Combat</value>
+    <comment>Menu header for displaying the currently active combat</comment>
+  </data>
+  <data name="ActualAmountLabel" xml:space="preserve">
+    <value>Actual Amount</value>
+  </data>
+  <data name="AddAttributeHeader" xml:space="preserve">
+    <value>Add Attribute...</value>
+    <comment>Menu header for Add Attribute menu item</comment>
+  </data>
+  <data name="AddButton" xml:space="preserve">
+    <value></value>
+    <comment>Text for add buttons</comment>
+  </data>
+  <data name="AddButtonToolTip" xml:space="preserve">
+    <value>Add</value>
+    <comment>Tooltip for add button</comment>
+  </data>
+  <data name="AddConditionMenuHeader" xml:space="preserve">
+    <value>Add Condition</value>
+    <comment>Menu header for adding a condition to a combatant</comment>
+  </data>
+  <data name="AddToCombatDisplayName" xml:space="preserve">
+    <value>Add to Combat</value>
+    <comment>Display name for adding combatants to a combat</comment>
+  </data>
+  <data name="AddToCombatMenuHeader" xml:space="preserve">
+    <value>Add To Combat</value>
+    <comment>Menu item for adding combatants to combat</comment>
+  </data>
+  <data name="AlignmentLabel" xml:space="preserve">
+    <value>Alignment</value>
+    <comment>Label for alignment</comment>
+  </data>
+  <data name="AllowOverHealLabel" xml:space="preserve">
+    <value>Allow Overheal</value>
+    <comment>Label for option to allow heals to generate temporary hit points</comment>
+  </data>
+  <data name="AmountLabel" xml:space="preserve">
+    <value>Amount</value>
+    <comment>Label for showing an amount</comment>
+  </data>
+  <data name="ApplyDamageReduction" xml:space="preserve">
+    <value>Apply Damage Reduction</value>
+    <comment>Label for applying damage reduction</comment>
+  </data>
+  <data name="ApplyToTotalLabel" xml:space="preserve">
+    <value>Apply To Total</value>
+  </data>
+  <data name="AreaLabel" xml:space="preserve">
+    <value>Area</value>
+    <comment>Label for area</comment>
+  </data>
+  <data name="ArmorClassLabel" xml:space="preserve">
+    <value>Armor Class</value>
+    <comment>Label for armor class</comment>
+  </data>
+  <data name="ArtifactLevelLabel" xml:space="preserve">
+    <value>Artifact Level</value>
+    <comment>Label for whether or not something is an artifact, and how powerful it is if it is</comment>
+  </data>
+  <data name="ArtifactLevelMajorLabel" xml:space="preserve">
+    <value>Major Artifact</value>
+    <comment>Label for an item that is a major artifact</comment>
+  </data>
+  <data name="ArtifactLevelMinorLabel" xml:space="preserve">
+    <value>Minor Artifact</value>
+    <comment>Label for an item that is a minor artifact</comment>
+  </data>
+  <data name="ArtifactLevelNoneLabel" xml:space="preserve">
+    <value>Not an Artifact</value>
+    <comment>Label for an item that is not an artifact</comment>
+  </data>
+  <data name="AttributeDefinitionViewModelDisplayName" xml:space="preserve">
+    <value>Attribute:  {0}</value>
+    <comment>Display name for attribute definition view models, where {0} is the name of the attribute</comment>
+  </data>
+  <data name="AttributeDetailsHeader" xml:space="preserve">
+    <value>Attribute Details</value>
+    <comment>Header for the details of an attribute</comment>
+  </data>
+  <data name="AttributeListHeader" xml:space="preserve">
+    <value>Attributes</value>
+    <comment>Header shown above list of attributes</comment>
+  </data>
+  <data name="AttributeModifierCategory" xml:space="preserve">
+    <value>Attribute Modifiers</value>
+    <comment>Category for attribute modifiers</comment>
+  </data>
+  <data name="AttributeModifierFromAttributeDisplayName" xml:space="preserve">
+    <value>From Attribute</value>
+    <comment>Display name for view model for attribute modifiers from attributes</comment>
+  </data>
+  <data name="AttributeModifierSourceLabel" xml:space="preserve">
+    <value>Source:</value>
+    <comment>Label for source of an attribute modifier</comment>
+  </data>
+  <data name="AttributeModifierStaticViewModelName" xml:space="preserve">
+    <value>Static Modifier</value>
+    <comment>Name for static attribute modifiers</comment>
+  </data>
+  <data name="AttributeModifiersViewModelName" xml:space="preserve">
+    <value>Campaign Attribute Modifiers</value>
+    <comment>Name for the view model containing attribute modifiers for the campaign</comment>
+  </data>
+  <data name="AttributeModifierTargetsLabel" xml:space="preserve">
+    <value>Targets:</value>
+    <comment>Label for targets of an attribute modifier</comment>
+  </data>
+  <data name="AttributeModifierType_AbilityScore" xml:space="preserve">
+    <value>Ability Score</value>
+    <comment>Shown when an attribute's modifier is calculated like an ability score (value / 2 - 5)</comment>
+  </data>
+  <data name="AttributeModifierType_Value" xml:space="preserve">
+    <value>Attribute Value</value>
+    <comment>Shown when an attribute's modifier is the attributes value</comment>
+  </data>
+  <data name="AurasLabel" xml:space="preserve">
+    <value>Auras</value>
+    <comment>Label for an item's auras</comment>
+  </data>
+  <data name="AuraStrengthLabel" xml:space="preserve">
+    <value>Aura Strength</value>
+    <comment>Label for hte strength of an item's aura</comment>
+  </data>
+  <data name="BaseAttackBonusLabel" xml:space="preserve">
+    <value>Base Attack Bonus</value>
+    <comment>Label for base attack bonus</comment>
+  </data>
+  <data name="BeginCombatButton" xml:space="preserve">
+    <value>Begin</value>
+    <comment>Button label for beginning combat</comment>
+  </data>
+  <data name="BeginCombatDisplayName" xml:space="preserve">
+    <value>Begin Combat</value>
+    <comment>Display name for beginning combat</comment>
+  </data>
+  <data name="BeginCombatMenuHeader" xml:space="preserve">
+    <value>Begin Combat</value>
+    <comment>Menu header to begin a combat session</comment>
+  </data>
+  <data name="BestiaryMenuHeader" xml:space="preserve">
+    <value>Bestiary</value>
+    <comment>Menu header for the bestiary</comment>
+  </data>
+  <data name="BypassDamageReduction" xml:space="preserve">
+    <value>Bypass Damage Reduction</value>
+    <comment>Label for bypassing damage reduction when applying damage</comment>
+  </data>
+  <data name="CampaignAttributesMenuHeader" xml:space="preserve">
+    <value>_Attributes</value>
+    <comment>Menu header for campaign attribute settings</comment>
+  </data>
+  <data name="CampaignAttributesViewModelName" xml:space="preserve">
+    <value>Attributes</value>
+    <comment>Display name for the campaign attributes settings</comment>
+  </data>
+  <data name="CampaignMenuHeader" xml:space="preserve">
+    <value>_Campaign</value>
+    <comment>Menu header for the campaign settings menu</comment>
+  </data>
+  <data name="CampaignModifiersMenuHeader" xml:space="preserve">
+    <value>Attribute Modifiers</value>
+    <comment>Menu header for editing campaign level attribute modifiers</comment>
+  </data>
+  <data name="CampaignRacesViewModelDisplayName" xml:space="preserve">
+    <value>Races</value>
+    <comment>Display name used for hte CampaignRacesViewModel</comment>
+  </data>
+  <data name="CampaignSettingsCategory" xml:space="preserve">
+    <value>Campaign Settings</value>
+    <comment>View model category for campaign settings</comment>
+  </data>
+  <data name="CampaignSpecialQualitiesDisplayName" xml:space="preserve">
+    <value>Special Qualities</value>
+    <comment>Display name for the campaign level special qualities view model</comment>
+  </data>
+  <data name="CancelWizardButton" xml:space="preserve">
+    <value>Cancel</value>
+    <comment>Button label for cancelling a wizard</comment>
+  </data>
+  <data name="CannotDeleteCombatantMessage" xml:space="preserve">
+    <value>Cannot delete this combatant because it is currently in use.</value>
+    <comment>Error message displayed when a user attempts to delete a combatant that is being used somewhere (probably in combat)</comment>
+  </data>
+  <data name="CannotDeleteCombatScenarioMessage" xml:space="preserve">
+    <value>Cannot delete this combat scenario because it is currently in use, or one of its combatants is currently in use.</value>
+    <comment>Error message displayed when a user attempts to delete a combat scenario that is being used.</comment>
+  </data>
+  <data name="CasterLevelLabel" xml:space="preserve">
+    <value>Caster Level</value>
+    <comment>Label for a caster level</comment>
+  </data>
+  <data name="CastingTimeLabel" xml:space="preserve">
+    <value>Casting Time</value>
+    <comment>Label for casting time</comment>
+  </data>
+  <data name="CategoryLabel" xml:space="preserve">
+    <value>Category</value>
+    <comment>Label for category</comment>
+  </data>
+  <data name="ChallengeRatingLabel" xml:space="preserve">
+    <value>Challenge Rating</value>
+    <comment>Label for a monster's challenge rating</comment>
+  </data>
+  <data name="ChaoticEvilAlignment" xml:space="preserve">
+    <value>Chaotic Evil</value>
+    <comment>Alignment string for chaotic evil</comment>
+  </data>
+  <data name="ChaoticGoodAlignment" xml:space="preserve">
+    <value>Chaotic Good</value>
+    <comment>Alignment string for chaotic good</comment>
+  </data>
+  <data name="ChaoticNeutralAlignment" xml:space="preserve">
+    <value>Chaotic Neutral</value>
+    <comment>Alignment string for chaotic neutral</comment>
+  </data>
+  <data name="CharismaLabel" xml:space="preserve">
+    <value>Charisma</value>
+    <comment>Label for charisma</comment>
+  </data>
+  <data name="ChooseSourceLabel" xml:space="preserve">
+    <value>Choose a Source</value>
+    <comment>Label for choosing a source from a list of options</comment>
+  </data>
+  <data name="ClassLabel" xml:space="preserve">
+    <value>Class</value>
+    <comment>Label for class</comment>
+  </data>
+  <data name="CloseButton" xml:space="preserve">
+    <value>Close</value>
+    <comment>Button for closing a window</comment>
+  </data>
+  <data name="CollosalSize" xml:space="preserve">
+    <value>Collosal</value>
+    <comment>Size string for collosal</comment>
+  </data>
+  <data name="CombatantsLabel" xml:space="preserve">
+    <value>Combatants</value>
+    <comment>Label for a list of combatants</comment>
+  </data>
+  <data name="CombatCategory" xml:space="preserve">
+    <value>Combat</value>
+    <comment>Category for combat related view models</comment>
+  </data>
+  <data name="CombatManeuverBonusLabel" xml:space="preserve">
+    <value>CMB</value>
+    <comment>Label for combat maneuver bonus</comment>
+  </data>
+  <data name="CombatManeuverDefenseLabel" xml:space="preserve">
+    <value>CMD</value>
+    <comment>Label for combat maneuver defense</comment>
+  </data>
+  <data name="CombatMenuHeader" xml:space="preserve">
+    <value>Combat</value>
+    <comment>Menu header for combat</comment>
+  </data>
+  <data name="CombatScenariosViewModelDisplayName" xml:space="preserve">
+    <value>Combat Scenarios</value>
+    <comment>Display name for combat scenarios</comment>
+  </data>
+  <data name="CommunicationLabel" xml:space="preserve">
+    <value>Communications</value>
+    <comment>Label for methods of communication</comment>
+  </data>
+  <data name="ComponentsLabel" xml:space="preserve">
+    <value>Components</value>
+    <comment>Label for components</comment>
+  </data>
+  <data name="ConditionsMenuHeader" xml:space="preserve">
+    <value>Conditions</value>
+    <comment>Menu header for managing conditions</comment>
+  </data>
+  <data name="ConditionsViewModelName" xml:space="preserve">
+    <value>Conditions</value>
+  </data>
+  <data name="ConstitutionLabel" xml:space="preserve">
+    <value>Constitution</value>
+    <comment>Label for constitution</comment>
+  </data>
+  <data name="CopyButton" xml:space="preserve">
+    <value></value>
+    <comment>Button label for copying something</comment>
+  </data>
+  <data name="CopyButtonToolTip" xml:space="preserve">
+    <value>Create Copy</value>
+    <comment>Tooltip for copy button</comment>
+  </data>
+  <data name="CostLabel" xml:space="preserve">
+    <value>Cost</value>
+    <comment>Label for the cost of an item</comment>
+  </data>
+  <data name="CostlyComponentsLabel" xml:space="preserve">
+    <value>Costly Components</value>
+    <comment>Label for costly components</comment>
+  </data>
+  <data name="CountLabel" xml:space="preserve">
+    <value>Count</value>
+    <comment>Label for the number of an item</comment>
+  </data>
+  <data name="CurrentCombatantMarker" xml:space="preserve">
+    <value>▶</value>
+    <comment>Marker shown next to the currently active combatant</comment>
+  </data>
+  <data name="CurrentRoundLabel" xml:space="preserve">
+    <value>Round</value>
+    <comment>Label for showing the current round in combat</comment>
+  </data>
+  <data name="d20GameScreenLabel" xml:space="preserve">
+    <value>d20 GameScreen</value>
+    <comment>Label for importing from d20 GameScreen</comment>
+  </data>
+  <data name="DamageCombatantsButton" xml:space="preserve">
+    <value>Damage</value>
+    <comment>Button label for dealing damage during combat</comment>
+  </data>
+  <data name="DamageLabel" xml:space="preserve">
+    <value>Damage</value>
+    <comment>Label for showing damage or dealing damage</comment>
+  </data>
+  <data name="DamageReductionLabel" xml:space="preserve">
+    <value>Damage Reduction</value>
+    <comment>Label for damage reduction</comment>
+  </data>
+  <data name="DamageTypesLabel" xml:space="preserve">
+    <value>Damage Types</value>
+    <comment>Label for selecting types of damage being dealt</comment>
+  </data>
+  <data name="DeadAtLabel" xml:space="preserve">
+    <value>Dead At</value>
+    <comment>Label for a combatant's death hp</comment>
+  </data>
+  <data name="DefenseLabel" xml:space="preserve">
+    <value>Defense</value>
+    <comment>Label for defense</comment>
+  </data>
+  <data name="DefenseLabel1" xml:space="preserve">
+    <value>Defense</value>
+    <comment>Label for defense</comment>
+  </data>
+  <data name="DescriptionLabel" xml:space="preserve">
+    <value>Description</value>
+    <comment>Label for description</comment>
+  </data>
+  <data name="DescriptionLabel1" xml:space="preserve">
+    <value>Description</value>
+    <comment>Label used for an item's description</comment>
+  </data>
+  <data name="DeselectAllButton" xml:space="preserve">
+    <value>Deselect All</value>
+    <comment>Label for deselect all button</comment>
+  </data>
+  <data name="DestructionLabel" xml:space="preserve">
+    <value>Destruction</value>
+    <comment>Label for how to destroy something</comment>
+  </data>
+  <data name="DetailsHeader" xml:space="preserve">
+    <value>Details</value>
+    <comment>Header show above detail information</comment>
+  </data>
+  <data name="DexterityLabel" xml:space="preserve">
+    <value>Dexterity</value>
+    <comment>Label for dexterity</comment>
+  </data>
+  <data name="DiminutiveSize" xml:space="preserve">
+    <value>Diminutive</value>
+    <comment>Size string for diminutive</comment>
+  </data>
+  <data name="DismissibleLabel" xml:space="preserve">
+    <value>Dismissible</value>
+    <comment>Label for dismissible</comment>
+  </data>
+  <data name="DisplayNameLabel" xml:space="preserve">
+    <value>Display Name</value>
+    <comment>Label for the name to present to players</comment>
+  </data>
+  <data name="DisplayToPlayersLabel" xml:space="preserve">
+    <value>Display To Players</value>
+    <comment>Label for check box to determine whether to display something to players or not</comment>
+  </data>
+  <data name="DoNotOverwriteButton" xml:space="preserve">
+    <value>No Overwrite</value>
+    <comment>Label to not overwrite all existing of something</comment>
+  </data>
+  <data name="DoubleDamageLabel" xml:space="preserve">
+    <value>Double Damage (200%)</value>
+    <comment>Label for dealing 200% damage</comment>
+  </data>
+  <data name="DurationLabel" xml:space="preserve">
+    <value>Duration</value>
+    <comment>Label for duration</comment>
+  </data>
+  <data name="EditAttributeHeader" xml:space="preserve">
+    <value>Edit Attribute...</value>
+    <comment>Menu header for Edit Attribute menu item</comment>
+  </data>
+  <data name="EditButton" xml:space="preserve">
+    <value></value>
+    <comment>Text for edit buttons</comment>
+  </data>
+  <data name="EditButtonToolTip" xml:space="preserve">
+    <value>Edit</value>
+    <comment>Tooltip for edit button</comment>
+  </data>
+  <data name="EditEffectMenuHeader" xml:space="preserve">
+    <value>Edit Effect</value>
+    <comment>Menu header for editing an effect in combat</comment>
+  </data>
+  <data name="EffectLabel" xml:space="preserve">
+    <value>Effect</value>
+    <comment>Label for effect</comment>
+  </data>
+  <data name="EffectsLabel" xml:space="preserve">
+    <value>Effects</value>
+    <comment>Label for showing what this is the source of</comment>
+  </data>
+  <data name="EffectTypesLabel" xml:space="preserve">
+    <value>Effect Types</value>
+    <comment>Label for effect types</comment>
+  </data>
+  <data name="EgoLabel" xml:space="preserve">
+    <value>Ego</value>
+    <comment>Label for an item's ego</comment>
+  </data>
+  <data name="EllipsisButton" xml:space="preserve">
+    <value>…</value>
+    <comment>Label for a button with an ellipsis</comment>
+  </data>
+  <data name="EncounterMembersLabel" xml:space="preserve">
+    <value>Encounter Members</value>
+    <comment>Label for the members of an encounter</comment>
+  </data>
+  <data name="EndButton" xml:space="preserve">
+    <value>End</value>
+    <comment>Button label for ending combat</comment>
+  </data>
+  <data name="EndCombatWarningMessage" xml:space="preserve">
+    <value>End the current combat?</value>
+    <comment>Message prompting user whether they wish to end the current combat or not</comment>
+  </data>
+  <data name="EnvironmentLabel" xml:space="preserve">
+    <value>Environment</value>
+    <comment>Label for environment</comment>
+  </data>
+  <data name="EquipmentCategory" xml:space="preserve">
+    <value>Equipment</value>
+    <comment>Category for view models for equipment</comment>
+  </data>
+  <data name="EquipmentMenuHeader" xml:space="preserve">
+    <value>Equipment</value>
+    <comment>Menu header for equipment</comment>
+  </data>
+  <data name="ExpiredEffectsInformationLabel" xml:space="preserve">
+    <value>The following effects expired</value>
+    <comment>Label used when showing the user that effects have expired</comment>
+  </data>
+  <data name="FastHealingLabel" xml:space="preserve">
+    <value>Fast Healing</value>
+    <comment>Label for the amount of fast healing</comment>
+  </data>
+  <data name="FeatsLabel" xml:space="preserve">
+    <value>Feats</value>
+    <comment>Label for a monster's feats</comment>
+  </data>
+  <data name="FilterButton" xml:space="preserve">
+    <value></value>
+    <comment>Button for filtering or searching</comment>
+  </data>
+  <data name="FilterLabel" xml:space="preserve">
+    <value>Filter</value>
+    <comment>Label for filtering</comment>
+  </data>
+  <data name="FineSize" xml:space="preserve">
+    <value>Fine</value>
+    <comment>Size string for fine</comment>
+  </data>
+  <data name="FinishWizardButton" xml:space="preserve">
+    <value>Finish</value>
+    <comment>Button label for finishing a wizard</comment>
+  </data>
+  <data name="FlatFootedArmorClassLabel" xml:space="preserve">
+    <value>Flat-Footed Armor Class</value>
+    <comment>Label for a monster's flat footed AC</comment>
+  </data>
+  <data name="FortitudeLabel" xml:space="preserve">
+    <value>Fortitude</value>
+    <comment>Label for a monster's fortitude saving throw</comment>
+  </data>
+  <data name="GargantuanSize" xml:space="preserve">
+    <value>Gargantuan</value>
+    <comment>Size string for gargantuan</comment>
+  </data>
+  <data name="GeneralLabel" xml:space="preserve">
+    <value>General</value>
+    <comment>Label for general information about something</comment>
+  </data>
+  <data name="GroupLabel" xml:space="preserve">
+    <value>Group</value>
+    <comment>Label for a group</comment>
+  </data>
+  <data name="HalfAgainDamageLabel" xml:space="preserve">
+    <value>Half Again Damage (150%)</value>
+    <comment>Label for dealing 150% damage</comment>
+  </data>
+  <data name="HalfDamageLabel" xml:space="preserve">
+    <value>Half Damage (50%)</value>
+    <comment>Label for dealing half damage</comment>
+  </data>
+  <data name="HealCombatantsButton" xml:space="preserve">
+    <value>Heal</value>
+    <comment>Button label for healing combatants in combat</comment>
+  </data>
+  <data name="HitDiceLabel" xml:space="preserve">
+    <value>Hit Dice</value>
+    <comment>Label for setting something's hit dice</comment>
+  </data>
+  <data name="HitPointsLabel" xml:space="preserve">
+    <value>Hit Points</value>
+    <comment>Label for displaying a combatant's hit points</comment>
+  </data>
+  <data name="HugeSize" xml:space="preserve">
+    <value>Huge</value>
+    <comment>Size string for huge</comment>
+  </data>
+  <data name="ImmunitiesLabel" xml:space="preserve">
+    <value>Immunities</value>
+    <comment>Label for immunities</comment>
+  </data>
+  <data name="ImportMenuHeader" xml:space="preserve">
+    <value>Import</value>
+    <comment>Menu header for importing something</comment>
+  </data>
+  <data name="IncludeInCombatLabel" xml:space="preserve">
+    <value>Include In Combat</value>
+    <comment>Label for including a combatant in combat</comment>
+  </data>
+  <data name="InitiativeModifierLabel" xml:space="preserve">
+    <value>Initiative Modifier</value>
+    <comment>Label for the initiative modifier of a combatant</comment>
+  </data>
+  <data name="InitiativeOrderLabel" xml:space="preserve">
+    <value>Initiative Order</value>
+    <comment>Label for initiative order</comment>
+  </data>
+  <data name="InitiativeRollLabel" xml:space="preserve">
+    <value>Initiative Roll</value>
+    <comment>Label for displaying the initiative roll of a combatant</comment>
+  </data>
+  <data name="InitiativeSourceLabel" xml:space="preserve">
+    <value>Initiative Count Combatant</value>
+    <comment>Label for the initiative source of an effect</comment>
+  </data>
+  <data name="InitiativeTotalLabel" xml:space="preserve">
+    <value>Total Initiative</value>
+    <comment>Label for displaying the total initiative (roll + modifier) of a combatant</comment>
+  </data>
+  <data name="IntelligenceLabel" xml:space="preserve">
+    <value>Intelligence</value>
+    <comment>Label for intelligence</comment>
+  </data>
+  <data name="IsIntelligentLabel" xml:space="preserve">
+    <value>Intelligent</value>
+    <comment>Label for whether or not an item is intelligent</comment>
+  </data>
+  <data name="IsLethalLabel" xml:space="preserve">
+    <value>Lethal Damage</value>
+    <comment>Label for selecting whether or not damage is lethal</comment>
+  </data>
+  <data name="IsMagicalLabel" xml:space="preserve">
+    <value>Magical</value>
+    <comment>Label for option to make something magical</comment>
+  </data>
+  <data name="KillCombatantMenuHeader" xml:space="preserve">
+    <value>Kill</value>
+    <comment>Menu header for the option to kill a combatant and remove them from the combat</comment>
+  </data>
+  <data name="LanguagesLabel" xml:space="preserve">
+    <value>Languages</value>
+    <comment>Label for languages</comment>
+  </data>
+  <data name="LanguagesLabel1" xml:space="preserve">
+    <value>Languages</value>
+  </data>
+  <data name="LargeSize" xml:space="preserve">
+    <value>Large</value>
+    <comment>Size string for large</comment>
+  </data>
+  <data name="LawfulEvilAlignment" xml:space="preserve">
+    <value>Lawful Evil</value>
+    <comment>Alignment string for lawful evil</comment>
+  </data>
+  <data name="LawfulGoodAlignment" xml:space="preserve">
+    <value>Lawful Good</value>
+    <comment>Alignment string for lawful good</comment>
+  </data>
+  <data name="LawfulNeutralAlignment" xml:space="preserve">
+    <value>Lawful Neutral</value>
+    <comment>Alignment string for lawful neutral</comment>
+  </data>
+  <data name="LevelLabel" xml:space="preserve">
+    <value>Level</value>
+    <comment>Label for the level of something</comment>
+  </data>
+  <data name="LightRadiusLabel" xml:space="preserve">
+    <value>Light Radius</value>
+  </data>
+  <data name="MagicItemsDisplayName" xml:space="preserve">
+    <value>Magic Items</value>
+    <comment>Display name for magic items view model</comment>
+  </data>
+  <data name="MagicItemsMenuHeader" xml:space="preserve">
+    <value>Magic Items</value>
+    <comment>Menu header for magic items</comment>
+  </data>
+  <data name="MainWindowTitle" xml:space="preserve">
+    <value>d20 GameScreen Desktop</value>
+    <comment>Window title for main window</comment>
+  </data>
+  <data name="ManageCombatantsButton" xml:space="preserve">
+    <value>Manage</value>
+    <comment>Button label for managing combat and combatants</comment>
+  </data>
+  <data name="ManageMonstersDisplayName" xml:space="preserve">
+    <value>Manage Monsters</value>
+    <comment>Display name for the manage monsters view model</comment>
+  </data>
+  <data name="ManageMonsterTypesDisplayName" xml:space="preserve">
+    <value>Monster Types</value>
+    <comment>Display name for managing monster types and subtypes</comment>
+  </data>
+  <data name="ManageMonsterTypesMenuHeader" xml:space="preserve">
+    <value>Monster Types and SubTypes</value>
+    <comment>Menu header for managing monster types and subtypes</comment>
+  </data>
+  <data name="ManageScenariosMenuHeader" xml:space="preserve">
+    <value>Scenarios</value>
+    <comment>Menu header for managing combat scenarios</comment>
+  </data>
+  <data name="ManageSourcesDisplayName" xml:space="preserve">
+    <value>Sources</value>
+    <comment>Display name for managing sources</comment>
+  </data>
+  <data name="ManageSourcesMenuItem" xml:space="preserve">
+    <value>Manage Sources</value>
+    <comment>Menu item to manage sources</comment>
+  </data>
+  <data name="ManageSpellSchoolsDisplayName" xml:space="preserve">
+    <value>Schools and Effects</value>
+    <comment>Display name for managing spells and effect types</comment>
+  </data>
+  <data name="ManageSpellSchoolsLabel" xml:space="preserve">
+    <value>Manage Spell Schools and Effects</value>
+    <comment>Label for managing spells and effect types</comment>
+  </data>
+  <data name="ManageSpellsDisplayName" xml:space="preserve">
+    <value>Spells</value>
+    <comment>Display name for managing spells</comment>
+  </data>
+  <data name="ManageSpellsMenuHeader" xml:space="preserve">
+    <value>Manage Spells</value>
+    <comment>Menu header for managing spells in the campaign</comment>
+  </data>
+  <data name="MaxHitPointsLabel" xml:space="preserve">
+    <value>Maximum Hit Points</value>
+    <comment>Label for displaying the maximum hit points a combatant has</comment>
+  </data>
+  <data name="MaximumPriceLabel" xml:space="preserve">
+    <value>Maximum Price</value>
+    <comment>Label for maximum price</comment>
+  </data>
+  <data name="MediumSize" xml:space="preserve">
+    <value>Medium</value>
+    <comment>Size string for medium</comment>
+  </data>
+  <data name="MeleeLabel" xml:space="preserve">
+    <value>Melee Attacks</value>
+    <comment>Label for a monster's label attacks</comment>
+  </data>
+  <data name="MergeSourceWarning" xml:space="preserve">
+    <value>You are about to merge every item from {0} to {1}.  Are you sure you want to do this?</value>
+    <comment>Warning message displayed when renaming a source would cause two sources to merge together.</comment>
+  </data>
+  <data name="MinimumPriceLabel" xml:space="preserve">
+    <value>Minimum Price</value>
+    <comment>Label for minimum price</comment>
+  </data>
+  <data name="ModifiersLabel" xml:space="preserve">
+    <value>Attribute Modifiers</value>
+    <comment>Label for adding/removing/editing attribute modifiers on an object</comment>
+  </data>
+  <data name="ModifierStackingType_Default" xml:space="preserve">
+    <value>Default for Type</value>
+    <comment>Text displayed when a modifier uses its type for stacking rules</comment>
+  </data>
+  <data name="ModifierStackingType_NonStacking" xml:space="preserve">
+    <value>No Stacking</value>
+    <comment>Text displayed when a modifier never stacks with other modifiers of its type</comment>
+  </data>
+  <data name="ModifierStackingType_Stacking" xml:space="preserve">
+    <value>Stacks</value>
+    <comment>Text displayed when a modifier always stacks with other modifiers of its type</comment>
+  </data>
+  <data name="ModifierTypeCategory" xml:space="preserve">
+    <value>Modifier Types</value>
+    <comment>Category for modifier types</comment>
+  </data>
+  <data name="ModifierTypeLabel" xml:space="preserve">
+    <value>Modifier Type</value>
+    <comment>Label displayed for selecting a modifier type</comment>
+  </data>
+  <data name="ModifierTypesMenuHeader" xml:space="preserve">
+    <value>Modifier Types</value>
+    <comment>Menu header for modifier type settings</comment>
+  </data>
+  <data name="ModifierTypesViewModelName" xml:space="preserve">
+    <value>Modifier Types</value>
+    <comment>Display name for the modifier type list for a campaign</comment>
+  </data>
+  <data name="MonstersCategory" xml:space="preserve">
+    <value>Bestiary</value>
+    <comment>Category for monsters in a campaign</comment>
+  </data>
+  <data name="MonstersMenuHeader" xml:space="preserve">
+    <value>Monsters</value>
+    <comment>Menu header for managing monsters</comment>
+  </data>
+  <data name="MonsterTypesLabel" xml:space="preserve">
+    <value>Monster Types</value>
+    <comment>Label for a list of monster types</comment>
+  </data>
+  <data name="MoveAfterCurrentMenuHeader" xml:space="preserve">
+    <value>Move to After Current (Delayed Action)</value>
+    <comment>Menu item for moving the combatant to the initiative after the current active combatant</comment>
+  </data>
+  <data name="MoveBeforeCurrentMenuHeader" xml:space="preserve">
+    <value>Move to Before Current (Prepared Action)</value>
+    <comment>Menu item for moving the combatant to the initiative before the current active combatant</comment>
+  </data>
+  <data name="MythicLabel" xml:space="preserve">
+    <value>Mythic</value>
+    <comment>Label for whether something is mythic or not</comment>
+  </data>
+  <data name="NameLabel" xml:space="preserve">
+    <value>Name</value>
+    <comment>Label for name</comment>
+  </data>
+  <data name="NeutralEvilAlignment" xml:space="preserve">
+    <value>Neutral Evil</value>
+    <comment>Alignment string for neutral evil</comment>
+  </data>
+  <data name="NeutralGoodAlignment" xml:space="preserve">
+    <value>Neutral Good</value>
+    <comment>Alignment string for neutral good</comment>
+  </data>
+  <data name="NeutralNeutralAlignment" xml:space="preserve">
+    <value>True Neutral</value>
+    <comment>Alignment string for neutral neutral</comment>
+  </data>
+  <data name="NewAttributeDefinitionName" xml:space="preserve">
+    <value>New Attribute</value>
+    <comment>Name used for new attributes</comment>
+  </data>
+  <data name="NewAttributeDefinitionType" xml:space="preserve">
+    <value>New Type</value>
+    <comment>Category used for new attributes</comment>
+  </data>
+  <data name="NewCampaignMenuHeader" xml:space="preserve">
+    <value>_New</value>
+    <comment>Menu header for creating a new campaign</comment>
+  </data>
+  <data name="NewEffectMenuItem" xml:space="preserve">
+    <value>Create effect from this combatant</value>
+    <comment>Menu item for creating an effect</comment>
+  </data>
+  <data name="NewModifierTypeName" xml:space="preserve">
+    <value>New Modifier Type</value>
+    <comment>Name of new modifier types</comment>
+  </data>
+  <data name="NextCombatantButton" xml:space="preserve">
+    <value>Next</value>
+    <comment>Button label for moving to the next combatant in combat</comment>
+  </data>
+  <data name="NextPageButton" xml:space="preserve">
+    <value>Next</value>
+    <comment>Button label for next page in a wizard</comment>
+  </data>
+  <data name="NoDamageLabel" xml:space="preserve">
+    <value>No Damage</value>
+    <comment>Label for reducing all damage to zero</comment>
+  </data>
+  <data name="NoneLabel" xml:space="preserve">
+    <value>None</value>
+    <comment>Label for no selection</comment>
+  </data>
+  <data name="NonLethalDamageLabel" xml:space="preserve">
+    <value>Non-lethal</value>
+    <comment>Label for showing non-lethal damage on a combatant</comment>
+  </data>
+  <data name="NoteMarker" xml:space="preserve">
+    <value>▶</value>
+    <comment>Marker for the beginning of a note</comment>
+  </data>
+  <data name="NotesLabel" xml:space="preserve">
+    <value>Notes</value>
+    <comment>Label for showing notes</comment>
+  </data>
+  <data name="NumberWillBeOverwrittenLabel" xml:space="preserve">
+    <value>{0} will be overwritten</value>
+    <comment>Label for the number of items that will be overwritten</comment>
+  </data>
+  <data name="OffenseLabel" xml:space="preserve">
+    <value>Offense</value>
+    <comment>Label for offense</comment>
+  </data>
+  <data name="OpenCampaignDialogTitle" xml:space="preserve">
+    <value>Open Campaign</value>
+    <comment>Title of the open dialog for opening an existing campaign</comment>
+  </data>
+  <data name="OpenCampaignMenuHeader" xml:space="preserve">
+    <value>Open Campaign</value>
+    <comment>Menu item for opening a campaign</comment>
+  </data>
+  <data name="OrganisationLabel" xml:space="preserve">
+    <value>Organisation</value>
+    <comment>Label for organisation</comment>
+  </data>
+  <data name="OverwriteButton" xml:space="preserve">
+    <value>Overwrite</value>
+    <comment>Label to overwrite all existing of something</comment>
+  </data>
+  <data name="OverwriteLabel" xml:space="preserve">
+    <value>Overwrite</value>
+    <comment>Label for something being overwritten</comment>
+  </data>
+  <data name="PfsrdImportLabel" xml:space="preserve">
+    <value>d20 PFSRD CSV file</value>
+    <comment>Label for importing from a csv file downloaded from the d20 PFSRD website</comment>
+  </data>
+  <data name="PlayerNameLabel" xml:space="preserve">
+    <value>Player</value>
+    <comment>Label for showing the name of a player</comment>
+  </data>
+  <data name="PlayersDisplayName" xml:space="preserve">
+    <value>Players</value>
+    <comment>Display name for the player management view model</comment>
+  </data>
+  <data name="PlayersMenuHeader" xml:space="preserve">
+    <value>Players</value>
+    <comment>Menu item for editing player information</comment>
+  </data>
+  <data name="PowersLabel" xml:space="preserve">
+    <value>Powers</value>
+    <comment>Label for the powers of an item</comment>
+  </data>
+  <data name="PrepareInfoLabel" xml:space="preserve">
+    <value>Prep Info</value>
+    <comment>Label for combat preparation information</comment>
+  </data>
+  <data name="PrepareInfoToolTip" xml:space="preserve">
+    <value>Information used to create this combatant.</value>
+    <comment>ToolTip displayed for the combatant preparation information</comment>
+  </data>
+  <data name="PrevPageButton" xml:space="preserve">
+    <value>Previous</value>
+    <comment>Button label for previous page in a wizard</comment>
+  </data>
+  <data name="PriceLabel" xml:space="preserve">
+    <value>Price</value>
+    <comment>Label for the price of something</comment>
+  </data>
+  <data name="QuarterDamageLabel" xml:space="preserve">
+    <value>Quarter Damage (25%)</value>
+    <comment>Label for dealing quarter damage</comment>
+  </data>
+  <data name="RacesMenuHeader" xml:space="preserve">
+    <value>Races</value>
+    <comment>Menu header for races menu item</comment>
+  </data>
+  <data name="RacialSkillModifiersLabel" xml:space="preserve">
+    <value>Racial Skill Modifiers</value>
+    <comment>Label for racial skill modifiers</comment>
+  </data>
+  <data name="RangedLabel" xml:space="preserve">
+    <value>Ranged Attacks</value>
+    <comment>Label for a monster's ranged attacks</comment>
+  </data>
+  <data name="RangeLabel" xml:space="preserve">
+    <value>Range</value>
+    <comment>Label for range</comment>
+  </data>
+  <data name="ReachLabel" xml:space="preserve">
+    <value>Reach</value>
+    <comment>Label for reach</comment>
+  </data>
+  <data name="ReflexLabel" xml:space="preserve">
+    <value>Reflex</value>
+    <comment>Label for reflex saving throw</comment>
+  </data>
+  <data name="RelatedEffectItemLabel" xml:space="preserve">
+    <value>Related Spell</value>
+    <comment>Label for an item related to an effect</comment>
+  </data>
+  <data name="RemainingRoundsLabel" xml:space="preserve">
+    <value>Remaining Rounds</value>
+    <comment>Label for remaining rounds</comment>
+  </data>
+  <data name="RemoveAttributeHeader" xml:space="preserve">
+    <value>Remove Attribute</value>
+    <comment>Menu header for Remove Attribute menu item</comment>
+  </data>
+  <data name="RemoveButton" xml:space="preserve">
+    <value></value>
+    <comment>Text for remove buttons</comment>
+  </data>
+  <data name="RemoveButtonToolTip" xml:space="preserve">
+    <value>Remove</value>
+    <comment>Tooltip for remove button</comment>
+  </data>
+  <data name="RemoveConditionMenuHeader" xml:space="preserve">
+    <value>Remove Condition</value>
+    <comment>Menu header for removing a condition from a combatant</comment>
+  </data>
+  <data name="RemoveEffectMenuHeader" xml:space="preserve">
+    <value>Remove Effect</value>
+    <comment>Menu header to remove an effect from combat</comment>
+  </data>
+  <data name="RemoveSourceWarning" xml:space="preserve">
+    <value>You are about to remove the source {0} and everything that comes from that source.  Are you sure you want to do this?</value>
+    <comment>Warning message displayed when the user is about to remove a source from the campaign.</comment>
+  </data>
+  <data name="RemoveTargetMenuHeader" xml:space="preserve">
+    <value>Remove from this effect</value>
+    <comment>Menu header for removing a combatant from an effect</comment>
+  </data>
+  <data name="RequiredStatsHeader" xml:space="preserve">
+    <value>Required Statistics</value>
+    <comment>Header for statistics that are required for a combatant template</comment>
+  </data>
+  <data name="RequirementsLabel" xml:space="preserve">
+    <value>Requirements</value>
+    <comment>Label for something's requirements</comment>
+  </data>
+  <data name="RequiresAllLabel" xml:space="preserve">
+    <value>Requires All Types</value>
+    <comment>Checkbox for whether or not all types must be met to bypass damage reduction</comment>
+  </data>
+  <data name="ResetViewButton" xml:space="preserve">
+    <value>Clear</value>
+    <comment>Button label for buttons that reset the current view back to default</comment>
+  </data>
+  <data name="ResistancesLabel" xml:space="preserve">
+    <value>Resistances</value>
+    <comment>Label for resistances</comment>
+  </data>
+  <data name="RollingStrategyAboveAverage" xml:space="preserve">
+    <value>Above Average</value>
+    <comment>Display string for RollingStrategy.AboveAverage</comment>
+  </data>
+  <data name="RollingStrategyBelowAverage" xml:space="preserve">
+    <value>Below Average</value>
+    <comment>Display string for RollingStrategy.BelowAverage</comment>
+  </data>
+  <data name="RollingStrategyHeroic" xml:space="preserve">
+    <value>Heroic</value>
+    <comment>Display string for RollingStrategy.Heroic</comment>
+  </data>
+  <data name="RollingStrategyLabel" xml:space="preserve">
+    <value>Rolling Strategy</value>
+    <comment>Label for selecting the rolling strategy for dice or hit dice</comment>
+  </data>
+  <data name="RollingStrategyMaximum" xml:space="preserve">
+    <value>Maximum</value>
+    <comment>Display string for RollingStrategy.Maximum</comment>
+  </data>
+  <data name="RollingStrategyMinimum" xml:space="preserve">
+    <value>Minimum</value>
+    <comment>Display string for RollingStrategy.Minimum</comment>
+  </data>
+  <data name="RollingStrategyStandard" xml:space="preserve">
+    <value>Standard</value>
+    <comment>Display string for RollingStrategy.Standard</comment>
+  </data>
+  <data name="RollLabel" xml:space="preserve">
+    <value>Roll</value>
+    <comment>Label to roll a die</comment>
+  </data>
+  <data name="SaveCampaignFirstMessage" xml:space="preserve">
+    <value>Would you like to save your current campaign first before closing it?</value>
+    <comment>Message asking to save a campaign before closing it or opening another.</comment>
+  </data>
+  <data name="SaveCampaignMenuHeader" xml:space="preserve">
+    <value>Save Campaign</value>
+    <comment>Menu item for saving a campaign</comment>
+  </data>
+  <data name="SavingThrowLabel" xml:space="preserve">
+    <value>Saving Throw</value>
+    <comment>Label for saving throw</comment>
+  </data>
+  <data name="SchoolLabel" xml:space="preserve">
+    <value>School</value>
+    <comment>Label for a school display</comment>
+  </data>
+  <data name="SelectAllButton" xml:space="preserve">
+    <value>Select All</value>
+    <comment>Label for select all button</comment>
+  </data>
+  <data name="SelectItemWindowText" xml:space="preserve">
+    <value>Select One</value>
+    <comment>Label displayed above the combo box for selecting an item from the select item window</comment>
+  </data>
+  <data name="SelectItemWindowTitle" xml:space="preserve">
+    <value>Select One</value>
+    <comment>Window title for select item window</comment>
+  </data>
+  <data name="SensesLabel" xml:space="preserve">
+    <value>Senses</value>
+    <comment>Label for senses</comment>
+  </data>
+  <data name="SensesLabel1" xml:space="preserve">
+    <value>Senses</value>
+  </data>
+  <data name="SettingsMenuHeader" xml:space="preserve">
+    <value>Settings</value>
+    <comment>Menu header for application settings</comment>
+  </data>
+  <data name="ShapeableLabel" xml:space="preserve">
+    <value>Shapeable</value>
+    <comment>Label for shapeable</comment>
+  </data>
+  <data name="ShortDescriptionLabel" xml:space="preserve">
+    <value>Short Description</value>
+    <comment>Label for short description</comment>
+  </data>
+  <data name="SizeLabel" xml:space="preserve">
+    <value>Size</value>
+    <comment>Label for a monster's size</comment>
+  </data>
+  <data name="SkillsLabel" xml:space="preserve">
+    <value>Skills</value>
+    <comment>Label for a monster's skills</comment>
+  </data>
+  <data name="SlotLabel" xml:space="preserve">
+    <value>Slot</value>
+    <comment>Label for the slot an item takes</comment>
+  </data>
+  <data name="SmallSize" xml:space="preserve">
+    <value>Small</value>
+    <comment>Size string for small</comment>
+  </data>
+  <data name="SortByLabel" xml:space="preserve">
+    <value>Sort By</value>
+    <comment>Label for sorting options</comment>
+  </data>
+  <data name="SourceAttributeLabel" xml:space="preserve">
+    <value>Source Attribute</value>
+    <comment>Label for displaying the source attribute</comment>
+  </data>
+  <data name="SourceButton" xml:space="preserve">
+    <value>Source</value>
+    <comment>Button label for choosing a source for something</comment>
+  </data>
+  <data name="SourceLabel" xml:space="preserve">
+    <value>Source</value>
+    <comment>Label for showing the source of something</comment>
+  </data>
+  <data name="SpecialAbilitiesLabel" xml:space="preserve">
+    <value>Special Abilities</value>
+    <comment>Label for special abilities</comment>
+  </data>
+  <data name="SpecialAttacksLabel" xml:space="preserve">
+    <value>Special Attacks</value>
+    <comment>Label for special attacks</comment>
+  </data>
+  <data name="SpecialQualitiesLabel" xml:space="preserve">
+    <value>Special Qualities</value>
+    <comment>Label for region to edit or view special qualities on something</comment>
+  </data>
+  <data name="SpeedLabel" xml:space="preserve">
+    <value>Speed</value>
+    <comment>Label for speed</comment>
+  </data>
+  <data name="SpellLikeAbilitiesLabel" xml:space="preserve">
+    <value>Spell Like Abilities</value>
+    <comment>Label for spell like abilities</comment>
+  </data>
+  <data name="SpellResistanceLabel" xml:space="preserve">
+    <value>Spell Resistance</value>
+    <comment>Label for spell resistance</comment>
+  </data>
+  <data name="SpellsCategory" xml:space="preserve">
+    <value>Spells</value>
+    <comment>Category for managing spells</comment>
+  </data>
+  <data name="SpellsMenuHeader" xml:space="preserve">
+    <value>Spells</value>
+    <comment>Menu header for spells</comment>
+  </data>
+  <data name="StackingRuleLabel" xml:space="preserve">
+    <value>Stacking Rule</value>
+    <comment>Label used for setting the stacking rules of a modifier type</comment>
+  </data>
+  <data name="StandardDamageLabel" xml:space="preserve">
+    <value>Standard Damage</value>
+    <comment>Label for not modifying damage</comment>
+  </data>
+  <data name="StatisticsLabel" xml:space="preserve">
+    <value>Statistics</value>
+    <comment>Label for statistics</comment>
+  </data>
+  <data name="StrengthLabel" xml:space="preserve">
+    <value>Strength</value>
+    <comment>Label for a monster's strength</comment>
+  </data>
+  <data name="SubschoolLabel" xml:space="preserve">
+    <value>Subschool</value>
+    <comment>Label for subschool</comment>
+  </data>
+  <data name="SubtypesLabel" xml:space="preserve">
+    <value>Sub Types</value>
+    <comment>Label for a monster's sub types</comment>
+  </data>
+  <data name="TagsLabel" xml:space="preserve">
+    <value>Tags</value>
+    <comment>Label for region to edit or view tags</comment>
+  </data>
+  <data name="TargetsLabel" xml:space="preserve">
+    <value>Targets</value>
+    <comment>Label for targets</comment>
+  </data>
+  <data name="TemporaryHitPointsLabel" xml:space="preserve">
+    <value>Temporary Hit Points</value>
+    <comment>Label for showing temporary hit points</comment>
+  </data>
+  <data name="TinySize" xml:space="preserve">
+    <value>Tiny</value>
+    <comment>Size string for tiny</comment>
+  </data>
+  <data name="TouchArmorClassLabel" xml:space="preserve">
+    <value>Touch Armor Class</value>
+    <comment>Label for a monster's touch AC</comment>
+  </data>
+  <data name="TouchModeMenuHeader" xml:space="preserve">
+    <value>Touch Mode</value>
+    <comment>Menu header for toggling touch mode</comment>
+  </data>
+  <data name="TreasureLabel" xml:space="preserve">
+    <value>Treasure</value>
+    <comment>Label for treasure</comment>
+  </data>
+  <data name="TypeLabel" xml:space="preserve">
+    <value>Type</value>
+    <comment>Label for type</comment>
+  </data>
+  <data name="TypesLabel" xml:space="preserve">
+    <value>Types</value>
+    <comment>Label for a collection of types</comment>
+  </data>
+  <data name="UnconsciousAtLabel" xml:space="preserve">
+    <value>Unconscious At</value>
+    <comment>Label for a combatant's unconscious hp</comment>
+  </data>
+  <data name="UndoButtonLabel" xml:space="preserve">
+    <value></value>
+    <comment>Button label for performing an undo operation</comment>
+  </data>
+  <data name="UndoButtonToolTip" xml:space="preserve">
+    <value>Undoes back to the last time the current combatant changed (such as pressing the Next button)</value>
+    <comment>Button tooltip for performing an undo operation</comment>
+  </data>
+  <data name="UnknownLabel" xml:space="preserve">
+    <value>Unknown</value>
+    <comment>Label for anything that is not known (likely missing user input)</comment>
+  </data>
+  <data name="UnknownType" xml:space="preserve">
+    <value>Unknown Type</value>
+    <comment>Text displayed when a type is unknown</comment>
+  </data>
+  <data name="UnnamedSourceLabel" xml:space="preserve">
+    <value>(Unnamed Source)</value>
+    <comment>Label used when a source without a name is needed to be displayed</comment>
+  </data>
+  <data name="UpButton" xml:space="preserve">
+    <value></value>
+    <comment>Button label for moving something up</comment>
+  </data>
+  <data name="ValueLabel" xml:space="preserve">
+    <value>Value</value>
+    <comment>Label for displaying or editing a value</comment>
+  </data>
+  <data name="ViewObjectButton" xml:space="preserve">
+    <value></value>
+    <comment>Button label for viewing an objec</comment>
+  </data>
+  <data name="VisualDescriptionLabel" xml:space="preserve">
+    <value>Flavor Description</value>
+    <comment>Label for visual description</comment>
+  </data>
+  <data name="VulnerabilitiesLabel" xml:space="preserve">
+    <value>Vulnierabilities</value>
+    <comment>Label for vulnerabilities</comment>
+  </data>
+  <data name="WeightLabel" xml:space="preserve">
+    <value>Weight</value>
+    <comment>Label for the weight of something</comment>
+  </data>
+  <data name="WIllpowerLabel" xml:space="preserve">
+    <value>Willpower</value>
+    <comment>Label for a willpower saving throw</comment>
+  </data>
+  <data name="WisdomLabel" xml:space="preserve">
+    <value>Wisdom</value>
+    <comment>Label for wisdom</comment>
+  </data>
+</root>

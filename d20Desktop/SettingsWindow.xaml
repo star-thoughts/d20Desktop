@@ -1,0 +1,35 @@
+﻿<Window x:Class="Fiction.GameScreen.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:Fiction.GameScreen"
+        xmlns:windows="clr-namespace:Fiction.Windows;assembly=Fiction.Windows"
+        xmlns:vm="clr-namespace:Fiction.GameScreen.ViewModels"
+        Title="{Binding ElementName=Window, Path=ViewModel.ViewModelDisplayName}"
+        windows:DialogExtensions.IsDialog="True"
+        x:Name="Window"
+        Loaded="Window_Loaded"
+        WindowStartupLocation="CenterOwner"
+        Height="500"
+        Width="900">
+    <Window.CommandBindings>
+        <CommandBinding Command="windows:Commands.Ok"
+                        x:Name="OkCommand"
+                        CanExecute="OkCommand_CanExecute"
+                        Executed="OkCommand_Executed" />
+        <CommandBinding Command="windows:Commands.Cancel"
+                        x:Name="CancelCommand"
+                        CanExecute="CancelCommand_CanExecute"
+                        Executed="CancelCommand_Executed" />
+    </Window.CommandBindings>
+    <Grid Margin="{StaticResource WindowMargin}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <ContentPresenter Content="{Binding ElementName=Window, Path=ViewModel}">
+            <ContentPresenter.Resources>
+            </ContentPresenter.Resources>
+        </ContentPresenter>
+        <windows:OkCancel Grid.Row="1" />
+    </Grid>
+</Window>

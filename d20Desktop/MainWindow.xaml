@@ -1,0 +1,237 @@
+﻿<Window x:Class="Fiction.GameScreen.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:Fiction.GameScreen"
+        xmlns:resources="clr-namespace:Fiction.GameScreen.Resources"
+        xmlns:vm="clr-namespace:Fiction.GameScreen.ViewModels"
+        xmlns:controls="clr-namespace:Fiction.GameScreen.Controls"
+        xmlns:diag="clr-namespace:System.Diagnostics;assembly=WindowsBase"
+        Title="{Binding Source={x:Static resources:Resources.MainWindowTitle}}"
+        x:Name="Window"
+        WindowState="Maximized"
+        Height="350"
+        Width="525"
+        Closing="Window_Closing"
+        TextElement.Foreground="White">
+    <Window.CommandBindings>
+        <CommandBinding Command="local:Commands.CloseTab"
+                        CanExecute="CloseTabCommand_CanExecute"
+                        Executed="CloseTabCommand_Executed" />
+        <CommandBinding Command="local:Commands.ManageCombatScenarios"
+                        CanExecute="ManageCombatScenariosCommand_CanExecute"
+                        Executed="ManageCombatScenariosCommand_Executed" />
+        <CommandBinding Command="local:Commands.BeginCombat"
+                        CanExecute="BeginCombatCommand_CanExecute"
+                        Executed="BeginCombatCommand_Executed" />
+        <CommandBinding Command="local:Commands.EndCombat"
+                        CanExecute="EndCombat_CanExecute"
+                        Executed="EndCombat_Executed" />
+        <CommandBinding Command="local:Commands.ActiveCombat"
+                        CanExecute="ActiveCombat_CanExecute"
+                        Executed="ActiveCombat_Executed" />
+        <CommandBinding Command="local:Commands.ManageMonsters"
+                        CanExecute="ManageMonstersCommand_CanExecute"
+                        Executed="ManageMonstersCommand_Executed" />
+        <CommandBinding Command="local:Commands.ManagePlayers"
+                        CanExecute="ManagePlayersCommand_CanExecute"
+                        Executed="ManagePlayersCommand_Executed" />
+        <CommandBinding Command="local:Commands.NewCampaign"
+                        CanExecute="NewCampaign_CanExecute"
+                        Executed="NewCampaign_Executed" />
+        <CommandBinding Command="local:Commands.OpenCampaign"
+                        CanExecute="OpenCampaign_CanExecute"
+                        Executed="OpenCampaign_Executed" />
+        <CommandBinding Command="local:Commands.SaveCampaign"
+                        CanExecute="SaveCampaign_CanExecute"
+                        Executed="SaveCampaign_Executed" />
+        <CommandBinding Command="local:Commands.ManageTypes"
+                        CanExecute="ManageTypes_CanExecute"
+                        Executed="ManageTypes_Executed" />
+        <CommandBinding Command="local:Commands.ManageSpells"
+                        CanExecute="ManageSpells_CanExecute"
+                        Executed="ManageSpells_Executed" />
+        <CommandBinding Command="local:Commands.ManageSpellSchools"
+                        CanExecute="ManageSpellSchools_CanExecute"
+                        Executed="ManageSpellSchools_Executed" />
+        <CommandBinding Command="local:Commands.ManageSources"
+                        CanExecute="ManageSources_CanExecute"
+                        Executed="ManageSources_Executed" />
+        <CommandBinding Command="local:Commands.MagicItems"
+                        CanExecute="MagicItems_CanExecute"
+                        Executed="MagicItems_Executed" />
+        <CommandBinding Command="local:Commands.ManageConditions"
+                        CanExecute="ManageConditionsCommand_CanExecute"
+                        Executed="ManageConditionsCommand_Executed" />
+    </Window.CommandBindings>
+    <Border Background="Black"
+            BorderBrush="White"
+            BorderThickness="2"
+            IsEnabled="{Binding ElementName=Window, Path=IsIdle}">
+        <Grid Margin="4">
+            <Grid.RowDefinitions>
+                <!--  Main Menu  -->
+                <RowDefinition Height="Auto" />
+                <!--  Window Content  -->
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <!--  Main Menu  -->
+            <Menu Grid.Row="0"
+                  Background="Black"
+                  DataContext="{Binding ElementName=Window}">
+                <MenuItem Header="{Binding Source={x:Static resources:Resources.CampaignMenuHeader}}">
+                    <MenuItem Header="{Binding Source={x:Static resources:Resources.NewCampaignMenuHeader}}"
+                              Command="local:Commands.NewCampaign" />
+                    <MenuItem Header="{Binding Source={x:Static resources:Resources.OpenCampaignMenuHeader}}"
+                              Command="local:Commands.OpenCampaign" />
+                    <MenuItem Header="{Binding Source={x:Static resources:Resources.SaveCampaignMenuHeader}}"
+                              Command="local:Commands.SaveCampaign" />
+                    <Separator />
+                    <MenuItem Header="{Binding Source={x:Static resources:Resources.PlayersMenuHeader}}"
+                              Command="local:Commands.ManagePlayers" />
+                    <MenuItem Header="{Binding Source={x:Static resources:Resources.ManageSourcesMenuItem}}"
+                              Command="local:Commands.ManageSources" />
+                </MenuItem>
+                <MenuItem Header="{Binding Source={x:Static resources:Resources.EquipmentMenuHeader}}">
+                    <MenuItem Header="{Binding Source={x:Static resources:Resources.MagicItemsMenuHeader}}"
+                              Command="local:Commands.MagicItems" />
+                </MenuItem>
+                <MenuItem Header="{Binding Source={x:Static resources:Resources.SpellsMenuHeader}}">
+                    <MenuItem Header="{Binding Source={x:Static resources:Resources.ManageSpellsMenuHeader}}"
+                              Command="local:Commands.ManageSpells" />
+                    <MenuItem Header="{Binding Source={x:Static resources:Resources.ManageSpellSchoolsLabel}}"
+                              Command="local:Commands.ManageSpellSchools" />
+                </MenuItem>
+                <MenuItem Header="{Binding Source={x:Static resources:Resources.BestiaryMenuHeader}}">
+                    <MenuItem Header="{Binding Source={x:Static resources:Resources.MonstersMenuHeader}}"
+                              Command="local:Commands.ManageMonsters" />
+                    <MenuItem Header="{Binding Source={x:Static resources:Resources.ManageMonsterTypesMenuHeader}}"
+                              Command="local:Commands.ManageTypes" />
+                </MenuItem>
+                <MenuItem Header="{Binding Source={x:Static resources:Resources.CombatMenuHeader}}">
+                    <MenuItem Header="{Binding Source={x:Static resources:Resources.ManageScenariosMenuHeader}}"
+                              Command="local:Commands.ManageCombatScenarios" />
+                    <MenuItem Header="{Binding Source={x:Static resources:Resources.ConditionsMenuHeader}}"
+                              Command="local:Commands.ManageConditions" />
+                    <Separator />
+                    <MenuItem Command="local:Commands.BeginCombat">
+                        <MenuItem.Style>
+                            <Style TargetType="{x:Type MenuItem}"
+                                   BasedOn="{StaticResource {x:Type MenuItem}}">
+                                <Setter Property="Header"
+                                        Value="{Binding Source={x:Static resources:Resources.AddToCombatMenuHeader}}" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Path=Campaign.ActiveCombat}"
+                                                 Value="{x:Null}">
+                                        <Setter Property="Header"
+                                                Value="{Binding Source={x:Static resources:Resources.BeginCombatMenuHeader}}" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </MenuItem.Style>
+                    </MenuItem>
+                    <MenuItem Header="{Binding Source={x:Static resources:Resources.ActiveCombatMenuHeader}}"
+                              Command="local:Commands.ActiveCombat" />
+                </MenuItem>
+                <MenuItem Header="{Binding Source={x:Static resources:Resources.SettingsMenuHeader}}">
+                    <MenuItem Header="{Binding Source={x:Static resources:Resources.TouchModeMenuHeader}}"
+                              IsChecked="{Binding Source={x:Static local:App.Current}, Path=AppSettings.IsTouchEnabled}"
+                              IsCheckable="True" />
+                </MenuItem>
+            </Menu>
+            <local:MainTabControl Grid.Row="1"
+                                  ItemsSource="{Binding ElementName=Window, Path=ViewModels}"
+                                  SelectedValue="{Binding ElementName=Window, Path=SelectedPage}"
+                                  Margin="4"
+                                  FocusManager.IsFocusScope="True">
+                <local:MainTabControl.Background>
+                    <RadialGradientBrush GradientOrigin="0.5,0.5"
+                                         Center="0.5,0.5"
+                                         RadiusX="0.6"
+                                         RadiusY="2">
+                        <RadialGradientBrush.GradientStops>
+                            <GradientStop Color="DimGray"
+                                          Offset="0.5" />
+                            <GradientStop Color="DarkSlateGray"
+                                          Offset="0.9" />
+                            <GradientStop Color="Black"
+                                          Offset="1.0" />
+                        </RadialGradientBrush.GradientStops>
+                    </RadialGradientBrush>
+                </local:MainTabControl.Background>
+                <local:MainTabControl.ItemTemplate>
+                    <DataTemplate DataType="{x:Type vm:CampaignViewModelCore}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="120" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{Binding Path=ViewModelDisplayName}"
+                                       TextTrimming="CharacterEllipsis"
+                                       VerticalAlignment="Center">
+                                <TextBlock.ToolTip>
+                                    <ToolTip>
+                                        <TextBlock Text="{Binding Path=ViewModelDisplayName}" />
+                                    </ToolTip>
+                                </TextBlock.ToolTip>
+                            </TextBlock>
+                            <Button Grid.Column="1"
+                                    MinWidth="0"
+                                    BorderBrush="{x:Null}"
+                                    TextElement.Foreground="DarkGray"
+                                    BorderThickness="0"
+                                    Margin="4, 0, 0, 0"
+                                    Command="local:Commands.CloseTab"
+                                    CommandParameter="{Binding}"
+                                    Content="X" />
+                        </Grid>
+                    </DataTemplate>
+                </local:MainTabControl.ItemTemplate>
+                <local:MainTabControl.Resources>
+                    <DataTemplate DataType="{x:Type vm:CombatScenariosViewModel}">
+                        <controls:CombatScenarios Scenarios="{Binding Scenarios}"
+                                                  Factory="{Binding ElementName=Window, Path=Campaign}" />
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type vm:PrepareCombatViewModel}">
+                        <controls:PrepareCombat Factory="{Binding ElementName=Window, Path=Campaign}"
+                                                Preparer="{Binding}" />
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type vm:ActiveCombatViewModel}">
+                        <controls:ActiveCombat Combat="{Binding}" />
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type vm:ManageMonstersViewModel}">
+                        <controls:ManageMonsters ViewModel="{Binding}" />
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type vm:ManagePlayersViewModel}">
+                        <controls:ManagePlayers ViewModel="{Binding}" />
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type vm:ManageMonsterTypesViewModel}">
+                        <controls:ManageMonsterTypes ViewModel="{Binding}" />
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type vm:ManageSpellsViewModel}">
+                        <controls:ManageSpells ViewModel="{Binding}" />
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type vm:ManageSpellSchoolsViewModel}">
+                        <controls:ManageSpellSchools ViewModel="{Binding}" />
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type vm:ManageSourcesViewModel}">
+                        <controls:ManageSources ViewModel="{Binding}" />
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type vm:MagicItemsViewModel}">
+                        <controls:ManageMagicItems ViewModel="{Binding}" />
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type vm:ConditionsViewModel}">
+                        <controls:ConditionsManager Conditions="{Binding}" />
+                    </DataTemplate>
+                </local:MainTabControl.Resources>
+                <local:MainTabControl.ContentTemplate>
+                    <DataTemplate>
+                        <Border BorderBrush="{x:Null}"
+                                BorderThickness="0, 4, 0, 0">
+                            <ContentPresenter Content="{Binding}" />
+                        </Border>
+                    </DataTemplate>
+                </local:MainTabControl.ContentTemplate>
+            </local:MainTabControl>
+        </Grid>
+    </Border>
+</Window>

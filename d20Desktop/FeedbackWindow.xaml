@@ -1,0 +1,40 @@
+﻿<Window x:Class="Fiction.GameScreen.FeedbackWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:Fiction.GameScreen"
+        xmlns:resources="clr-namespace:Fiction.GameScreen.Resources"
+        xmlns:controls="clr-namespace:Fiction.GameScreen.Controls"
+        xmlns:vm="clr-namespace:Fiction.GameScreen.ViewModels"
+        xmlns:windows="clr-namespace:Fiction.Windows;assembly=Fiction.Windows"
+        xmlns:comp="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+        Title="{Binding Source={x:Static resources:Resources.MainWindowTitle}}"
+        windows:DialogExtensions.IsDialog="True"
+        WindowStartupLocation="CenterOwner"
+        Height="700"
+        Width="500"
+        TextElement.Foreground="White">
+    <Border BorderBrush="White"
+            BorderThickness="2"
+            Background="Black">
+        <Grid Margin="4">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <ContentPresenter Grid.Row="0"
+                              Content="{Binding}">
+                <ContentPresenter.Resources>
+                    <DataTemplate DataType="{x:Type vm:GotoNextResultViewModel}">
+                        <controls:GotoNextResults ViewModel="{Binding}" />
+                    </DataTemplate>
+                </ContentPresenter.Resources>
+            </ContentPresenter>
+            <!--  Close Button  -->
+            <Grid Grid.Row="1">
+                <Button HorizontalAlignment="Center"
+                        Content="{Binding Source={x:Static resources:Resources.CloseButton}}"
+                        Click="CloseButton_Click" />
+            </Grid>
+        </Grid>
+    </Border>
+</Window>

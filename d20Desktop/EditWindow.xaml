@@ -1,0 +1,174 @@
+﻿<Window x:Class="Fiction.GameScreen.EditWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:Fiction.GameScreen"
+        xmlns:resources="clr-namespace:Fiction.GameScreen.Resources"
+        xmlns:controls="clr-namespace:Fiction.GameScreen.Controls"
+        xmlns:vm="clr-namespace:Fiction.GameScreen.ViewModels"
+        xmlns:windows="clr-namespace:Fiction.Windows;assembly=Fiction.Windows"
+        xmlns:comp="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+        Title="{Binding Source={x:Static resources:Resources.MainWindowTitle}}"
+        windows:DialogExtensions.IsDialog="True"
+        WindowStartupLocation="CenterOwner"
+        Height="700"
+        Width="1200"
+        TextElement.Foreground="White">
+    <Window.CommandBindings>
+        <CommandBinding Command="windows:Commands.Ok"
+                        x:Name="OkCommand"
+                        CanExecute="OkCommand_CanExecute"
+                        Executed="OkCommand_Executed" />
+        <CommandBinding Command="windows:Commands.Cancel"
+                        x:Name="CancelCommand"
+                        CanExecute="CancelCommand_CanExecute"
+                        Executed="CancelCommand_Executed" />
+        <CommandBinding Command="local:Commands.ViewObject"
+                        CanExecute="ViewObjectCommand_CanExecute"
+                        Executed="ViewObjectCommand_Executed" />
+    </Window.CommandBindings>
+    <Border BorderBrush="White"
+            BorderThickness="2"
+            Background="Black">
+        <Grid Margin="4">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <ContentPresenter Content="{Binding}">
+                <ContentPresenter.Resources>
+                    <DataTemplate DataType="{x:Type vm:CombatScenarioEditViewModel}">
+                        <controls:CombatScenarioEditor Scenario="{Binding}" />
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type vm:SelectCombatantSourceViewModel}">
+                        <controls:SelectCombatantSource ViewModel="{Binding}" />
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type vm:ResolveInitiativesViewModel}">
+                        <controls:ResolveInitiatives Resolver="{Binding}" />
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type vm:DamageCombatantViewModel}">
+                        <controls:DamageCombatants ViewModel="{Binding}" />
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type vm:HealCombatantsViewModel}">
+                        <controls:HealCombatants ViewModel="{Binding}" />
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type vm:ManageCombatantsViewModel}">
+                        <controls:ManageCombatants ViewModel="{Binding}" />
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type vm:EditMonsterViewModel}">
+                        <controls:MonsterEditor ViewModel="{Binding}" />
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type vm:EnterValueViewModel}">
+                        <Grid Focusable="False">
+                            <Grid.Resources>
+                                <CollectionViewSource x:Key="StringsCollection"
+                                                      Source="{Binding Values}">
+                                    <CollectionViewSource.SortDescriptions>
+                                        <comp:SortDescription PropertyName="."
+                                                              Direction="Ascending" />
+                                    </CollectionViewSource.SortDescriptions>
+                                </CollectionViewSource>
+                            </Grid.Resources>
+                            <TextBox x:Name="TextBox"
+                                     Visibility="Collapsed"
+                                     Text="{Binding Value, UpdateSourceTrigger=PropertyChanged}"
+                                     windows:TextBoxHelper.DataType="{Binding DataType}" />
+                            <ComboBox x:Name="ComboBox"
+                                      Visibility="Visible"
+                                      Text="{Binding Value, UpdateSourceTrigger=PropertyChanged}"
+                                      IsEditable="{Binding AllowEdit}"
+                                      ItemsSource="{Binding Source={StaticResource StringsCollection}}" />
+                        </Grid>
+                        <DataTemplate.Triggers>
+                            <DataTrigger Binding="{Binding Values}"
+                                         Value="{x:Null}">
+                                <Setter Property="Visibility"
+                                        Value="Collapsed"
+                                        TargetName="ComboBox" />
+                                <Setter Property="Visibility"
+                                        Value="Visible"
+                                        TargetName="TextBox" />
+                            </DataTrigger>
+                        </DataTemplate.Triggers>
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type vm:ChooseCombatantTemplateSourceViewModel}">
+                        <controls:ChooseCombatantTemplateSource ViewModel="{Binding}" />
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type vm:EditPlayerCharacterViewModel}">
+                        <controls:PlayerCharacterEditor Character="{Binding}" />
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type vm:EditSpellViewModel}">
+                        <controls:SpellEditor ViewModel="{Binding}" />
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type vm:EditSpellLevelsViewModel}">
+                        <controls:EditSpellLevels ViewModel="{Binding}" />
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type vm:EditEffectViewModel}">
+                        <controls:EditEffect ViewModel="{Binding}" />
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type vm:SelectCombatantsViewModel}">
+                        <controls:SelectCombatants Combatants="{Binding Combat.Combatants}"
+                                                   SelectedCombatants="{Binding SelectedCombatants}"
+                                                   IncludeNonPlayers="{Binding IncludeNonPlayers}"
+                                                   IncludePlayers="{Binding IncludePlayers}"
+                                                   MultiSelect="{Binding MultiSelect}" />
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type vm:SelectCampaignObjectViewModel}">
+                        <controls:SelectCampaignObjects Items="{Binding Items}"
+                                                        SelectedItems="{Binding SelectedItems}"
+                                                        MultiSelect="{Binding MultiSelect}" />
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type vm:EditMagicItemViewModel}">
+                        <controls:MagicItemEditor ViewModel="{Binding}" />
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type vm:MonsterFilterViewModel}">
+                        <controls:MonsterFilter ViewModel="{Binding}" />
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type vm:SpellFilterViewModel}">
+                        <controls:SpellFilter ViewModel="{Binding}" />
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type vm:MagicItemFilterViewModel}">
+                        <controls:MagicItemFilter ViewModel="{Binding}" />
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type vm:EditDamageReductionViewModel}">
+                        <Grid Grid.IsSharedSizeScope="True">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition SharedSizeGroup="Labels" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Row="0"
+                                   Grid.Column="0"
+                                   Content="{Binding Source={x:Static resources:Resources.AmountLabel}}" />
+                            <Label Grid.Row="1"
+                                   Grid.Column="0"
+                                   Content="{Binding Source={x:Static resources:Resources.RequiresAllLabel}}" />
+                            <Label Grid.Row="2"
+                                   Grid.Column="0"
+                                   Content="{Binding Source={x:Static resources:Resources.TypesLabel}}" />
+                            <TextBox Grid.Row="0"
+                                     Grid.Column="1"
+                                     VerticalAlignment="Center"
+                                     Text="{Binding Path=Amount, UpdateSourceTrigger=PropertyChanged}" />
+                            <CheckBox Grid.Row="1"
+                                      Grid.Column="1"
+                                      VerticalAlignment="Center"
+                                      IsChecked="{Binding Path=RequiresAllTypes}" />
+                            <controls:StringListEditor Grid.Row="3"
+                                                       Grid.ColumnSpan="2"
+                                                       StringCollection="{Binding Path=Types}" />
+                        </Grid>
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type vm:EditDamageReductionsViewModel}">
+                        <controls:DamageReductionsEditor DamageReductions="{Binding}" />
+                    </DataTemplate>
+                </ContentPresenter.Resources>
+            </ContentPresenter>
+            <windows:OkCancel Grid.Row="1" />
+        </Grid>
+    </Border>
+</Window>
