@@ -75,23 +75,23 @@ namespace Fiction.GameScreen.Controls
                 _monsterList.AddHandler(FilterableList.ItemDoubleClickedEvent, new ItemDoubleClickedEventHandler(_monsterList_MonsterDoubleClick));
         }
 
-        private async void _monsterList_MonsterDoubleClick(object sender, ItemDoubleClickedEventArgs e)
+        private void _monsterList_MonsterDoubleClick(object sender, ItemDoubleClickedEventArgs e)
         {
-            await Exceptions.FailSafeMethodCall(async () =>
+            Exceptions.FailSafeMethodCall(() =>
             {
                 if (e.Item is Monster monster)
-                    await EditMonster(monster);
+                    EditMonster(monster);
             });
         }
 
-        private async void CreateCopy_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void CreateCopy_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-           await Exceptions.FailSafeMethodCall(async () =>
+           Exceptions.FailSafeMethodCall(() =>
             {
                 e.Handled = true;
                 if (e.Parameter is Monster monster)
                 {
-                    await EditMonster(monster, createCopy: true);
+                    EditMonster(monster, createCopy: true);
                 }
             });
         }
@@ -120,27 +120,26 @@ namespace Fiction.GameScreen.Controls
             e.CanExecute = e.Parameter is Monster;
         }
 
-        private async void Monster_DoubleClick(object sender, MouseButtonEventArgs e)
+        private void Monster_DoubleClick(object sender, MouseButtonEventArgs e)
         {
             if (e.Source is FrameworkElement element && element.DataContext is Monster monster)
-                await EditMonster(monster);
+                EditMonster(monster);
         }
 
-        private async void Edit_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void Edit_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            await Exceptions.FailSafeMethodCall(async () =>
+            Exceptions.FailSafeMethodCall(() =>
             {
                 e.Handled = true;
                 if (e.Parameter is Monster monster)
                 {
-                    await EditMonster(monster);
+                    EditMonster(monster);
                 }
             });
         }
 
-        private async Task EditMonster(Monster monster, bool createCopy = false)
+        private void EditMonster(Monster monster, bool createCopy = false)
         {
-            await Task.Yield();
             EditMonsterViewModel viewModel = new EditMonsterViewModel(ViewModel.Campaign, monster);
             EditWindow window = new EditWindow();
             window.DataContext = viewModel;
@@ -152,6 +151,7 @@ namespace Fiction.GameScreen.Controls
             if (window.ShowDialog() == true)
             {
                 viewModel.Save();
+                    ViewModel.Monsters.Add(viewModel.Monster);
                 SelectedMonster = viewModel.Monster;
                 ViewModel?.Campaign?.MonsterManager?.Reconcile();
             }

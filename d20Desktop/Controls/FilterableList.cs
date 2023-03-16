@@ -109,7 +109,7 @@ namespace Fiction.GameScreen.Controls
         /// <summary>
         /// DependencyProperty for <see cref="Filter"/>
         /// </summary>
-        public static readonly DependencyProperty FilterProperty = DependencyProperty.Register(nameof(Filter), typeof(string), typeof(FilterableList));
+        public static readonly DependencyProperty FilterProperty = DependencyProperty.Register(nameof(Filter), typeof(IFilterViewModel), typeof(FilterableList));
 
         private static void ItemsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
