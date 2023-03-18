@@ -69,7 +69,8 @@ namespace Fiction.GameScreen.Controls
         /// <summary>
         /// DependencyProperty for <see cref="IsIdle"/>
         /// </summary>
-        public static readonly DependencyProperty IsIdleProperty = DependencyProperty.Register(nameof(IsIdle), typeof(bool), typeof(ActiveCombat));
+        public static readonly DependencyProperty IsIdleProperty = DependencyProperty.Register(nameof(IsIdle), typeof(bool), typeof(ActiveCombat),
+            new FrameworkPropertyMetadata(true));
 
         private static void CombatChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
