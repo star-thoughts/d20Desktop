@@ -50,7 +50,7 @@ namespace Fiction.GameScreen.Controls
             CommandBindings.Add(new CommandBinding(Commands.Remove, Remove_Executed, Remove_CanExecute));
             CommandBindings.Add(new CommandBinding(Commands.CreateCopy, Copy_Executed, Copy_CanExecute));
 
-            FilterableList list = Template.FindName("PART_List", this) as FilterableList;
+            FilterableList? list = Template.FindName("PART_List", this) as FilterableList;
             if (list != null)
                 list.ItemDoubleClicked += List_ItemDoubleClicked;
         }

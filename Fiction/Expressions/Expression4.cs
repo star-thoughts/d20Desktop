@@ -40,12 +40,12 @@ namespace Fiction.Expressions
 		/// <param name="param2">Second parameter for the expression</param>
 		/// <param name="param3">Third parameter for the expression</param>
 		/// <returns>Result of the expression</returns>
-		public TResult Call(T1 param1, T2 param2, T3 param3)
+		public TResult? Call(T1 param1, T2 param2, T3 param3)
 		{
 			//  If no assemblies assigned, just use the calling method's assemblies
 			if (Assemblies == null)
 				SetAssemblies(Assembly.GetCallingAssembly().GetReferencedAssemblies());
-			return (TResult)Invoke(new object[] { param1, param2, param3 });
+			return (TResult?)Invoke(new object?[] { param1, param2, param3 });
 		}
 		#endregion
 	}

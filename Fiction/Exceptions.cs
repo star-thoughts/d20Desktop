@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 
 namespace Fiction
 {
@@ -14,7 +15,7 @@ namespace Fiction
         /// <summary>
         /// Event that is triggered when an exception is considered ignored
         /// </summary>
-        public static event EventHandler<IgnoredExceptionEventArgs> IgnoredException;
+        public static event EventHandler<IgnoredExceptionEventArgs>? IgnoredException;
         /// <summary>
         /// Triggers an IgnoredException event
         /// </summary>
@@ -60,7 +61,7 @@ namespace Fiction
         }
         #endregion
         #region Testers
-        public static void ThrowIfArgumentDefault<T>(T value, string property) where T : struct
+        public static void ThrowIfArgumentDefault<T>(T? value, string property) where T : struct
         {
             if (value.Equals(default(T)))
                 ThrowArgumentException(Resources.CommonResources.ArgumentDefaultException, property);
@@ -69,15 +70,14 @@ namespace Fiction
         /// Throws an ArgumentNullException if value is null
         /// </summary>
         /// <param name="value">Value to test</param>
-        public static void ThrowIfArgumentNull(object value, string property)
+        public static void ThrowIfArgumentNull([NotNull] object? value, string property)
         {
-            if (value == null)
-                ThrowNullArgumentException(property);
+            ArgumentNullException.ThrowIfNull(value, property);
         }
-        public static void ThrowIfArgumentNullOrEmpty(string value, string property)
+        public static void ThrowIfArgumentNullOrEmpty([NotNull] string? value, string property)
         {
-            if (value == null)
-                ThrowNullArgumentException(property);
+            ArgumentNullException.ThrowIfNull(value, property);
+
             if (value == string.Empty)
                 ThrowArgumentException(Fiction.Resources.CommonResources.ExceptionStringEmpty, property);
         }
@@ -169,7 +169,7 @@ namespace Fiction
                 RaiseIgnoredException(exc);
             }
         }
-        public static T FailSafeMethodCall<T>(Func<T> action)
+        public static T? FailSafeMethodCall<T>(Func<T> action)
         {
             try
             {
@@ -236,7 +236,7 @@ namespace Fiction
         /// <typeparam name="T">Type of result of the action</typeparam>
         /// <param name="action">Action to retry</param>
         /// <returns>Result of the action</returns>
-        public static T RetryOnException<T>(Func<T> action)
+        public static T? RetryOnException<T>(Func<T> action)
         {
             if (action == null)
                 throw new ArgumentNullException(nameof(action));
@@ -244,7 +244,7 @@ namespace Fiction
             bool success = false;
             List<Exception> exceptions = new List<Exception>();
             int count = 0;
-            T result = default(T);
+            T? result = default;
 
             while (!success)
             {
@@ -278,7 +278,7 @@ namespace Fiction
         /// <param name="parameter">Parameter to pass to the action</param>
         /// <returns>Result of the action</returns>
         /// <exception cref="AggregateException">Each run of the given method resulted in an exception being thrown, and are provided in this exception.</exception>
-        public static async Task RetryOnExceptionAsync<T1>(Action<T1> action, T1 parameter)
+        public static async Task RetryOnExceptionAsync<T1>(Action<T1?> action, T1? parameter)
         {
             int maxCount = 5;
             int delayMilliseconds = 200;
@@ -291,7 +291,7 @@ namespace Fiction
                 success = true;
                 try
                 {
-                    await Task.Factory.StartNew(p => action((T1)p), parameter, CancellationToken.None, TaskCreationOptions.None, TaskScheduler.Current);
+                    await Task.Factory.StartNew(p => action((T1?)p), parameter, CancellationToken.None, TaskCreationOptions.None, TaskScheduler.Current);
                 }
                 catch (Exception exc)
                 {
@@ -314,7 +314,7 @@ namespace Fiction
         /// <param name="parameter">Parameter to pass to the action</param>
         /// <returns>Result of the action</returns>
         /// <exception cref="AggregateException">Each run of the given method resulted in an exception being thrown, and are provided in this exception.</exception>
-        public static async Task<TR> RetryOnExceptionAsync<TR, T1>(Func<T1, TR> action, T1 parameter)
+        public static async Task<TR> RetryOnExceptionAsync<TR, T1>(Func<T1?, TR> action, T1? parameter)
         {
             int maxCount = 5;
             int delayMilliseconds = 200;
@@ -327,7 +327,7 @@ namespace Fiction
                 success = true;
                 try
                 {
-                    return await Task.Factory.StartNew(p => action((T1)p), parameter, CancellationToken.None, TaskCreationOptions.None, TaskScheduler.Current);
+                    return await Task.Factory.StartNew(p => action((T1?)p), parameter, CancellationToken.None, TaskCreationOptions.None, TaskScheduler.Current);
                 }
                 catch (Exception exc)
                 {
@@ -351,7 +351,7 @@ namespace Fiction
         /// <returns>Result of the action</returns>
         /// <exception cref="OperationCanceledException"><see cref="CancellationToken"/> passed in entered a cancelled state</exception>
         /// <exception cref="AggregateException">Each run of the given method resulted in an exception being thrown, and are provided in this exception.</exception>
-        public static async Task<TR> RetryOnExceptionAsync<TR, T1>(Func<T1, TR> action, T1 parameter, CancellationToken token)
+        public static async Task<TR> RetryOnExceptionAsync<TR, T1>(Func<T1?, TR> action, T1? parameter, CancellationToken token)
         {
             int maxCount = 5;
             int delayMilliseconds = 200;
@@ -365,7 +365,7 @@ namespace Fiction
                 token.ThrowIfCancellationRequested();
                 try
                 {
-                    return await Task.Factory.StartNew(p => action((T1)p), parameter, token, TaskCreationOptions.None, TaskScheduler.Current);
+                    return await Task.Factory.StartNew(p => action((T1?)p), parameter, token, TaskCreationOptions.None, TaskScheduler.Current);
                 }
                 catch (Exception exc)
                 {
@@ -404,7 +404,7 @@ namespace Fiction
         /// <returns>List of child exceptions</returns>
         public static Exception[] ToArray(this Exception exc)
         {
-            AggregateException aggregate = exc as AggregateException;
+            AggregateException? aggregate = exc as AggregateException;
             if (aggregate != null)
                 return aggregate.InnerExceptions.ToArray();
             else if (exc.InnerException != null)
@@ -413,7 +413,7 @@ namespace Fiction
         }
         #endregion
         #region Event Handlers
-        static void TaskScheduler_UnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs e)
+        static void TaskScheduler_UnobservedTaskException(object? sender, UnobservedTaskExceptionEventArgs e)
         {
             // Raise an ignored event
             RaiseIgnoredException(e.Exception);

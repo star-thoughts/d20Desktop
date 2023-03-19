@@ -34,7 +34,6 @@ namespace Fiction.GameScreen.Spells
         }
         #endregion
         #region Properties
-        private string _name;
         /// <summary>
         /// Gets the campaign this spell is in
         /// </summary>
@@ -43,10 +42,11 @@ namespace Fiction.GameScreen.Spells
         /// Gets the ID of this spell
         /// </summary>
         public int Id { get; private set; }
+        private string? _name;
         /// <summary>
         /// Gets or sets the name of the spell
         /// </summary>
-        public string Name
+        public string? Name
         {
             get { return _name; }
             set
@@ -58,11 +58,11 @@ namespace Fiction.GameScreen.Spells
                 }
             }
         }
-        private string _school;
+        private string? _school;
         /// <summary>
         /// Gets or sets the school of this spell
         /// </summary>
-        public string School
+        public string? School
         {
             get { return _school; }
             set
@@ -74,11 +74,11 @@ namespace Fiction.GameScreen.Spells
                 }
             }
         }
-        private string _subSchool;
+        private string? _subSchool;
         /// <summary>
         /// Gets or sets the sub school for this spell
         /// </summary>
-        public string SubSchool
+        public string? SubSchool
         {
             get { return _subSchool; }
             set
@@ -94,11 +94,11 @@ namespace Fiction.GameScreen.Spells
         /// Gets a collection of level information for this spell
         /// </summary>
         public ObservableCollection<SpellLevel> Levels { get; private set; }
-        private string _castingTime;
+        private string? _castingTime;
         /// <summary>
         /// Gets the casting time of this spell
         /// </summary>
-        public string CastingTime
+        public string? CastingTime
         {
             get { return _castingTime; }
             set
@@ -110,11 +110,11 @@ namespace Fiction.GameScreen.Spells
                 }
             }
         }
-        private string _components;
+        private string? _components;
         /// <summary>
         /// Gets or sets the components for the spell
         /// </summary>
-        public string Components
+        public string? Components
         {
             get { return _components; }
             set
@@ -126,11 +126,11 @@ namespace Fiction.GameScreen.Spells
                 }
             }
         }
-        private string _costlyComponents;
+        private string? _costlyComponents;
         /// <summary>
         /// Gets or sets any costly components for this spell
         /// </summary>
-        public string CostlyComponents
+        public string? CostlyComponents
         {
             get { return _costlyComponents; }
             set
@@ -142,11 +142,11 @@ namespace Fiction.GameScreen.Spells
                 }
             }
         }
-        private string _range;
+        private string? _range;
         /// <summary>
         /// Gets or sets the range of this spell
         /// </summary>
-        public string Range
+        public string? Range
         {
             get { return _range; }
             set
@@ -158,11 +158,11 @@ namespace Fiction.GameScreen.Spells
                 }
             }
         }
-        private string _area;
+        private string? _area;
         /// <summary>
         /// Gets or sets the area of effect of the spell
         /// </summary>
-        public string Area
+        public string? Area
         {
             get { return _area; }
             set
@@ -174,11 +174,11 @@ namespace Fiction.GameScreen.Spells
                 }
             }
         }
-        private string _effect;
+        private string? _effect;
         /// <summary>
         /// Gets or sets the effect of the spell
         /// </summary>
-        public string Effect
+        public string? Effect
         {
             get { return _effect; }
             set
@@ -190,11 +190,11 @@ namespace Fiction.GameScreen.Spells
                 }
             }
         }
-        private string _targets;
+        private string? _targets;
         /// <summary>
         /// Gets or sets the targets of the spell
         /// </summary>
-        public string Targets
+        public string? Targets
         {
             get { return _targets; }
             set
@@ -206,11 +206,11 @@ namespace Fiction.GameScreen.Spells
                 }
             }
         }
-        private string _duration;
+        private string? _duration;
         /// <summary>
         /// Gets or sets the duration of the spell
         /// </summary>
-        public string Duration
+        public string? Duration
         {
             get { return _duration; }
             set
@@ -254,11 +254,11 @@ namespace Fiction.GameScreen.Spells
                 }
             }
         }
-        private string _savingThrow;
+        private string? _savingThrow;
         /// <summary>
         /// Gets or sets the saving throw for this spell
         /// </summary>
-        public string SavingThrow
+        public string? SavingThrow
         {
             get { return _savingThrow; }
             set
@@ -270,11 +270,11 @@ namespace Fiction.GameScreen.Spells
                 }
             }
         }
-        private string _spellResistance;
+        private string? _spellResistance;
         /// <summary>
         /// Gets or sets whether or not spell resistance applies to this spell
         /// </summary>
-        public string SpellResistance
+        public string? SpellResistance
         {
             get { return _spellResistance; }
             set
@@ -286,11 +286,11 @@ namespace Fiction.GameScreen.Spells
                 }
             }
         }
-        private string _description;
+        private string? _description;
         /// <summary>
         /// Gets or sets the descriptive text for the spell
         /// </summary>
-        public string Description
+        public string? Description
         {
             get { return _description; }
             set
@@ -302,11 +302,11 @@ namespace Fiction.GameScreen.Spells
                 }
             }
         }
-        private string _source;
+        private string? _source;
         /// <summary>
         /// Gets or sets the reference source this spell came from
         /// </summary>
-        public string Source
+        public string? Source
         {
             get { return _source; }
             set
@@ -326,11 +326,11 @@ namespace Fiction.GameScreen.Spells
             get { return Resources.Resources.SpellSourceType; }
         }
 
-        private string _shortDescription;
+        private string? _shortDescription;
         /// <summary>
         /// Gets or sets the short description for this spell
         /// </summary>
-        public string ShortDescription
+        public string? ShortDescription
         {
             get { return _shortDescription; }
             set
@@ -365,7 +365,7 @@ namespace Fiction.GameScreen.Spells
         /// <summary>
         /// Event that is triggered when a property changes
         /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 #pragma warning restore 67
         #endregion
     }

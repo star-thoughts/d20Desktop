@@ -1,10 +1,4 @@
 ﻿using System.ComponentModel;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Fiction.GameScreen.ViewModels
 {
@@ -42,7 +36,7 @@ namespace Fiction.GameScreen.ViewModels
         /// <summary>
         /// Event that is triggered when a property changes
         /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
         #endregion
         #region Methods
         /// <summary>

@@ -1,10 +1,10 @@
 ﻿using Fiction.GameScreen.Combat;
-using System.ComponentModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel;
 
 namespace Fiction.GameScreen.ViewModels
 {
@@ -27,11 +27,11 @@ namespace Fiction.GameScreen.ViewModels
         /// Gets the campaign
         /// </summary>
         public CampaignSettings Campaign { get; private set; }
-        private ICombatantTemplateSource _selectedSource;
+        private ICombatantTemplateSource? _selectedSource;
         /// <summary>
         /// Gets or sets the chosen source
         /// </summary>
-        public ICombatantTemplateSource SelectedSource
+        public ICombatantTemplateSource? SelectedSource
         {
             get { return _selectedSource; }
             set

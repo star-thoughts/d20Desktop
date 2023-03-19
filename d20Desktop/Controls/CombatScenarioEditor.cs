@@ -22,7 +22,7 @@ namespace Fiction.GameScreen.Controls
         }
         #endregion
         #region Member Variables
-        private TextBox _countTextBox;
+        private TextBox? _countTextBox;
         #endregion
         #region Properties
         /// <summary>
@@ -36,7 +36,7 @@ namespace Fiction.GameScreen.Controls
         /// <summary>
         /// Gets or sets the selected combatant
         /// </summary>
-        public CombatantTemplateEditViewModel SelectedCombatant
+        public CombatantTemplateEditViewModel? SelectedCombatant
         {
             get { return (CombatantTemplateEditViewModel)GetValue(SelectedCombatantProperty); }
             set { SetValue(SelectedCombatantProperty, value); }
@@ -120,7 +120,7 @@ namespace Fiction.GameScreen.Controls
                 {
                     if (Scenario.Campaign.Combat.CanDeleteCombatantTemplate(SelectedCombatant.Combatant))
                     {
-                        CombatantTemplateEditViewModel combatant = Scenario.Combatants.AfterOrFirstOrDefault(SelectedCombatant);
+                        CombatantTemplateEditViewModel? combatant = Scenario.Combatants.AfterOrFirstOrDefault(SelectedCombatant);
                         Scenario.Combatants.Remove(SelectedCombatant);
                         SelectedCombatant = combatant;
                     }

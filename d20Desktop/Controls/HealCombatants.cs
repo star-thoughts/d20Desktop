@@ -46,7 +46,7 @@ namespace Fiction.GameScreen.Controls
         #region Methods
         public override void OnApplyTemplate()
         {
-            System.Windows.Controls.Primitives.Selector selector = Template.FindName("PART_CombatantList", this) as System.Windows.Controls.Primitives.Selector;
+            System.Windows.Controls.Primitives.Selector? selector = Template.FindName("PART_CombatantList", this) as System.Windows.Controls.Primitives.Selector;
             if (selector != null)
                 selector.SelectionChanged += Selector_SelectionChanged;
         }
@@ -64,7 +64,7 @@ namespace Fiction.GameScreen.Controls
                 {
                     foreach (ICombatant combatant in e.RemovedItems)
                     {
-                        CombatantHealInformation heal = ViewModel.Healing.Combatants.FirstOrDefault(p => ReferenceEquals(p.Combatant, combatant));
+                        CombatantHealInformation? heal = ViewModel.Healing.Combatants.FirstOrDefault(p => ReferenceEquals(p.Combatant, combatant));
                         if (heal != null)
                             ViewModel.Healing.Combatants.Remove(heal);
                     }

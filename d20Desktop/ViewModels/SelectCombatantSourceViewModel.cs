@@ -1,10 +1,10 @@
 ﻿using Fiction.GameScreen.Combat;
-using System.ComponentModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel;
 
 namespace Fiction.GameScreen.ViewModels
 {
@@ -28,11 +28,11 @@ namespace Fiction.GameScreen.ViewModels
         /// Gets the view model factory
         /// </summary>
         public IViewModelFactory Factory { get; private set; }
-        private ICombatantSource _selectedSource;
+        private ICombatantSource? _selectedSource;
         /// <summary>
         /// Gets or sets the currently selected combatant source
         /// </summary>
-        public ICombatantSource SelectedSource
+        public ICombatantSource? SelectedSource
         {
             get { return _selectedSource; }
             set

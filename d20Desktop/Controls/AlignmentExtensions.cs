@@ -47,11 +47,11 @@ namespace Fiction.GameScreen.Controls
             }
         }
 
-        private static IEnumerable _itemsSource;
+        private static IEnumerable? _itemsSource;
         /// <summary>
         /// Gets an items source for a selector
         /// </summary>
-        public static IEnumerable ItemsSource
+        public static IEnumerable? ItemsSource
         {
             get
             {

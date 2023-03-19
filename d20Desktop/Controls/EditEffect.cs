@@ -47,7 +47,7 @@ namespace Fiction.GameScreen.Controls
             CommandBindings.Add(new CommandBinding(Commands.Add, Add_Executed, Add_CanExecute));
             CommandBindings.Add(new CommandBinding(Commands.Remove, Remove_Executed, Remove_CanExecute));
 
-            Button button = Template.FindName("PART_PickRelated", this) as Button;
+            Button? button = Template.FindName("PART_PickRelated", this) as Button;
             if (button != null)
                 button.Click += PickRelated_Clicked;
         }
@@ -72,7 +72,7 @@ namespace Fiction.GameScreen.Controls
             Exceptions.FailSafeMethodCall(() =>
             {
                 e.Handled = true;
-                if (ViewModel != null)
+                if (ViewModel?.Combat != null)
                 {
                     SelectCombatantsViewModel vm = new SelectCombatantsViewModel(ViewModel.Combat, multiSelect: true);
                     EditWindow window = new EditWindow();
@@ -96,7 +96,7 @@ namespace Fiction.GameScreen.Controls
             Exceptions.FailSafeMethodCall(() =>
             {
                 e.Handled = true;
-                if (ViewModel != null && e.Parameter is ICombatant combatant)
+                if (ViewModel?.Targets != null && e.Parameter is ICombatant combatant)
                     ViewModel.Targets.Remove(combatant);
             });
         }

@@ -1,11 +1,7 @@
 ﻿using Fiction.GameScreen.Combat;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Fiction.GameScreen.ViewModels
 {
@@ -22,9 +18,9 @@ namespace Fiction.GameScreen.ViewModels
         {
             _scenario = scenario;
 
-            Name = _scenario.Name;
-            Group = _scenario.Group;
-            Details = _scenario.Details;
+            _name = _scenario.Name;
+            _group = _scenario.Group;
+            _details = _scenario.Details;
             Combatants = _scenario.Combatants.Select(p => new CombatantTemplateEditViewModel(p))
                 .ToObservableCollection();
             _combatantsMonitor = new CollectionMonitor(Combatants);
@@ -56,11 +52,11 @@ namespace Fiction.GameScreen.ViewModels
                 }
             }
         }
-        private string _group;
+        private string? _group;
         /// <summary>
         /// Gets or sets the group this scenario is in
         /// </summary>
-        public string Group
+        public string? Group
         {
             get { return _group; }
             set
@@ -72,11 +68,11 @@ namespace Fiction.GameScreen.ViewModels
                 }
             }
         }
-        private string _details;
+        private string? _details;
         /// <summary>
         /// Gets or sets any extra details for the scenario
         /// </summary>
-        public string Details
+        public string? Details
         {
             get { return _details; }
             set
@@ -134,7 +130,7 @@ namespace Fiction.GameScreen.ViewModels
             return _scenario;
         }
 
-        private void _combatantsMonitor_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void _combatantsMonitor_PropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
             this.RaisePropertyChanged(nameof(IsValid));
         }

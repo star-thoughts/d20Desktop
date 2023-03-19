@@ -8,11 +8,11 @@
         /// <summary>
         /// Gets the name of this campaign object
         /// </summary>
-        string Name { get; }
+        string? Name { get; }
         /// <summary>
         /// Gets the campaign this object is part of
         /// </summary>
-        CampaignSettings Campaign { get; }
+        CampaignSettings? Campaign { get; }
         /// <summary>
         /// Gets the ID of this object
         /// </summary>

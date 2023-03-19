@@ -224,7 +224,7 @@ namespace Fiction.GameScreen.Combat
         /// <summary>
         /// Event that is triggered when a property changes
         /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 #pragma warning restore 67
         #endregion
     }

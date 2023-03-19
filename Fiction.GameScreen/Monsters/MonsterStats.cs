@@ -44,11 +44,11 @@ namespace Fiction.GameScreen.Monsters
         /// events will work on "Item[]".
         /// </remarks>
         [IndexerName("Item")]
-        public IMonsterStat this[string name]
+        public IMonsterStat? this[string name]
         {
             get
             {
-                if (_stats.TryGetValue(name, out IMonsterStat value))
+                if (_stats.TryGetValue(name, out IMonsterStat? value))
                     return value;
                 return null;
             }
@@ -91,7 +91,7 @@ namespace Fiction.GameScreen.Monsters
         /// <summary>
         /// Event that is triggered when a property changes
         /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 #pragma warning restore 67
         #endregion
     }

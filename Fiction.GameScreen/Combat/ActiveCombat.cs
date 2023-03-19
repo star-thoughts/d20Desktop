@@ -1,12 +1,7 @@
 ﻿using Fiction.GameScreen.Serialization;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Fiction.GameScreen.Combat
 {
@@ -27,7 +22,7 @@ namespace Fiction.GameScreen.Combat
             Exceptions.ThrowIfArgumentNullOrEmpty(name, nameof(name));
             Exceptions.ThrowIfArgumentNull(preparer, nameof(preparer));
 
-            Name = name;
+            _name = name;
             preparer.ResolveOrdinals();
             _serializer = serializer;
 
@@ -46,7 +41,7 @@ namespace Fiction.GameScreen.Combat
             Exceptions.ThrowIfArgumentNullOrEmpty(name, nameof(name));
             Exceptions.ThrowIfArgumentNull(combatants, nameof(combatants));
 
-            Name = name;
+            _name = name;
             _combatants = combatants.ToObservableCollection();
             Combatants = new ReadOnlyObservableCollection<ICombatant>(_combatants);
             _serializer = serializer;
@@ -54,6 +49,8 @@ namespace Fiction.GameScreen.Combat
             Initialize();
         }
 
+        [MemberNotNull(nameof(Settings)), MemberNotNull(nameof(Effects)), MemberNotNull(nameof(_combatantsMonitor)),
+            MemberNotNull(nameof(_goneThisTurn)), MemberNotNull(nameof(_backups))]
         private void Initialize()
         {
             Settings = new CombatSettings();
@@ -102,11 +99,11 @@ namespace Fiction.GameScreen.Combat
                 }
             }
         }
-        private ICombatant _current;
+        private ICombatant? _current;
         /// <summary>
         /// Gets or sets the current combatant
         /// </summary>
-        public ICombatant Current
+        public ICombatant? Current
         {
             get { return _current; }
             set
@@ -187,13 +184,14 @@ namespace Fiction.GameScreen.Combat
         /// Adds combatants from the <see cref="CombatPreparer"/> passed in
         /// </summary>
         /// <param name="preparer">Prepared combat information to add to this active combat</param>
+        [MemberNotNull(nameof(_combatants)), MemberNotNull(nameof(Combatants))]
         public void AddCombatants(CombatPreparer preparer)
         {
             ThrowIfCantAddPreparer(preparer);
 
             preparer.ResolveOrdinals();
 
-            if (Combatants == null)
+            if (_combatants == null || Combatants == null)
             {
                 _combatants = preparer.CreateCombatants().ToObservableCollection();
                 Combatants = new ReadOnlyObservableCollection<ICombatant>(_combatants);
@@ -221,13 +219,13 @@ namespace Fiction.GameScreen.Combat
         public GotoNextResult GotoNext()
         {
             //  Only iterate through combatants once, if can't find one then we return null
-            ICombatant start = Current;
+            ICombatant? start = Current;
             bool beganTurn = false;
             List<GotoNextCombatant> combatants = new List<GotoNextCombatant>();
             do
             {
                 int nextOrder = Current?.InitiativeOrder + 1 ?? 1;
-                ICombatant next = GetCombatantAtInitiativeOrder(nextOrder);
+                ICombatant? next = GetCombatantAtInitiativeOrder(nextOrder);
 
                 if (next == null)
                 {
@@ -238,7 +236,7 @@ namespace Fiction.GameScreen.Combat
                 }
 
                 Current = next;
-                var result = TryBeginTurn(Current);
+                (bool result, Effect[] effects) result = TryBeginTurn(Current);
                 beganTurn = result.result;
                 combatants.Add(new GotoNextCombatant(Current, result.effects));
             }
@@ -252,7 +250,7 @@ namespace Fiction.GameScreen.Combat
         /// </summary>
         /// <param name="combatant">Combatant to test</param>
         /// <returns>Whether or not this character should go in initiative</returns>
-        private (bool result, Effect[] effects) TryBeginTurn(ICombatant combatant)
+        private (bool result, Effect[] effects) TryBeginTurn(ICombatant? combatant)
         {
             bool result = true;
             Effect[] effects = ResolveEffects(combatant);
@@ -268,27 +266,30 @@ namespace Fiction.GameScreen.Combat
             return (result, effects);
         }
 
-        private Effect[] ResolveEffects(ICombatant combatant)
+        private Effect[] ResolveEffects(ICombatant? combatant)
         {
             List<Effect> completed = new List<Effect>();
 
-            foreach (Effect effect in Effects.Where(p => ReferenceEquals(p.InitiativeSource, combatant)))
+            if (combatant != null)
             {
-                effect.RemainingRounds--;
-                if (effect.RemainingRounds <= 0)
+                foreach (Effect effect in Effects.Where(p => ReferenceEquals(p.InitiativeSource, combatant)))
                 {
-                    effect.RemainingRounds = 0;
-                    completed.Add(effect);
+                    effect.RemainingRounds--;
+                    if (effect.RemainingRounds <= 0)
+                    {
+                        effect.RemainingRounds = 0;
+                        completed.Add(effect);
+                    }
                 }
-            }
 
-            foreach (Effect effect in completed)
-                Effects.Remove(effect);
+                foreach (Effect effect in completed)
+                    Effects.Remove(effect);
+            }
 
             return completed.ToArray();
         }
 
-        private ICombatant GetCombatantAtInitiativeOrder(int order)
+        private ICombatant? GetCombatantAtInitiativeOrder(int order)
         {
             foreach (ICombatant combatant in Combatants)
             {
@@ -298,7 +299,7 @@ namespace Fiction.GameScreen.Combat
             return null;
         }
 
-        private void _combatantsMonitor_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void _combatantsMonitor_PropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
             //  If we set a combatant's IsCurrent to true, then update all previous current combatants
             if (e.IsProperty(nameof(Combatant.IsCurrent)) && sender is ICombatant combatant && combatant.IsCurrent == true)
@@ -350,7 +351,7 @@ namespace Fiction.GameScreen.Combat
         /// <summary>
         /// Event that is triggered when a property changes
         /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 #pragma warning restore 67
         #endregion
     }

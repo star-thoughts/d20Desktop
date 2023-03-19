@@ -1,9 +1,9 @@
 ﻿using Fiction.GameScreen.Monsters;
-using System.ComponentModel;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.ComponentModel;
 
 namespace Fiction.GameScreen.ViewModels
 {
@@ -51,11 +51,11 @@ namespace Fiction.GameScreen.ViewModels
         /// Gets a collection of challenge ratings
         /// </summary>
         public IEnumerable<string> ChallengeRatings { get; private set; }
-        private string _name;
+        private string? _name;
         /// <summary>
         /// Gets or sets the name filter
         /// </summary>
-        public string Name
+        public string? Name
         {
             get { return _name; }
             set
@@ -67,11 +67,11 @@ namespace Fiction.GameScreen.ViewModels
                 }
             }
         }
-        private string _group;
+        private string? _group;
         /// <summary>
         /// Gets or sets the group to filter by
         /// </summary>
-        public string Group
+        public string? Group
         {
             get { return _group; }
             set
@@ -83,11 +83,11 @@ namespace Fiction.GameScreen.ViewModels
                 }
             }
         }
-        private string _type;
+        private string? _type;
         /// <summary>
         /// Gets or sets the type to filter by
         /// </summary>
-        public string Type
+        public string? Type
         {
             get { return _type; }
             set
@@ -158,7 +158,7 @@ namespace Fiction.GameScreen.ViewModels
             SubTypes.Clear();
         }
 
-        private void SubTypes_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        private void SubTypes_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             this.RaisePropertiesChanged(nameof(IsValid), nameof(HasFilter));
         }

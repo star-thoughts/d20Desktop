@@ -33,12 +33,12 @@ namespace Fiction.Expressions
 		/// Calls the expression and return the result
 		/// </summary>
 		/// <returns>Result of the expression</returns>
-		public TResult Call(T1 param1)
+		public TResult? Call(T1 param1)
 		{
 			//  If no assemblies assigned, just use the calling method's assemblies
 			if (Assemblies == null)
 				SetAssemblies(Assembly.GetCallingAssembly().GetReferencedAssemblies());
-			return (TResult)Invoke(new object[] { param1 });
+			return (TResult?)Invoke(new object?[] { param1 });
 		}
 		#endregion
 	}

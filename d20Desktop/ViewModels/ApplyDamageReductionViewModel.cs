@@ -53,7 +53,7 @@ namespace Fiction.GameScreen.ViewModels
             Damage.Damage.BypassDamageReduction = false;
         }
 
-        private void Combatants_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        private void Combatants_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             UpdateAvailableDamageTypes();
         }
@@ -91,7 +91,7 @@ namespace Fiction.GameScreen.ViewModels
             }
         }
 
-        private void _monitor_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void _monitor_PropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
             UpdateDamageTypes();
         }

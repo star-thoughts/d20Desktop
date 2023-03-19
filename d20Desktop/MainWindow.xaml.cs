@@ -1,6 +1,5 @@
 ﻿using Fiction.GameScreen.Serialization;
 using Fiction.GameScreen.ViewModels;
-using System.Xml;
 using Microsoft.Win32;
 using System;
 using System.Collections.ObjectModel;
@@ -10,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
+using System.Xml;
 
 namespace Fiction.GameScreen
 {
@@ -35,7 +35,7 @@ namespace Fiction.GameScreen
         /// <summary>
         /// Gets the current campaign's view model factory
         /// </summary>
-        public ViewModelFactory Campaign
+        public ViewModelFactory? Campaign
         {
             get { return (ViewModelFactory)GetValue(CampaignProperty); }
             private set { SetValue(CampaignProperty, value); }
@@ -46,15 +46,15 @@ namespace Fiction.GameScreen
         public ObservableCollection<CampaignViewModelCore> ViewModels
         {
             get { return (ObservableCollection<CampaignViewModelCore>)GetValue(ViewModelsProperty); }
-            set { SetValue(ViewModelsProperty, value); }
+            private set { SetValue(ViewModelsProperty, value); }
         }
         /// <summary>
         /// Gets or sets the currently selected page
         /// </summary>
-        public CampaignViewModelCore SelectedPage
+        public CampaignViewModelCore? SelectedPage
         {
             get { return (CampaignViewModelCore)GetValue(SelectedPageProperty); }
-            set { SetValue(SelectedPageProperty, value);}
+            set { SetValue(SelectedPageProperty, value); }
         }
         /// <summary>
         /// Gets or sets whether or not the application is idle
@@ -67,7 +67,7 @@ namespace Fiction.GameScreen
         /// <summary>
         /// Gets or sets the last file name used for the campaign
         /// </summary>
-        public string FileName { get; private set; }
+        public string? FileName { get; private set; }
         #endregion
         #region Dependency Properties
         /// <summary>
@@ -220,7 +220,7 @@ namespace Fiction.GameScreen
 
         private void CloseTab(CampaignViewModelCore vm)
         {
-            CampaignViewModelCore next = ViewModels.AfterOrFirstOrDefault(vm);
+            CampaignViewModelCore? next = ViewModels.AfterOrFirstOrDefault(vm);
             ViewModels.Remove(vm);
             if (!ReferenceEquals(vm, next))
                 SelectedPage = next;
@@ -244,7 +244,7 @@ namespace Fiction.GameScreen
             await Exceptions.FailSafeMethodCall(async () =>
                {
                    e.Handled = true;
-                   if (e.Parameter is ActiveCombatViewModel combat)
+                   if (e.Parameter is ActiveCombatViewModel combat && Campaign != null)
                    {
                        if (MessageBox.Show(this, GameScreen.Resources.Resources.EndCombatWarningMessage, Title, MessageBoxButton.YesNo) == MessageBoxResult.Yes)
                        {
@@ -266,7 +266,7 @@ namespace Fiction.GameScreen
             Exceptions.FailSafeMethodCall(() =>
             {
                 e.Handled = true;
-                if (Campaign.ActiveCombat != null)
+                if (Campaign?.ActiveCombat != null)
                     AddPageIfNotOpen(Campaign.ActiveCombat);
             });
         }
@@ -348,7 +348,7 @@ namespace Fiction.GameScreen
             {
                 if (string.IsNullOrEmpty(FileName))
                     FileName = AskUserForCampaignSaveFile();
-                if (!string.IsNullOrWhiteSpace(FileName))
+                if (!string.IsNullOrWhiteSpace(FileName) && Campaign != null)
                 {
                     XmlCampaignSerializer serializer = new XmlCampaignSerializer(ReaderWriterGenerator.DefaultAsync);
                     using (Stream stream = new FileStream(FileName, FileMode.Create, FileAccess.ReadWrite, FileShare.None, 4096, true))
@@ -523,7 +523,8 @@ namespace Fiction.GameScreen
             {
                 e.Handled = true;
 
-                AddPageIfNotOpen(Campaign.ManageSpellSchools);
+                if (Campaign != null)
+                    AddPageIfNotOpen(Campaign.ManageSpellSchools);
             });
         }
 
@@ -539,7 +540,8 @@ namespace Fiction.GameScreen
             {
                 e.Handled = true;
 
-                AddPageIfNotOpen(Campaign?.ManageSources);
+                if (Campaign?.ManageSources != null)
+                    AddPageIfNotOpen(Campaign.ManageSources);
             });
         }
 
@@ -555,7 +557,8 @@ namespace Fiction.GameScreen
             {
                 e.Handled = true;
 
-                AddPageIfNotOpen(Campaign.MagicItems);
+                if (Campaign != null)
+                    AddPageIfNotOpen(Campaign.MagicItems);
             });
         }
 

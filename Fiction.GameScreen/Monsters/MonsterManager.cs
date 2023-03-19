@@ -96,7 +96,7 @@ namespace Fiction.GameScreen.Monsters
         {
             foreach (Monster monster in Monsters)
             {
-                IList<string> stat = monster.Stats["subType"]?.Value as IList<string>;
+                IList<string>? stat = monster.Stats["subType"]?.Value as IList<string>;
                 stat?.Remove(subType);
             }
         }

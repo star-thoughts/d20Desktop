@@ -16,7 +16,7 @@ namespace Fiction.GameScreen.Monsters
         /// </summary>
         /// <param name="name">Name of the stat</param>
         /// <param name="value">Value for the stat</param>
-        public MonsterStat(string name, object value)
+        public MonsterStat(string name, object? value)
         {
             Name = name;
             Value = value;
@@ -27,11 +27,11 @@ namespace Fiction.GameScreen.Monsters
         /// Gets the name of the stat
         /// </summary>
         public string Name { get; private set; }
-        private object _value;
+        private object? _value;
         /// <summary>
         /// Gets or sets the value
         /// </summary>
-        public object Value
+        public object? Value
         {
             get { return _value; }
             set
@@ -54,7 +54,7 @@ namespace Fiction.GameScreen.Monsters
         /// <summary>
         /// Event that is triggered when a property changes
         /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 #pragma warning restore 67
         #endregion
     }

@@ -1,9 +1,9 @@
 ﻿using Fiction.GameScreen.Monsters;
 using Fiction.GameScreen.ViewModels.EditMonsterViewModels;
-using System.ComponentModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.ComponentModel;
 
 namespace Fiction.GameScreen.ViewModels
 {
@@ -26,11 +26,11 @@ namespace Fiction.GameScreen.ViewModels
             Monster = monster;
             Campaign = campaign;
 
-            Name = monster.Name;
+            _name = monster.Name;
             InitiativeModifier = monster.InitiativeModifier;
-            HitDice = monster.HitDieString;
-            FastHealing = monster.FastHealing;
-            Source = monster.Source;
+            _hitDice = monster.HitDieString;
+            _fastHealing = monster.FastHealing;
+            _source = monster.Source;
             DeadAt = monster.DeadAt;
             UnconsciousAt = monster.UnconsciousAt;
 
@@ -70,7 +70,7 @@ namespace Fiction.GameScreen.ViewModels
         }
         #endregion
         #region Properties
-        public CampaignSettings Campaign { get; private set; }
+        public CampaignSettings? Campaign { get; private set; }
         /// <summary>
         /// Gets a collection of sources to choose from
         /// </summary>
@@ -79,7 +79,7 @@ namespace Fiction.GameScreen.ViewModels
             get
             {
                 string[] sources = new string[] { string.Empty }
-                    .Concat(Campaign.Sources)
+                    .Concat((IEnumerable<string>?)Campaign?.Sources ?? Array.Empty<string>())
                     .ToArray();
                 return sources;
             }
@@ -92,7 +92,7 @@ namespace Fiction.GameScreen.ViewModels
             get
             {
                 string[] groups = new string[] { string.Empty }
-                    .Concat(Campaign.MonsterManager.Groups)
+                    .Concat((IEnumerable<string>?)Campaign?.MonsterManager?.Groups ?? Array.Empty<string>())
                     .ToArray();
                 return groups;
             }
@@ -100,12 +100,12 @@ namespace Fiction.GameScreen.ViewModels
         /// <summary>
         /// Gets the monster to edit
         /// </summary>
-        public Monster Monster { get; private set; }
-        private string _name;
+        public Monster? Monster { get; private set; }
+        private string? _name;
         /// <summary>
         /// Gets or sets the name of the monster
         /// </summary>
-        public string Name
+        public string? Name
         {
             get { return _name; }
             set
@@ -117,11 +117,11 @@ namespace Fiction.GameScreen.ViewModels
                 }
             }
         }
-        private string _hitDice;
+        private string? _hitDice;
         /// <summary>
         /// Gets or sets the hit dice of the monster
         /// </summary>
-        public string HitDice
+        public string? HitDice
         {
             get { return _hitDice; }
             set
@@ -197,11 +197,11 @@ namespace Fiction.GameScreen.ViewModels
                 }
             }
         }
-        private string _source;
+        private string? _source;
         /// <summary>
         /// Gets or sets the source of this monster
         /// </summary>
-        public string Source
+        public string? Source
         {
             get { return _source; }
             set
@@ -216,7 +216,7 @@ namespace Fiction.GameScreen.ViewModels
         /// <summary>
         /// Gets a collection of stats the user can modify
         /// </summary>
-        public IReadOnlyCollection<IMonsterStatViewModel> Stats { get; private set; }
+        public IReadOnlyCollection<IMonsterStatViewModel>? Stats { get; private set; }
         /// <summary>
         /// Gets whether or not this view model is valid
         /// </summary>
@@ -299,8 +299,11 @@ namespace Fiction.GameScreen.ViewModels
         }
         private void CreateStats()
         {
-            Monster monster = new Monster(Campaign, string.Empty, new MonsterStats());
-            CreateStats(monster);
+            if (Campaign != null)
+            {
+                Monster monster = new Monster(Campaign, string.Empty, new MonsterStats());
+                CreateStats(monster);
+            }
         }
 
         /// <summary>
@@ -311,6 +314,9 @@ namespace Fiction.GameScreen.ViewModels
         {
             if (Campaign == null)
                 throw new InvalidOperationException("Cannot save a readonly monster.");
+
+            if (Stats == null || string.IsNullOrWhiteSpace(Name) || !Dice.IsValidString(HitDice))
+                throw new InvalidOperationException("Cannot save a monster without stats assigned.");
 
             List<IMonsterStat> statList = Stats
                 .Select(p => new MonsterStat(p.StatName, p.Value))
@@ -341,14 +347,15 @@ namespace Fiction.GameScreen.ViewModels
             }
 
             //  Now let's see if they added a type or subtype
-            StringStatViewModel type = Stats
+            StringStatViewModel? type = Stats
                 .OfType<StringStatViewModel>()
                 .FirstOrDefault(p => p.StatName.Equals("type", StringComparison.InvariantCultureIgnoreCase));
+
             if (!string.IsNullOrWhiteSpace(type?.Value) && !Campaign.MonsterManager.Types.Contains(type.Value, StringComparer.CurrentCultureIgnoreCase))
                 Campaign.MonsterManager.Types.Add(type.Value);
 
-            CollectionStatViewModel subtypesStat = Stats.OfType<CollectionStatViewModel>().FirstOrDefault(p => p.StatName.Equals("subtype", StringComparison.InvariantCultureIgnoreCase));
-            string[] subTypes = (subtypesStat?.Value.ToArray() ?? Array.Empty<string>())
+            CollectionStatViewModel? subtypesStat = Stats.OfType<CollectionStatViewModel>().FirstOrDefault(p => p.StatName.Equals("subtype", StringComparison.InvariantCultureIgnoreCase));
+            string[] subTypes = (subtypesStat?.Value?.ToArray() ?? Array.Empty<string>())
                 .Except(Campaign.MonsterManager.SubTypes, StringComparer.CurrentCultureIgnoreCase)
                 .ToArray();
             foreach (string subType in subTypes)

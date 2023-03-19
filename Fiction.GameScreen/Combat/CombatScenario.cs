@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Fiction.GameScreen.Combat
 {
@@ -19,10 +20,11 @@ namespace Fiction.GameScreen.Combat
             Initialize(campaign);
         }
 
+        [MemberNotNull(nameof(_combatants)), MemberNotNull(nameof(_name)), MemberNotNull(nameof(Campaign))]
         private void Initialize(CampaignSettings campaign)
         {
-            Combatants = new ObservableCollection<ICombatantTemplate>();
-            Name = string.Empty;
+            _combatants = new ObservableCollection<ICombatantTemplate>();
+            _name = string.Empty;
             Campaign = campaign;
             Id = campaign.GetNextId();
         }
@@ -53,11 +55,11 @@ namespace Fiction.GameScreen.Combat
             }
         }
 
-        private string _group;
+        private string? _group;
         /// <summary>
         /// Gets or sets the grouping for this scenario
         /// </summary>
-        public string Group
+        public string? Group
         {
             get { return _group; }
             set
@@ -69,11 +71,11 @@ namespace Fiction.GameScreen.Combat
                 }
             }
         }
-        private string _details;
+        private string? _details;
         /// <summary>
         /// Gets or sets any extra details for this combat scenario
         /// </summary>
-        public string Details
+        public string? Details
         {
             get { return _details; }
             set
@@ -139,7 +141,7 @@ namespace Fiction.GameScreen.Combat
         /// <summary>
         /// Event that is triggered when a property changes
         /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 #pragma warning restore 67
         #endregion
     }

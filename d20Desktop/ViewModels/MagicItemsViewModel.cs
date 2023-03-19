@@ -1,11 +1,11 @@
 ﻿using Fiction.GameScreen.Equipment;
-using System.ComponentModel;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel;
 
 namespace Fiction.GameScreen.ViewModels
 {
@@ -22,7 +22,7 @@ namespace Fiction.GameScreen.ViewModels
         public MagicItemsViewModel(IViewModelFactory factory)
             : base(factory)
         {
-            Filter = new MagicItemFilterViewModel(factory.Campaign);
+            _filter = new MagicItemFilterViewModel(factory.Campaign);
         }
         #endregion
         #region Properties

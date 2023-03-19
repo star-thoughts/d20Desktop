@@ -36,9 +36,9 @@ namespace Fiction.Expressions
 		/// <param name="param1">First parameter for the expression</param>
 		/// <param name="param2">Second parameter for the expression</param>
 		/// <returns>Result of the expression</returns>
-		public TResult Call(T1 param1, T2 param2)
+		public TResult? Call(T1 param1, T2 param2)
 		{
-			return (TResult)Invoke(new object[]{ param1, param2 });
+			return (TResult?)Invoke(new object?[]{ param1, param2 });
 		}
 		#endregion
 	}

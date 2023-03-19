@@ -1,7 +1,6 @@
 ﻿using Fiction.GameScreen.Combat;
 using Fiction.GameScreen.ViewModels;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -228,17 +227,27 @@ namespace Fiction.GameScreen.Controls
             Exceptions.FailSafeMethodCall(() =>
             {
                 e.Handled = true;
-                IActiveCombatant current = Combat?.Combat?.Current;
-                if (e.Parameter is IActiveCombatant combatant && current != null && Combat.Combat.CanMoveAfter(combatant, current))
-                    Combat.Combat.MoveAfter(combatant, current);
+
+                Combat.ActiveCombat combat = Combat.Combat;
+                if (combat != null)
+                {
+                    IActiveCombatant? current = combat.Current;
+                    if (e.Parameter is IActiveCombatant combatant && current != null && combat.CanMoveAfter(combatant, current))
+                        Combat.Combat.MoveAfter(combatant, current);
+                }
             });
         }
 
         private void MoveAfter_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.Handled = true;
-            IActiveCombatant current = Combat?.Combat?.Current;
-            e.CanExecute = e.Parameter is IActiveCombatant combatant && current != null && Combat.Combat.CanMoveAfter(combatant, current);
+
+            Combat.ActiveCombat combat = Combat.Combat;
+            if (combat != null)
+            {
+                IActiveCombatant? current = combat.Current;
+                e.CanExecute = e.Parameter is IActiveCombatant combatant && current != null && combat.CanMoveAfter(combatant, current);
+            }
         }
 
         private void MoveBefore_Executed(object sender, ExecutedRoutedEventArgs e)
@@ -246,17 +255,27 @@ namespace Fiction.GameScreen.Controls
             Exceptions.FailSafeMethodCall(() =>
             {
                 e.Handled = true;
-                IActiveCombatant current = Combat?.Combat?.Current;
-                if (e.Parameter is IActiveCombatant combatant && current != null && Combat.Combat.CanMoveBefore(combatant, current))
-                    Combat.Combat.MoveBefore(combatant, current);
+
+                Combat.ActiveCombat combat = Combat.Combat;
+                if (combat != null)
+                {
+                    IActiveCombatant? current = combat.Current;
+                    if (e.Parameter is IActiveCombatant combatant && current != null && combat.CanMoveBefore(combatant, current))
+                        Combat.Combat.MoveBefore(combatant, current);
+                }
             });
         }
 
         private void MoveBefore_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.Handled = true;
-            IActiveCombatant current = Combat?.Combat?.Current;
-            e.CanExecute = e.Parameter is IActiveCombatant combatant && current != null && Combat.Combat.CanMoveBefore(combatant, current);
+
+            Combat.ActiveCombat combat = Combat.Combat;
+            if (combat != null)
+            {
+                IActiveCombatant? current = combat.Current;
+                e.CanExecute = e.Parameter is IActiveCombatant combatant && current != null && combat.CanMoveBefore(combatant, current);
+            }
         }
 
         private void ManageCombatants_Executed(object sender, ExecutedRoutedEventArgs e)

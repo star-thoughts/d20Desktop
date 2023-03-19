@@ -1,8 +1,8 @@
 ﻿using Fiction.GameScreen.Equipment;
-using System.ComponentModel;
 using System;
 using System.Globalization;
 using System.Linq;
+using System.ComponentModel;
 
 namespace Fiction.GameScreen.ViewModels
 {
@@ -21,20 +21,22 @@ namespace Fiction.GameScreen.ViewModels
             SlotOptions = campaign.EquipmentManager.MagicItems
                 .Select(p => p.Slot)
                 .Distinct(StringComparer.CurrentCultureIgnoreCase)
+                .OfType<string>()
                 .ToArray();
 
             GroupOptions = campaign.EquipmentManager.MagicItems
                 .Select(p => p.Group)
                 .Distinct(StringComparer.CurrentCultureIgnoreCase)
+                .OfType<string>()
                 .ToArray();
         }
         #endregion
         #region Properties
-        private string _name;
+        private string? _name;
         /// <summary>
         /// Gets or sets the name to filter by
         /// </summary>
-        public string Name
+        public string? Name
         {
             get { return _name; }
             set
@@ -46,11 +48,11 @@ namespace Fiction.GameScreen.ViewModels
                 }
             }
         }
-        private string _casterLevel;
+        private string? _casterLevel;
         /// <summary>
         /// Gets or sets the expected caster level
         /// </summary>
-        public string CasterLevel
+        public string? CasterLevel
         {
             get { return _casterLevel; }
             set
@@ -62,11 +64,11 @@ namespace Fiction.GameScreen.ViewModels
                 }
             }
         }
-        private string _slot;
+        private string? _slot;
         /// <summary>
         /// Gets or sets the expected slot
         /// </summary>
-        public string Slot
+        public string? Slot
         {
             get { return _slot; }
             set
@@ -78,22 +80,10 @@ namespace Fiction.GameScreen.ViewModels
                 }
             }
         }
-        private string[] _slotOptions;
         /// <summary>
         /// Gets a collection of options for <see cref="Slot"/>
         /// </summary>
-        public string[] SlotOptions
-        {
-            get { return _slotOptions; }
-            private set
-            {
-                if (!ReferenceEquals(_slotOptions, value))
-                {
-                    _slotOptions = value;
-                    this.RaisePropertiesChanged(nameof(SlotOptions), nameof(HasFilter), nameof(IsValid));
-                }
-            }
-        }
+        public string[] SlotOptions { get; }
         private int _minimumPrice;
         /// <summary>
         /// Gets or sets the minimum price to expect
@@ -126,11 +116,11 @@ namespace Fiction.GameScreen.ViewModels
                 }
             }
         }
-        private string _group;
+        private string? _group;
         /// <summary>
         /// Gets or sets the group to expect
         /// </summary>
-        public string Group
+        public string? Group
         {
             get { return _group; }
             set
@@ -142,22 +132,10 @@ namespace Fiction.GameScreen.ViewModels
                 }
             }
         }
-        private string[] _groupOptions;
         /// <summary>
         /// Gets or sets a collection of options for <see cref="Group"/>
         /// </summary>
-        public string[] GroupOptions
-        {
-            get { return _groupOptions; }
-            private set
-            {
-                if (!ReferenceEquals(_groupOptions, value))
-                {
-                    _groupOptions = value;
-                    this.RaisePropertiesChanged(nameof(GroupOptions), nameof(HasFilter), nameof(IsValid));
-                }
-            }
-        }
+        public string[]? GroupOptions { get; }
         private bool? _isIntelligent;
         /// <summary>
         /// Gets or sets whether or not to filter by intelligence

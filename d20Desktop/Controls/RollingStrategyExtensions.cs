@@ -38,12 +38,12 @@ namespace Fiction.GameScreen.Controls
             }
         }
 
-        private static IEnumerable _itemsSource;
+        private static IEnumerable? _itemsSource;
         /// <summary>
         /// Gets a collection of items for a ItemsControl
         /// </summary>
         /// <returns>Collection of objects with a Display/Value for an ItemsControl's ItemsSource</returns>
-        public static IEnumerable ItemsSource
+        public static IEnumerable? ItemsSource
         {
             get
             {

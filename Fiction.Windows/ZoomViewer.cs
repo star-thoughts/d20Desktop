@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -49,11 +47,11 @@ namespace Fiction.Windows
         /// <summary>
         /// Gets or sets the content presenter
         /// </summary>
-        protected ScrollContentPresenter ContentPresenterPart { get; set; }
+        protected ScrollContentPresenter? ContentPresenterPart { get; set; }
         /// <summary>
         /// Gets or sets the current content element
         /// </summary>
-        protected FrameworkElement ContentElement { get; set; }
+        protected FrameworkElement? ContentElement { get; set; }
         /// <summary>
         /// Gets or sets the current state of the zoom
         /// </summary>
@@ -67,12 +65,12 @@ namespace Fiction.Windows
         /// <summary>
         /// DependencyProperty for <see cref="Zoom"/>
         /// </summary>
-        public static readonly DependencyProperty ZoomProperty= DependencyProperty.Register("Zoom", typeof(double), typeof(ZoomViewer),
+        public static readonly DependencyProperty ZoomProperty = DependencyProperty.Register("Zoom", typeof(double), typeof(ZoomViewer),
                 new FrameworkPropertyMetadata(1.0, ZoomChanged, CoerceZoom));
 
         private static void ZoomChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ZoomViewer viewer = d as ZoomViewer;
+            ZoomViewer? viewer = d as ZoomViewer;
             if (viewer != null && !viewer._zoomChanging)
                 viewer.ZoomState = ZoomState.Custom;
         }
@@ -93,7 +91,7 @@ namespace Fiction.Windows
 
         private static void ZoomStateChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ZoomViewer viewer = d as ZoomViewer;
+            ZoomViewer? viewer = d as ZoomViewer;
             if (viewer != null)
             {
                 viewer.UpdateZoomState((ZoomState)e.NewValue);
@@ -164,22 +162,28 @@ namespace Fiction.Windows
 
         private void AttachToContent()
         {
-            if (ContentElement != null)
-                ContentElement.SizeChanged -= Content_SizeChanged;
+            if (ContentPresenterPart != null)
+            {
+                if (ContentElement != null)
+                    ContentElement.SizeChanged -= Content_SizeChanged;
 
-            ContentElement = VisualTreeHelperEx.GetChildren(ContentPresenterPart).OfType<FrameworkElement>().FirstOrDefault();
-            UpdateZoomState(ZoomState);
+                ContentElement = VisualTreeHelperEx.GetChildren(ContentPresenterPart).OfType<FrameworkElement>().FirstOrDefault();
+                UpdateZoomState(ZoomState);
 
-            if (ContentElement != null)
-                ContentElement.SizeChanged += Content_SizeChanged;
+                if (ContentElement != null)
+                    ContentElement.SizeChanged += Content_SizeChanged;
+            }
         }
 
         private void Content_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            //  Child control must have its height and width set at their root (not just ActualHeight and ActualWidth)
-            if (!_zoomChanging && !double.IsNaN(ContentElement.Height) && !double.IsNaN(ContentElement.Width))
+            if (ContentElement != null)
             {
-                UpdateZoomState(ZoomState);
+                //  Child control must have its height and width set at their root (not just ActualHeight and ActualWidth)
+                if (!_zoomChanging && !double.IsNaN(ContentElement.Height) && !double.IsNaN(ContentElement.Width))
+                {
+                    UpdateZoomState(ZoomState);
+                }
             }
         }
 
@@ -212,7 +216,7 @@ namespace Fiction.Windows
 
         private void FitToWidth()
         {
-            if (ContentElement != null)
+            if (ContentElement != null && ContentPresenterPart != null)
             {
                 double presenterWidth = ContentPresenterPart.ActualWidth * Zoom;
                 double contentWidth = ContentElement.ActualWidth;
@@ -224,7 +228,7 @@ namespace Fiction.Windows
 
         private void FitToHeight()
         {
-            if (ContentElement != null)
+            if (ContentElement != null && ContentPresenterPart != null)
             {
                 double presenterHeight = ContentPresenterPart.ActualHeight * Zoom;
                 double contentHeight = ContentElement.ActualHeight;
@@ -236,7 +240,7 @@ namespace Fiction.Windows
 
         private void Fit()
         {
-            if (ContentElement != null)
+            if (ContentElement != null && ContentPresenterPart != null)
             {
                 double presenterWidth = ContentPresenterPart.ActualWidth * Zoom;
                 double contentWidth = ContentElement.ActualWidth;
@@ -274,7 +278,7 @@ namespace Fiction.Windows
                 Point pt = e.GetPosition(this);
                 Point content = GetContentPointAtZoomViewerPoint(pt);
 
-                Dispatcher.BeginInvoke((Action)(() => SetPointLocation(content, pt)), DispatcherPriority.Loaded, Array.Empty<object>());
+                Dispatcher.BeginInvoke(() => SetPointLocation(content, pt), DispatcherPriority.Loaded, Array.Empty<object>());
             }
         }
 
@@ -320,13 +324,16 @@ namespace Fiction.Windows
         /// <param name="pointInZoomView">Location to move the point to</param>
         public void SetPointLocation(Point pointOnContent, Point pointInZoomView)
         {
-            Point pt = new Point(pointOnContent.X, pointOnContent.Y);
-            pt = ContentElement.TransformToAncestor(this).Transform(pt);
+            if (ContentElement != null)
+            {
+                Point pt = new Point(pointOnContent.X, pointOnContent.Y);
+                pt = ContentElement.TransformToAncestor(this).Transform(pt);
 
-            pt = new Point(pointInZoomView.X - pt.X, pointInZoomView.Y - pt.Y);
+                pt = new Point(pointInZoomView.X - pt.X, pointInZoomView.Y - pt.Y);
 
-            ScrollToHorizontalOffset(HorizontalOffset - pt.X);
-            ScrollToVerticalOffset(VerticalOffset - pt.Y);
+                ScrollToHorizontalOffset(HorizontalOffset - pt.X);
+                ScrollToVerticalOffset(VerticalOffset - pt.Y);
+            }
         }
         /// <summary>
         /// Gets the zoom viewer point from a point in the content
@@ -336,7 +343,9 @@ namespace Fiction.Windows
         public Point GetPointLocation(Point pointOnContent)
         {
             Point pt = pointOnContent;
-            pt = ContentElement.TransformToAncestor(this).Transform(pt);
+            if (ContentElement != null)
+                pt = ContentElement.TransformToAncestor(this).Transform(pt);
+
             return pt;
         }
 
@@ -348,7 +357,9 @@ namespace Fiction.Windows
         public Rect GetRectLocation(Rect rectOnContent)
         {
             Rect rect = rectOnContent;
-            rect = ContentElement.TransformToAncestor(this).TransformBounds(rect);
+            if (ContentElement != null)
+                rect = ContentElement.TransformToAncestor(this).TransformBounds(rect);
+
             return rect;
         }
 

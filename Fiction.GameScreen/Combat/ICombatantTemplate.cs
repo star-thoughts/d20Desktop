@@ -41,7 +41,7 @@
         /// <summary>
         /// Gets or sets the source of this combatant template
         /// </summary>
-        ICombatantTemplateSource Source { get; set; }
+        ICombatantTemplateSource? Source { get; set; }
         #endregion
         #region Methods
         /// <summary>

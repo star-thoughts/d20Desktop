@@ -18,11 +18,11 @@ namespace Fiction.Expressions
 		/// <remarks>
 		/// Must be a valid parameter name for the given language
 		/// </remarks>
-		public string Name { get; set; }
+		public string? Name { get; set; }
 		/// <summary>
 		/// Gets or sets the type of the parameter
 		/// </summary>
-		public Type ParameterType { get; set; }
+		public Type? ParameterType { get; set; }
 		#endregion
 	}
 }

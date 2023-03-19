@@ -38,8 +38,8 @@ namespace Fiction.Windows
         private bool _before;
         #endregion
         #region Properties
-        private FrameworkElement _target;
-        private FrameworkElement Target
+        private FrameworkElement? _target;
+        private FrameworkElement? Target
         {
             get { return _target; }
             set
@@ -76,7 +76,7 @@ namespace Fiction.Windows
         /// <summary>
         /// Gets where items should be inserted after a drop, or null to append
         /// </summary>
-        public object DropTarget { get; private set; }
+        public object? DropTarget { get; private set; }
         /// <summary>
         /// Gets whether or not the current value in <see cref="DropTarget"/> is valid
         /// </summary>
@@ -134,9 +134,9 @@ namespace Fiction.Windows
             }
         }
 
-        private object GetDropTarget(FrameworkElement target, bool before)
+        private object? GetDropTarget(FrameworkElement target, bool before)
         {
-            object result = target.DataContext;
+            object? result = target.DataContext;
             if (!before)
             {
                 int index = ItemsControl.ItemContainerGenerator.IndexFromContainer(target);

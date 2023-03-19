@@ -33,7 +33,7 @@ namespace Fiction.GameScreen.ViewModels
         public PrepareCombatViewModel(IViewModelFactory factory, ActiveCombatViewModel activeCombat)
             : base(factory)
         {
-            Preparer = new CombatPreparer(activeCombat.Combat);
+            Preparer = new CombatPreparer(factory.Campaign, activeCombat.Combat);
             Combatants.CollectionChanged += Combatants_CollectionChanged;
         }
         #endregion
@@ -74,7 +74,7 @@ namespace Fiction.GameScreen.ViewModels
             }
         }
 
-        private void Combatants_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        private void Combatants_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             this.RaisePropertyChanged(nameof(IsValid));
         }

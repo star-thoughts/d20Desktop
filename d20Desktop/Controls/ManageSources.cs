@@ -118,7 +118,7 @@ namespace Fiction.GameScreen.Controls
             e.CanExecute = ViewModel != null && e.Parameter is string source && source != null;
         }
 
-        private void UpdateSourceItems(string source)
+        private void UpdateSourceItems(string? source)
         {
             if (source != null)
                 ViewModel?.ShowItemsFromSource(source);

@@ -23,6 +23,7 @@ namespace Fiction.GameScreen.Players
             Id = campaign.GetNextId();
             _includeInCombat = true;
             _hitDie = "1";
+            _notes = Array.Empty<string>();
         }
         /// <summary>
         /// Constructs a new <see cref="PlayerCharacter"/>
@@ -34,12 +35,14 @@ namespace Fiction.GameScreen.Players
             Campaign = campaign;
             Id = id;
             _includeInCombat = true;
+            _hitDie = "1";
+            _notes = Array.Empty<string>();
         }
-        private string _name;
+        private string? _name;
         /// <summary>
         /// Gets or sets the name of the character
         /// </summary>
-        public string Name
+        public string? Name
         {
             get { return _name; }
             set
@@ -51,11 +54,11 @@ namespace Fiction.GameScreen.Players
                 }
             }
         }
-        private string _player;
+        private string? _player;
         /// <summary>
         /// Gets or sets the name of the player
         /// </summary>
-        public string Player
+        public string? Player
         {
             get { return _player; }
             set
@@ -183,11 +186,11 @@ namespace Fiction.GameScreen.Players
                 }
             }
         }
-        private string _senses;
+        private string? _senses;
         /// <summary>
         /// Gets or sets a string containing senses
         /// </summary>
-        public string Senses
+        public string? Senses
         {
             get { return _senses; }
             set
@@ -199,11 +202,11 @@ namespace Fiction.GameScreen.Players
                 }
             }
         }
-        private string _languages;
+        private string? _languages;
         /// <summary>
         /// Gets or sets the languages the character can speak
         /// </summary>
-        public string Languages
+        public string? Languages
         {
             get { return _languages; }
             set
@@ -267,9 +270,9 @@ namespace Fiction.GameScreen.Players
                 template.Count = "1";
                 template.FastHealing = 0;
                 template.HitDieRollingStrategy = RollingStrategy.Standard;
-                template.HitDieString = HitDieString;
+                template.HitDieString = HitDieString ?? string.Empty;
                 template.InitiativeModifier = InitiativeModifier;
-                template.Name = Name;
+                template.Name = Name ?? string.Empty;
                 template.Source = this;
 
                 return template;
@@ -281,7 +284,7 @@ namespace Fiction.GameScreen.Players
         /// <summary>
         /// Event that is triggered when a property changes
         /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 #pragma warning restore 67
         #endregion
     }

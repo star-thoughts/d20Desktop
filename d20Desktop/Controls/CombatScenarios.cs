@@ -74,8 +74,8 @@ namespace Fiction.GameScreen.Controls
             CommandBindings.Add(new CommandBinding(Commands.Remove, RemoveCommand_Executed, RemoveCommand_CanExecute));
             CommandBindings.Add(new CommandBinding(Commands.Edit, EditCommand_Executed, EditCommand_CanExecute));
 
-            ListBox scenarioList = Template.FindName("PART_ScenarioList", this) as ListBox;
-            Style containerStyle = scenarioList?.GetOrCreateItemContainerStyle<ListBoxItem>();
+            ListBox? scenarioList = Template.FindName("PART_ScenarioList", this) as ListBox;
+            Style? containerStyle = scenarioList?.GetOrCreateItemContainerStyle<ListBoxItem>();
             if (containerStyle != null)
                 containerStyle.Setters.Add(new EventSetter(Control.MouseDoubleClickEvent, new MouseButtonEventHandler(Scenario_DoubleClick)));
         }

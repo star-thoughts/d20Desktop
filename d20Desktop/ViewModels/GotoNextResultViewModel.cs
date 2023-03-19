@@ -22,7 +22,7 @@ namespace Fiction.GameScreen.ViewModels
             Result = result;
             ExpiredEffects = result
                 .Combatants
-                .SelectMany(p => p.ExpiredEffects, (c, e) => new ExpiredEffectViewModel(c.Combatant, e))
+                .SelectMany(p => p.ExpiredEffects, (c, e) => new ExpiredEffectViewModel(c.Combatant!, e))
                 .ToArray();
         }
         #endregion

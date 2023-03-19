@@ -17,7 +17,7 @@ namespace Fiction.GameScreen.ViewModels
         public ManageSpellsViewModel(IViewModelFactory factory)
             : base(factory)
         {
-            Filter = new SpellFilterViewModel(factory.Campaign);
+            _filter = new SpellFilterViewModel(factory.Campaign);
         }
         #endregion
         #region Properties

@@ -37,7 +37,7 @@ namespace Fiction.GameScreen.Controls
         #region Methods
         public override void OnApplyTemplate()
         {
-            Button button = Template.FindName("PART_AddButton", this) as Button;
+            Button? button = Template.FindName("PART_AddButton", this) as Button;
             if (button != null)
                 button.Click += AddButton_Click;
         }

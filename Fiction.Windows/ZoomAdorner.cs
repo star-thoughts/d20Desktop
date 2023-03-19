@@ -56,7 +56,7 @@ namespace Fiction.Windows
         {
             Exceptions.ThrowIfArgumentNull(drawingContext, nameof(drawingContext));
 
-            if (StartPoint != EndPoint)
+            if (StartPoint != EndPoint && StartPoint.HasValue && EndPoint.HasValue)
             {
                 drawingContext.DrawRectangle(null, new Pen(Brushes.DarkBlue, 2), new Rect(StartPoint.Value, EndPoint.Value));
             }

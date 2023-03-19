@@ -33,7 +33,7 @@ namespace Fiction.GameScreen.Controls
         /// <summary>
         /// Gets the campaign.  Since it's not in a campaign, this is always null.
         /// </summary>
-        public CampaignSettings Campaign => null;
+        public CampaignSettings? Campaign => null;
         /// <summary>
         /// Gets the ID of this object
         /// </summary>
@@ -45,7 +45,7 @@ namespace Fiction.GameScreen.Controls
         /// </summary>
         /// <param name="obj">Object to compare to</param>
         /// <returns>Whether or not the two objects are equivalent</returns>
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             return obj is NoCampaignObject;
         }

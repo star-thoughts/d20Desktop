@@ -1,10 +1,10 @@
-﻿using System.ComponentModel;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel;
 
 namespace Fiction.GameScreen.ViewModels
 {
@@ -29,11 +29,11 @@ namespace Fiction.GameScreen.ViewModels
         /// Gets the sources associated with the campaign
         /// </summary>
         public ReadOnlyObservableCollection<string> Sources { get; private set; }
-        private IEnumerable<ISourcedItem> _items;
+        private IEnumerable<ISourcedItem>? _items;
         /// <summary>
         /// Gets a set of items based on a call to
         /// </summary>
-        public IEnumerable<ISourcedItem> Items
+        public IEnumerable<ISourcedItem>? Items
         {
             get { return _items; }
             private set

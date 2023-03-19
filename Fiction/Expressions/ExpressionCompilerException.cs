@@ -51,17 +51,19 @@ namespace Fiction.Expressions
             : base(info, context)
         {
             Errors = info.GetValue("Errors", typeof(CompilerErrorCollection)) as CompilerErrorCollection;
-            string[] output = info.GetValue("Output", typeof(string[])) as string[];
+            string[]? output = info.GetValue("Output", typeof(string[])) as string[]
+                ?? Array.Empty<string>();
+
             Output = new ReadOnlyCollection<string>(new List<string>(output));
         }
         /// <summary>
         /// Get a collection of errors produced by the compiler
         /// </summary>
-        public CompilerErrorCollection Errors { get; private set; }
+        public CompilerErrorCollection? Errors { get; private set; }
         /// <summary>
         /// Gets the text output produced by the compiler
         /// </summary>
-        public ReadOnlyCollection<string> Output { get; private set; }
+        public ReadOnlyCollection<string>? Output { get; private set; }
         /// <summary>
         /// Writes the object data to the current serialization
         /// </summary>
@@ -72,7 +74,7 @@ namespace Fiction.Expressions
             base.GetObjectData(info, context);
 
             info.AddValue("Errors", Errors);
-            info.AddValue("Output", Output.ToArray());
+            info.AddValue("Output", Output?.ToArray());
         }
     }
 }

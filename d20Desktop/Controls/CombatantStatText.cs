@@ -47,7 +47,7 @@ namespace Fiction.GameScreen.Controls
         {
             if (d is CombatantStatText view)
             {
-                view.UpdateText(e.NewValue as string);
+                view.UpdateText((string)e.NewValue);
             }
         }
 

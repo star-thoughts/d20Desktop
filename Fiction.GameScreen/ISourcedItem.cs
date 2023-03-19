@@ -12,10 +12,10 @@ namespace Fiction.GameScreen
         /// <summary>
         /// Gets the source of this item
         /// </summary>
-        string Source { get; set; }
+        string? Source { get; set; }
         /// <summary>
         /// Gets the source type for display purposes
         /// </summary>
-        string SourceType { get; }
+        string? SourceType { get; }
     }
 }

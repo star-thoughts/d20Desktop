@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
 
 namespace Fiction.GameScreen.Combat
 {
@@ -29,11 +26,11 @@ namespace Fiction.GameScreen.Combat
         #endregion
         #region Properties
         public ICombatant Combatant { get; private set; }
-        private string _amount;
+        private string? _amount;
         /// <summary>
         /// Gets or sets the amount of damage
         /// </summary>
-        public string Amount
+        public string? Amount
         {
             get { return _amount; }
             set
@@ -52,10 +49,11 @@ namespace Fiction.GameScreen.Combat
         {
             get
             {
-                DamageReduction dr = !BypassDamageReduction ? Combatant.DamageReduction.GetDamageReduction(DamageTypes.ToArray())
+                DamageReduction? dr = !BypassDamageReduction ? Combatant.DamageReduction.GetDamageReduction(DamageTypes.ToArray())
                     : null;
 
-                if (DamageParser.TryParse(_amount, dr?.Amount ?? 0, !ApplyDamageReductionToTotal, out int amount))
+                string amountToParse = _amount ?? "0";
+                if (DamageParser.TryParse(amountToParse, dr?.Amount ?? 0, !ApplyDamageReductionToTotal, out int amount))
                 {
                     switch (Modifier)
                     {
@@ -145,7 +143,7 @@ namespace Fiction.GameScreen.Combat
         /// </summary>
         public IEnumerable<string> DamageTypes { get; private set; }
 
-        private void DamageTypes_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        private void DamageTypes_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             this.RaisePropertyChanged(nameof(ActualAmount));
         }
@@ -155,7 +153,7 @@ namespace Fiction.GameScreen.Combat
         /// <summary>
         /// Event that is triggered when a property changes
         /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 #pragma warning restore 67
         #endregion
     }

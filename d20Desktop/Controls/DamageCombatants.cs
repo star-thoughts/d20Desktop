@@ -22,7 +22,7 @@ namespace Fiction.GameScreen.Controls
         }
         #endregion
         #region Member Variables
-        private System.Windows.Controls.Primitives.Selector _damageModifierSelector;
+        private System.Windows.Controls.Primitives.Selector? _damageModifierSelector;
         #endregion
         #region Properties
         /// <summary>
@@ -63,7 +63,7 @@ namespace Fiction.GameScreen.Controls
         {
             if (d is DamageCombatants view)
             {
-                DamageCombatantViewModel damage = e.NewValue as DamageCombatantViewModel;
+                DamageCombatantViewModel? damage = e.NewValue as DamageCombatantViewModel;
                 view.UpdateDamageInformation(damage);
             }
         }
@@ -71,12 +71,13 @@ namespace Fiction.GameScreen.Controls
         #region Methods
         public override void OnApplyTemplate()
         {
-            System.Windows.Controls.Primitives.Selector selector = Template.FindName("PART_CombatantList", this) as System.Windows.Controls.Primitives.Selector;
+            System.Windows.Controls.Primitives.Selector? selector = Template.FindName("PART_CombatantList", this) as System.Windows.Controls.Primitives.Selector;
             if (selector != null)
                 selector.SelectionChanged += Selector_SelectionChanged;
 
             _damageModifierSelector = Template.FindName("PART_DamageModifier", this) as System.Windows.Controls.Primitives.Selector;
-            _damageModifierSelector.SelectionChanged += _damageModifierSelector_SelectionChanged;
+            if (_damageModifierSelector != null)
+                _damageModifierSelector.SelectionChanged += _damageModifierSelector_SelectionChanged;
 
             if (ViewModel != null)
                 UpdateDamageInformation(ViewModel);
@@ -84,8 +85,8 @@ namespace Fiction.GameScreen.Controls
 
         private void _damageModifierSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            dynamic item = e.AddedItems.Cast<object>().FirstOrDefault();
-            if (item.Value is IDamageModifiersViewModel vm)
+            dynamic? item = e.AddedItems.Cast<object>().FirstOrDefault();
+            if (item?.Value is IDamageModifiersViewModel vm)
                 vm?.Apply();
         }
 
@@ -104,7 +105,7 @@ namespace Fiction.GameScreen.Controls
                 {
                     foreach (ICombatant combatant in e.RemovedItems)
                     {
-                        CombatantDamageInformation damage = ViewModel.Damage.Combatants.FirstOrDefault(p => ReferenceEquals(p.Combatant, combatant));
+                        CombatantDamageInformation? damage = ViewModel.Damage.Combatants.FirstOrDefault(p => ReferenceEquals(p.Combatant, combatant));
                         if (damage != null)
                             ViewModel.Damage.Combatants.Remove(damage);
                     }
@@ -112,9 +113,9 @@ namespace Fiction.GameScreen.Controls
             });
         }
 
-        private void UpdateDamageInformation(DamageCombatantViewModel damage)
+        private void UpdateDamageInformation(DamageCombatantViewModel? damage)
         {
-            if (_damageModifierSelector != null)
+            if (_damageModifierSelector != null && damage != null)
             {
                 _damageModifierSelector.Items.Add(new { Value = new BypassDamageModifiersViewModel(damage), Display = GameScreen.Resources.Resources.BypassDamageReduction });
                 _damageModifierSelector.Items.Add(new { Value = new ApplyDamageReductionViewModel(damage), Display = GameScreen.Resources.Resources.ApplyDamageReduction });

@@ -59,8 +59,8 @@ namespace Fiction.GameScreen.Controls
         #region Methods
         public override void OnApplyTemplate()
         {
-            ListBox listBox = Template.FindName("PART_SourceList", this) as ListBox;
-            Style style = listBox?.GetOrCreateItemContainerStyle<ListBoxItem>();
+            ListBox? listBox = Template.FindName("PART_SourceList", this) as ListBox;
+            Style? style = listBox?.GetOrCreateItemContainerStyle<ListBoxItem>();
             if (style != null)
                 style.Setters.Add(new EventSetter(MouseDoubleClickEvent, new MouseButtonEventHandler(Effect_DoubleClick)));
 

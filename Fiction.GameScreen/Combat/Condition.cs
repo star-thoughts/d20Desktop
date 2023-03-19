@@ -18,10 +18,10 @@ namespace Fiction.GameScreen.Combat
         /// </summary>
         /// <param name="name">Name of the condition</param>
         /// <param name="description">Description and information about the condition</param>
-        public Condition(string name, string description)
+        public Condition(string name, string? description)
         {
-            Name = name;
-            Description = description;
+            _name = name;
+            _description = description;
         }
         #endregion
         #region Properties
@@ -41,11 +41,11 @@ namespace Fiction.GameScreen.Combat
                 }
             }
         }
-        private string _description;
+        private string? _description;
         /// <summary>
         /// Gets or sets the description of this condition
         /// </summary>
-        public string Description
+        public string? Description
         {
             get { return _description; }
             set
@@ -65,7 +65,7 @@ namespace Fiction.GameScreen.Combat
         /// <summary>
         /// Event that is triggered when a property changes
         /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 #pragma warning restore 67
         #endregion
     }

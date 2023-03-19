@@ -21,7 +21,7 @@ namespace Fiction.GameScreen.Combat
         /// <summary>
         /// Gets or sets the name to display to players
         /// </summary>
-        string DisplayName { get; set; }
+        string? DisplayName { get; set; }
         /// <summary>
         /// Gets a collection of damage reductions that apply to this combatant
         /// </summary>

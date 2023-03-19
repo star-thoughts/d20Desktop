@@ -19,11 +19,11 @@ namespace System.Xml
         /// <param name="name">Name of the attribute to read</param>
         /// <param name="defaultValue">Default value if the value doesn't exist</param>
         /// <returns>Value of the attribute</returns>
-        public static string ReadAttributeString(this XElement element, string name, string defaultValue = null)
+        public static string ReadAttributeString(this XElement element, string name, string? defaultValue = null)
         {
             Exceptions.ThrowIfArgumentNull(element, nameof(element));
 
-            XAttribute attribute = element.Attribute(name);
+            XAttribute? attribute = element.Attribute(name);
             if (attribute != null)
                 return attribute.Value;
 
@@ -40,7 +40,7 @@ namespace System.Xml
         {
             Exceptions.ThrowIfArgumentNull(element, nameof(element));
 
-            XAttribute attribute = element.Attribute(name);
+            XAttribute? attribute = element.Attribute(name);
             if (attribute != null)
             {
                 if (double.TryParse(attribute.Value, NumberStyles.Float, CultureInfo.InvariantCulture, out double result))
@@ -60,7 +60,7 @@ namespace System.Xml
         {
             Exceptions.ThrowIfArgumentNull(element, nameof(element));
 
-            XAttribute attribute = element.Attribute(name);
+            XAttribute? attribute = element.Attribute(name);
             if (attribute != null)
             {
                 Guid result;
@@ -82,7 +82,7 @@ namespace System.Xml
         {
             Exceptions.ThrowIfArgumentNull(element, nameof(element));
 
-            XAttribute attribute = element.Attribute(name);
+            XAttribute? attribute = element.Attribute(name);
             if (attribute != null)
             {
                 bool result;
@@ -104,7 +104,7 @@ namespace System.Xml
         {
             Exceptions.ThrowIfArgumentNull(element, nameof(element));
 
-            XAttribute attribute = element.Attribute(name);
+            XAttribute? attribute = element.Attribute(name);
             if (attribute != null)
             {
                 int result;
@@ -126,7 +126,7 @@ namespace System.Xml
         {
             Exceptions.ThrowIfArgumentNull(element, nameof(element));
 
-            XAttribute attribute = element.Attribute(name);
+            XAttribute? attribute = element.Attribute(name);
             if (attribute != null)
             {
                 T result = defaultValue;
@@ -158,7 +158,7 @@ namespace System.Xml
         /// <returns>DateTime read from the attribute</returns>
         public static DateTime ReadAttributeDate(this XElement reader, string name, DateTime @default = default)
         {
-            string dateTime = reader.Attribute(name)?.Value;
+            string? dateTime = reader.Attribute(name)?.Value;
             DateTime result = @default;
 
             if (string.IsNullOrEmpty(dateTime) || !DateTime.TryParse(dateTime, CultureInfo.CurrentCulture, DateTimeStyles.RoundtripKind, out result))

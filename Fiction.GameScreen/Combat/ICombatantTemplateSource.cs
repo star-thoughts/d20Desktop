@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Fiction.GameScreen.Combat
+﻿namespace Fiction.GameScreen.Combat
 {
     /// <summary>
     /// Base interface for a source for combatant templates

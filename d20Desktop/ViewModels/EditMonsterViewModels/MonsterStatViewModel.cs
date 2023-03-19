@@ -1,11 +1,5 @@
 ﻿using Fiction.GameScreen.Monsters;
 using System.ComponentModel;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Fiction.GameScreen.ViewModels.EditMonsterViewModels
 {
@@ -27,8 +21,7 @@ namespace Fiction.GameScreen.ViewModels.EditMonsterViewModels
             Name = name;
             Category = category;
             StatName = statName;
-            if (monster != null)
-                Value = (T)(monster.Stats[statName]?.Value ?? CreateDefaultValue());
+            _value = (T?)(monster?.Stats[statName]?.Value ?? CreateDefaultValue());
         }
         protected abstract T CreateDefaultValue();
         #endregion
@@ -47,11 +40,11 @@ namespace Fiction.GameScreen.ViewModels.EditMonsterViewModels
         /// Gets the name of the stat
         /// </summary>
         public string Name { get; private set; }
-        private T _value;
+        private T? _value;
         /// <summary>
         /// Gets or sets the value of this stat
         /// </summary>
-        public T Value
+        public T? Value
         {
             get { return _value; }
             set
@@ -66,14 +59,14 @@ namespace Fiction.GameScreen.ViewModels.EditMonsterViewModels
         /// <summary>
         /// Gets the value of the stat
         /// </summary>
-        object IMonsterStatViewModel.Value { get { return this.Value; } }
+        object? IMonsterStatViewModel.Value { get { return this.Value; } }
         #endregion
         #region Events
 #pragma warning disable 67
         /// <summary>
         /// Event that is triggered when a property changes
         /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 #pragma warning restore 67
         #endregion
     }

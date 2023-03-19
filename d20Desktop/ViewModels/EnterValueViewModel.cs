@@ -1,10 +1,10 @@
-﻿using System.ComponentModel;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel;
 
 namespace Fiction.GameScreen.ViewModels
 {
@@ -27,7 +27,7 @@ namespace Fiction.GameScreen.ViewModels
         /// <param name="startingValue">Default value</param>
         public EnterValueViewModel(string startingValue)
         {
-            Value = startingValue;
+            _value = startingValue;
         }
         /// <summary>
         /// Constructs a new <see cref="EnterValueViewModel"/>
@@ -71,7 +71,7 @@ namespace Fiction.GameScreen.ViewModels
         /// <summary>
         /// Gets a collection of available values
         /// </summary>
-        public ObservableCollection<string> Values { get; private set; }
+        public ObservableCollection<string>? Values { get; private set; }
         /// <summary>
         /// Gets or sets whether or not values can be entered that aren't in the list of values
         /// </summary>

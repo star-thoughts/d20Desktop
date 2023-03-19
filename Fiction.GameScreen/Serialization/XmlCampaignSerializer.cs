@@ -169,7 +169,7 @@ namespace Fiction.GameScreen.Serialization
         private string ReadCachedString(XElement reader, string key)
         {
             int id = reader.ReadAttributeInt(key);
-            if (_idToString.TryGetValue(id, out string result))
+            if (_idToString.TryGetValue(id, out string? result))
                 return result;
 
             return string.Empty;
@@ -232,21 +232,21 @@ namespace Fiction.GameScreen.Serialization
                 await writer.WriteAttributeStringAsync(Keys.Id, item.Id.ToString(CultureInfo.InvariantCulture)).ConfigureAwait(false);
                 await writer.WriteAttributeStringAsync(Keys.Name, item.Name).ConfigureAwait(false);
                 await writer.WriteAttributeStringAsync(Keys.CasterLevel, item.CasterLevel.ToString(CultureInfo.InvariantCulture)).ConfigureAwait(false);
-                await WriteCachedStringAsync(writer, Keys.Slot, item.Slot).ConfigureAwait(false);
+                await WriteCachedStringAsync(writer, Keys.Slot, item.Slot ?? string.Empty).ConfigureAwait(false);
                 await writer.WriteAttributeStringAsync(Keys.Price, item.PriceInCopper.ToString(CultureInfo.InvariantCulture)).ConfigureAwait(false);
                 await writer.WriteAttributeStringAsync(Keys.Cost, item.CostInCopper.ToString(CultureInfo.InvariantCulture)).ConfigureAwait(false);
-                await writer.WriteAttributeStringAsync(Keys.Weight, item.Weight).ConfigureAwait(false);
-                await WriteCachedStringAsync(writer, Keys.Group, item.Group).ConfigureAwait(false);
-                await WriteCachedStringAsync(writer, Keys.Source, item.Source).ConfigureAwait(false);
+                await writer.WriteAttributeStringAsync(Keys.Weight, item.Weight ?? string.Empty).ConfigureAwait(false);
+                await WriteCachedStringAsync(writer, Keys.Group, item.Group ?? string.Empty).ConfigureAwait(false);
+                await WriteCachedStringAsync(writer, Keys.Source, item.Source ?? string.Empty).ConfigureAwait(false);
                 await writer.WriteAttributeStringAsync(Keys.Alignment, item.Alignment.ToString()).ConfigureAwait(false);
                 await writer.WriteAttributeStringAsync(Keys.Intelligence, item.Intelligence.ToString(CultureInfo.InvariantCulture)).ConfigureAwait(false);
                 await writer.WriteAttributeStringAsync(Keys.Wisdom, item.Wisdom.ToString(CultureInfo.InvariantCulture)).ConfigureAwait(false);
                 await writer.WriteAttributeStringAsync(Keys.Charisma, item.Charisma.ToString(CultureInfo.InvariantCulture)).ConfigureAwait(false);
                 await writer.WriteAttributeStringAsync(Keys.Ego, item.Ego.ToString(CultureInfo.InvariantCulture)).ConfigureAwait(false);
-                await WriteCachedStringAsync(writer, Keys.Communication, item.Communication).ConfigureAwait(false);
-                await WriteCachedStringAsync(writer, Keys.Senses, item.Senses).ConfigureAwait(false);
+                await WriteCachedStringAsync(writer, Keys.Communication, item.Communication ?? string.Empty).ConfigureAwait(false);
+                await WriteCachedStringAsync(writer, Keys.Senses, item.Senses ?? string.Empty).ConfigureAwait(false);
                 await writer.WriteAttributeStringAsync(Keys.ArtifactLevel, item.ArtifactLevel.ToString()).ConfigureAwait(false);
-                await WriteCachedStringAsync(writer, Keys.AuraStrength, item.AuraStrength).ConfigureAwait(false);
+                await WriteCachedStringAsync(writer, Keys.AuraStrength, item.AuraStrength ?? string.Empty).ConfigureAwait(false);
                 await writer.WriteAttributeStringAsync(Keys.Mythic, item.Mythic.ToString()).ConfigureAwait(false);
 
                 await writer.WriteStartElementAsync(Keys.Description).ConfigureAwait(false);
@@ -287,23 +287,23 @@ namespace Fiction.GameScreen.Serialization
                 await writer.WriteStartElementAsync(Keys.Spell).ConfigureAwait(false);
 
                 await writer.WriteAttributeStringAsync(Keys.Id, spell.Id.ToString(CultureInfo.InvariantCulture)).ConfigureAwait(false);
-                await writer.WriteAttributeStringAsync(Keys.Name, spell.Name).ConfigureAwait(false);
-                await WriteCachedStringAsync(writer, Keys.School, spell.School).ConfigureAwait(false);
-                await WriteCachedStringAsync(writer, Keys.Subschool, spell.SubSchool).ConfigureAwait(false);
+                await writer.WriteAttributeStringAsync(Keys.Name, spell.Name ?? string.Empty).ConfigureAwait(false);
+                await WriteCachedStringAsync(writer, Keys.School, spell.School ?? string.Empty).ConfigureAwait(false);
+                await WriteCachedStringAsync(writer, Keys.Subschool, spell.SubSchool ?? string.Empty).ConfigureAwait(false);
                 await WriteCachedStringAsync(writer, Keys.Level, spell.Levels.GetInvariantSpellLevelString()).ConfigureAwait(false);
-                await WriteCachedStringAsync(writer, Keys.CastingTime, spell.CastingTime).ConfigureAwait(false);
-                await WriteCachedStringAsync(writer, Keys.Components, spell.Components).ConfigureAwait(false);
-                await WriteCachedStringAsync(writer, Keys.CostlyComponents, spell.CostlyComponents).ConfigureAwait(false);
-                await WriteCachedStringAsync(writer, Keys.Range, spell.Range).ConfigureAwait(false);
-                await WriteCachedStringAsync(writer, Keys.Area, spell.Area).ConfigureAwait(false);
-                await WriteCachedStringAsync(writer, Keys.Effect, spell.Effect).ConfigureAwait(false);
-                await WriteCachedStringAsync(writer, Keys.Targets, spell.Targets).ConfigureAwait(false);
-                await WriteCachedStringAsync(writer, Keys.Duration, spell.Duration).ConfigureAwait(false);
+                await WriteCachedStringAsync(writer, Keys.CastingTime, spell.CastingTime ?? string.Empty).ConfigureAwait(false);
+                await WriteCachedStringAsync(writer, Keys.Components, spell.Components ?? string.Empty).ConfigureAwait(false);
+                await WriteCachedStringAsync(writer, Keys.CostlyComponents, spell.CostlyComponents ?? string.Empty).ConfigureAwait(false);
+                await WriteCachedStringAsync(writer, Keys.Range, spell.Range ?? string.Empty).ConfigureAwait(false);
+                await WriteCachedStringAsync(writer, Keys.Area, spell.Area ?? string.Empty).ConfigureAwait(false);
+                await WriteCachedStringAsync(writer, Keys.Effect, spell.Effect ?? string.Empty).ConfigureAwait(false);
+                await WriteCachedStringAsync(writer, Keys.Targets, spell.Targets ?? string.Empty).ConfigureAwait(false);
+                await WriteCachedStringAsync(writer, Keys.Duration, spell.Duration ?? string.Empty).ConfigureAwait(false);
                 await writer.WriteAttributeStringAsync(Keys.Dismissible, spell.Dismissible.ToString()).ConfigureAwait(false);
                 await writer.WriteAttributeStringAsync(Keys.Shapeable, spell.Shapeable.ToString()).ConfigureAwait(false);
-                await WriteCachedStringAsync(writer, Keys.SavingThrow, spell.SavingThrow).ConfigureAwait(false);
-                await WriteCachedStringAsync(writer, Keys.SpellResistance, spell.SpellResistance).ConfigureAwait(false);
-                await WriteCachedStringAsync(writer, Keys.Source, spell.Source).ConfigureAwait(false);
+                await WriteCachedStringAsync(writer, Keys.SavingThrow, spell.SavingThrow ?? string.Empty).ConfigureAwait(false);
+                await WriteCachedStringAsync(writer, Keys.SpellResistance, spell.SpellResistance ?? string.Empty).ConfigureAwait(false);
+                await WriteCachedStringAsync(writer, Keys.Source, spell.Source ?? string.Empty).ConfigureAwait(false);
 
                 if (!string.IsNullOrWhiteSpace(spell.Description))
                 {
@@ -351,7 +351,7 @@ namespace Fiction.GameScreen.Serialization
             await writer.WriteAttributeStringAsync(Keys.Ordinal, combatant.Ordinal.ToString(CultureInfo.InvariantCulture)).ConfigureAwait(false);
             await writer.WriteAttributeStringAsync(Keys.InitiativeOrder, combatant.InitiativeOrder.ToString(CultureInfo.InvariantCulture)).ConfigureAwait(false);
             await writer.WriteAttributeStringAsync(Keys.DisplayToPlayers, combatant.DisplayToPlayers.ToString()).ConfigureAwait(false);
-            await writer.WriteAttributeStringAsync(Keys.DisplayName, combatant.DisplayName).ConfigureAwait(false);
+            await writer.WriteAttributeStringAsync(Keys.DisplayName, combatant.DisplayName ?? string.Empty).ConfigureAwait(false);
             await writer.WriteAttributeStringAsync(Keys.HasGoneOnce, combatant.HasGoneOnce.ToString()).ConfigureAwait(false);
             await writer.WriteAttributeStringAsync(Keys.IncludeInCombat, combatant.IncludeInCombat.ToString()).ConfigureAwait(false);
             await writer.WriteAttributeStringAsync(Keys.IsPlayer, combatant.IsPlayer.ToString()).ConfigureAwait(false);
@@ -393,7 +393,7 @@ namespace Fiction.GameScreen.Serialization
             await writer.WriteAttributeStringAsync(Keys.InitiativeOrder, preparer.InitiativeOrder.ToString(CultureInfo.InvariantCulture)).ConfigureAwait(false);
             await writer.WriteAttributeStringAsync(Keys.InitiativeGroup, preparer.InitiativeGroup.ToString(CultureInfo.InvariantCulture)).ConfigureAwait(false);
             await writer.WriteAttributeStringAsync(Keys.DisplayToPlayers, preparer.DisplayToPlayers.ToString()).ConfigureAwait(false);
-            await writer.WriteAttributeStringAsync(Keys.DisplayName, preparer.DisplayName).ConfigureAwait(false);
+            await writer.WriteAttributeStringAsync(Keys.DisplayName, preparer.DisplayName ?? string.Empty).ConfigureAwait(false);
             await writer.WriteAttributeStringAsync(Keys.FastHealing, preparer.FastHealing.ToString(CultureInfo.InvariantCulture)).ConfigureAwait(false);
 
             await writer.WriteEndElementAsync().ConfigureAwait(false);
@@ -406,16 +406,16 @@ namespace Fiction.GameScreen.Serialization
                 await writer.WriteStartElementAsync(Keys.Player).ConfigureAwait(false);
 
                 await writer.WriteAttributeStringAsync(Keys.Id, character.Id.ToString()).ConfigureAwait(false);
-                await writer.WriteAttributeStringAsync(Keys.Name, character.Name).ConfigureAwait(false);
+                await writer.WriteAttributeStringAsync(Keys.Name, character.Name ?? string.Empty).ConfigureAwait(false);
                 await writer.WriteAttributeStringAsync(Keys.InitiativeModifier, character.InitiativeModifier.ToString()).ConfigureAwait(false);
                 await writer.WriteAttributeStringAsync(Keys.IncludeInCombat, character.IncludeInCombat.ToString()).ConfigureAwait(false);
-                await writer.WriteAttributeStringAsync(Keys.HitDice, character.HitDieString).ConfigureAwait(false);
+                await writer.WriteAttributeStringAsync(Keys.HitDice, character.HitDieString ?? string.Empty).ConfigureAwait(false);
                 await writer.WriteAttributeStringAsync(Keys.HitDiceStrategy, character.HitDieRollingStrategy.ToString()).ConfigureAwait(false);
-                await writer.WriteAttributeStringAsync(Keys.Player, character.Player).ConfigureAwait(false);
+                await writer.WriteAttributeStringAsync(Keys.Player, character.Player ?? string.Empty).ConfigureAwait(false);
                 await writer.WriteOptionalAttributeStringAsync(Keys.LightRadius, character.LightRadius.ToString(CultureInfo.InvariantCulture)).ConfigureAwait(false);
                 await writer.WriteAttributeStringAsync(Keys.Alignment, character.Alignment.ToString()).ConfigureAwait(false);
-                await writer.WriteElementStringAsync(Keys.Senses, character.Senses).ConfigureAwait(false);
-                await writer.WriteElementStringAsync(Keys.Languages, character.Languages).ConfigureAwait(false);
+                await writer.WriteElementStringAsync(Keys.Senses, character.Senses ?? string.Empty).ConfigureAwait(false);
+                await writer.WriteElementStringAsync(Keys.Languages, character.Languages ?? string.Empty).ConfigureAwait(false);
                 await writer.WriteCollectionElementAsync(Keys.Notes, character.Notes).ConfigureAwait(false);
 
                 await writer.WriteEndElementAsync().ConfigureAwait(false);
@@ -431,9 +431,9 @@ namespace Fiction.GameScreen.Serialization
                 await writer.WriteAttributeStringAsync(Keys.Id, monster.Id.ToString()).ConfigureAwait(false);
                 await writer.WriteAttributeStringAsync(Keys.Name, monster.Name).ConfigureAwait(false);
                 await writer.WriteAttributeStringAsync(Keys.InitiativeModifier, monster.InitiativeModifier.ToString(CultureInfo.InvariantCulture)).ConfigureAwait(false);
-                await writer.WriteAttributeStringAsync(Keys.HitDice, monster.HitDieString).ConfigureAwait(false);
+                await writer.WriteAttributeStringAsync(Keys.HitDice, monster.HitDieString ?? string.Empty).ConfigureAwait(false);
                 await writer.WriteAttributeStringAsync(Keys.FastHealing, monster.FastHealing.ToString(CultureInfo.InvariantCulture)).ConfigureAwait(false);
-                await WriteCachedStringAsync(writer, Keys.Source, monster.Source).ConfigureAwait(false);
+                await WriteCachedStringAsync(writer, Keys.Source, monster.Source ?? string.Empty).ConfigureAwait(false);
                 await writer.WriteAttributeStringAsync(Keys.DeadAt, monster.DeadAt.ToString(CultureInfo.InvariantCulture)).ConfigureAwait(false);
                 await writer.WriteAttributeStringAsync(Keys.UnconsciousAt, monster.UnconsciousAt.ToString(CultureInfo.InvariantCulture)).ConfigureAwait(false);
 
@@ -477,7 +477,7 @@ namespace Fiction.GameScreen.Serialization
 
             await writer.WriteAttributeStringAsync(Keys.Id, scenario.Id.ToString(CultureInfo.InvariantCulture)).ConfigureAwait(false);
             await writer.WriteAttributeStringAsync(Keys.Name, scenario.Name).ConfigureAwait(false);
-            await writer.WriteAttributeStringAsync(Keys.Group, scenario.Group).ConfigureAwait(false);
+            await writer.WriteAttributeStringAsync(Keys.Group, scenario.Group ?? string.Empty).ConfigureAwait(false);
 
             if (!string.IsNullOrWhiteSpace(scenario.Details))
                 await writer.WriteElementStringAsync(null, Keys.Details, null, scenario.Details).ConfigureAwait(false);
@@ -509,7 +509,7 @@ namespace Fiction.GameScreen.Serialization
             await writer.WriteAttributeStringAsync(Keys.InitiativeModifier, template.InitiativeModifier.ToString(CultureInfo.InvariantCulture)).ConfigureAwait(false);
             await writer.WriteAttributeStringAsync(Keys.Count, template.Count).ConfigureAwait(false);
             await writer.WriteAttributeStringAsync(Keys.DisplayToPlayers, template.DisplayToPlayers.ToString(CultureInfo.InvariantCulture)).ConfigureAwait(false);
-            await writer.WriteAttributeStringAsync(Keys.DisplayName, template.DisplayName).ConfigureAwait(false);
+            await writer.WriteAttributeStringAsync(Keys.DisplayName, template.DisplayName ?? string.Empty).ConfigureAwait(false);
             await writer.WriteAttributeStringAsync(Keys.FastHealing, template.FastHealing.ToString(CultureInfo.InvariantCulture)).ConfigureAwait(false);
             await writer.WriteAttributeStringAsync(Keys.DeadAt, template.DeadAt.ToString(CultureInfo.InvariantCulture)).ConfigureAwait(false);
             await writer.WriteAttributeStringAsync(Keys.UnconsciousAt, template.UnconsciousAt.ToString(CultureInfo.InvariantCulture)).ConfigureAwait(false);
@@ -559,7 +559,7 @@ namespace Fiction.GameScreen.Serialization
                 foreach (Condition condition in ReadConditions(element, campaign))
                     campaign.Conditions.Conditions.Add(condition);
 
-                XElement activeCombatNode = element.Descendants(Keys.ActiveCombat).FirstOrDefault();
+                XElement? activeCombatNode = element.Descendants(Keys.ActiveCombat).FirstOrDefault();
                 if (activeCombatNode != null)
                     campaign.Combat.Active = ReadActiveCombat(activeCombatNode, campaign);
 
@@ -588,7 +588,7 @@ namespace Fiction.GameScreen.Serialization
                 string name = itemElement.ReadAttributeString(Keys.Name);
                 string group = ReadCachedString(itemElement, Keys.Group);
 
-                MagicItem item = new MagicItem(name, group, id);
+                MagicItem item = new MagicItem(campaign, name, group, id);
                 item.CasterLevel = itemElement.ReadAttributeInt(Keys.CasterLevel);
                 item.Slot = ReadCachedString(itemElement, Keys.Slot);
                 item.PriceInCopper = itemElement.ReadAttributeInt(Keys.Price, 0);
@@ -666,7 +666,12 @@ namespace Fiction.GameScreen.Serialization
 
         private ICombatant ReadCombatant(XElement element, CampaignSettings campaign)
         {
-            CombatantPreparer preparer = ReadCombatantPreparer(element.Descendants(Keys.PreparedInfo).FirstOrDefault());
+            var preparerElement = element.Descendants(Keys.PreparedInfo).FirstOrDefault();
+
+            if (preparerElement == null)
+                throw new InvalidOperationException("Combatant preparer info missing for combatant when reading file.");
+
+            CombatantPreparer preparer = ReadCombatantPreparer(preparerElement);
             Combatant combatant = new Combatant(campaign, preparer);
 
             combatant.Name = element.ReadAttributeString(Keys.Name);
@@ -677,7 +682,11 @@ namespace Fiction.GameScreen.Serialization
             combatant.HasGoneOnce = element.ReadAttributeBool(Keys.HasGoneOnce);
             combatant.IncludeInCombat = element.ReadAttributeBool(Keys.IncludeInCombat);
 
-            XElement healthElement = element.Descendants(Keys.Health).FirstOrDefault();
+            XElement? healthElement = element.Descendants(Keys.Health).FirstOrDefault();
+
+            if (healthElement == null)
+                throw new InvalidOperationException("Combatant health info missing for combatant when reading file.");
+
             combatant.Health.MaxHealth = healthElement.ReadAttributeInt(Keys.MaxHealth);
             combatant.Health.LethalDamage = healthElement.ReadAttributeInt(Keys.LethalDamage);
             combatant.Health.NonlethalDamage = healthElement.ReadAttributeInt(Keys.NonlethalDamage);
@@ -691,9 +700,9 @@ namespace Fiction.GameScreen.Serialization
 
         private CombatantPreparer ReadCombatantPreparer(XElement element)
         {
-            ICombatantTemplate source = null;
+            ICombatantTemplate? source = null;
             int id = element.ReadAttributeInt(Keys.Source);
-            if (_campaignItems.TryGetValue(id, out ICampaignObject temp))
+            if (_campaignItems.TryGetValue(id, out ICampaignObject? temp))
                 source = temp as ICombatantTemplate;
 
             CombatantPreparer preparer = new CombatantPreparer(source);
@@ -824,7 +833,7 @@ namespace Fiction.GameScreen.Serialization
         private Condition ReadCondition(XElement element, CampaignSettings campaign)
         {
             string name = element.ReadAttributeString(Keys.Name);
-            string description = element.Descendants(Keys.Description).FirstOrDefault().Value;
+            string? description = element.Descendants(Keys.Description).FirstOrDefault()?.Value;
 
             return new Condition(name, description);
         }
@@ -859,7 +868,7 @@ namespace Fiction.GameScreen.Serialization
 
             //  Attempt to read the source of this combatant in
             int source = element.ReadAttributeInt(Keys.Source, -1);
-            if (source != -1 && _campaignItems.TryGetValue(source, out ICampaignObject value) && value is ICombatantTemplateSource sourceItem)
+            if (source != -1 && _campaignItems.TryGetValue(source, out ICampaignObject? value) && value is ICombatantTemplateSource sourceItem)
                 template.Source = sourceItem;
 
             string damageReductionString = element.ReadAttributeString(Keys.DamageReduction);
@@ -867,7 +876,7 @@ namespace Fiction.GameScreen.Serialization
             template.DamageReduction.CopyFrom(damageReduction);
 
             int scenarioId = element.ReadAttributeInt(Keys.Scenario);
-            if (_campaignItems.TryGetValue(scenarioId, out ICampaignObject item) && item is CombatScenario scenario)
+            if (_campaignItems.TryGetValue(scenarioId, out ICampaignObject? item) && item is CombatScenario scenario)
                 scenario.Combatants.Add(template);
 
             StoreCampaignObject(template);

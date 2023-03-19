@@ -1,27 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace Fiction.Windows
 {
-	/// <summary>
-	/// Object used to initialize special WPF windows handlers
-	/// </summary>
-	public static class CommonWindows
-	{
-		#region Constructors
-		static CommonWindows()
-		{
-			EventManager.RegisterClassHandler(typeof(TextBox), UIElement.PreviewMouseLeftButtonDownEvent,
-			  new MouseButtonEventHandler(SelectivelyHandleMouseButton), true);
-			EventManager.RegisterClassHandler(typeof(TextBox), UIElement.GotKeyboardFocusEvent,
-			  new RoutedEventHandler(SelectAllText), true);
-		}
+    /// <summary>
+    /// Object used to initialize special WPF windows handlers
+    /// </summary>
+    public static class CommonWindows
+    {
+        #region Constructors
+        static CommonWindows()
+        {
+            EventManager.RegisterClassHandler(typeof(TextBox), UIElement.PreviewMouseLeftButtonDownEvent,
+              new MouseButtonEventHandler(SelectivelyHandleMouseButton), true);
+            EventManager.RegisterClassHandler(typeof(TextBox), UIElement.GotKeyboardFocusEvent,
+              new RoutedEventHandler(SelectAllText), true);
+        }
         #endregion
         #region Member Variables
         #endregion
@@ -64,7 +59,7 @@ namespace Fiction.Windows
             {
                 Exceptions.RaiseIgnoredException(e.Exception);
             }
-            catch(Exception exc)
+            catch (Exception exc)
             {
                 Exceptions.RaiseIgnoredException(exc);
             }
@@ -77,18 +72,18 @@ namespace Fiction.Windows
         #endregion
         #region Event Handlers
         private static void SelectAllText(object sender, RoutedEventArgs e)
-		{
+        {
             if (GetAutoSelectAll((TextBox)sender))
             {
-                var textBox = e.OriginalSource as TextBox;
+                TextBox? textBox = e.OriginalSource as TextBox;
                 if (textBox != null)
                     textBox.SelectAll();
             }
-		}
+        }
 
-		private static void SelectivelyHandleMouseButton(object sender, MouseButtonEventArgs e)
-		{
-			TextBox textbox = (sender as TextBox);
+        private static void SelectivelyHandleMouseButton(object sender, MouseButtonEventArgs e)
+        {
+            TextBox? textbox = sender as TextBox;
             if (GetAutoSelectAll((TextBox)sender))
             {
                 if (textbox != null && !textbox.IsKeyboardFocusWithin)
@@ -100,7 +95,7 @@ namespace Fiction.Windows
                     }
                 }
             }
-		}
-		#endregion
-	}
+        }
+        #endregion
+    }
 }

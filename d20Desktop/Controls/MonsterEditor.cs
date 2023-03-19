@@ -59,7 +59,7 @@ namespace Fiction.GameScreen.Controls
             {
                 e.Handled = true;
                 if (e.OriginalSource is FrameworkElement element && element.DataContext is CollectionStatViewModel stat && e.Parameter is string value)
-                    stat.Value.Remove(value);
+                    stat.Value?.Remove(value);
             });
         }
 
@@ -76,9 +76,11 @@ namespace Fiction.GameScreen.Controls
                 e.Handled = true;
                 if (e.OriginalSource is FrameworkElement element && element.DataContext is CollectionStatViewModel stat)
                 {
-                    string value = EnterValueWindow.GetValue(Window.GetWindow(this), string.Empty, stat.Source, stat.CanAddNew);
+                    IEnumerable<string>? options = stat.Source;
 
-                    if (!string.IsNullOrWhiteSpace(value) && !stat.Value.Contains(value, StringComparer.CurrentCultureIgnoreCase))
+                    string value = EnterValueWindow.GetValue(Window.GetWindow(this), string.Empty, options ?? Array.Empty<string>(), stat.CanAddNew);
+
+                    if (!string.IsNullOrWhiteSpace(value) && (stat.Value?.Contains(value, StringComparer.CurrentCultureIgnoreCase) == false))
                         stat.Value.Add(value);
                 }
             });

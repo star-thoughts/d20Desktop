@@ -1,12 +1,11 @@
 ﻿using System.ComponentModel;
-using System.ComponentModel;
 
 namespace Fiction.GameScreen.ViewModels
 {
     /// <summary>
     /// View model for selecting a type of damage
     /// </summary>
-    public class DamageTypeSelectionViewModel  : INotifyPropertyChanged
+    public class DamageTypeSelectionViewModel : INotifyPropertyChanged
     {
         /// <summary>
         /// Constructs a new <see cref="DamageTypeSelectionViewModel"/>
@@ -41,7 +40,7 @@ namespace Fiction.GameScreen.ViewModels
         /// <summary>
         /// Event that is triggered when a property changes
         /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 #pragma warning restore 67
         #endregion
     }

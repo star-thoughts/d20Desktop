@@ -14,7 +14,7 @@ namespace Fiction.GameScreen.Combat
         /// <summary>
         /// Gets the source information for this combatant
         /// </summary>
-        ICombatantTemplate Source { get; }
+        ICombatantTemplate? Source { get; }
         /// <summary>
         /// Gets the information used to prepare this combatant for combat
         /// </summary>

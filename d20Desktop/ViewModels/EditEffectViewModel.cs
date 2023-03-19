@@ -1,8 +1,8 @@
 ﻿using Fiction.GameScreen.Combat;
-using System.ComponentModel;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.ComponentModel;
 
 namespace Fiction.GameScreen.ViewModels
 {
@@ -22,10 +22,10 @@ namespace Fiction.GameScreen.ViewModels
             _effect = effect;
             Campaign = campaign;
 
-            Name = _effect.Name;
-            InitiativeSource = _effect.InitiativeSource;
-            Source = _effect.Source;
-            Targets = _effect.Targets.ToObservableCollection();
+            _name = _effect.Name;
+            _initiativeSource = _effect.InitiativeSource;
+            _source = _effect.Source;
+            _targets = _effect.Targets.ToObservableCollection();
             RelatedItem = _effect.RelatedItem;
             Duration = _effect.DurationRounds;
             RemainingRounds = _effect.RemainingRounds;
@@ -37,26 +37,26 @@ namespace Fiction.GameScreen.ViewModels
         public EditEffectViewModel(CampaignSettings campaign)
         {
             Campaign = campaign;
-            Targets = new ObservableCollection<ICombatant>();
+            _targets = new ObservableCollection<ICombatant>();
         }
         #endregion
         #region Member Variables
-        private Effect _effect;
+        private Effect? _effect;
         #endregion
         #region Properties
         /// <summary>
         /// Gets the currently active combat
         /// </summary>
-        public ActiveCombat Combat { get { return Campaign.Combat.Active; } }
+        public ActiveCombat? Combat { get { return Campaign.Combat.Active; } }
         /// <summary>
         /// Gets the campaign
         /// </summary>
         public CampaignSettings Campaign { get; private set; }
-        private string _name;
+        private string? _name;
         /// <summary>
         /// Gets or sets the name of the effect
         /// </summary>
-        public string Name
+        public string? Name
         {
             get { return _name; }
             set
@@ -68,11 +68,11 @@ namespace Fiction.GameScreen.ViewModels
                 }
             }
         }
-        private ICombatant _initiativeSource;
+        private ICombatant? _initiativeSource;
         /// <summary>
         /// Gets or sets the combatant that controls the duration
         /// </summary>
-        public ICombatant InitiativeSource
+        public ICombatant? InitiativeSource
         {
             get { return _initiativeSource; }
             set
@@ -84,11 +84,11 @@ namespace Fiction.GameScreen.ViewModels
                 }
             }
         }
-        private ICombatant _source;
+        private ICombatant? _source;
         /// <summary>
         /// Gets or sets the source of this effect
         /// </summary>
-        public ICombatant Source
+        public ICombatant? Source
         {
             get { return _source; }
             set
@@ -116,11 +116,11 @@ namespace Fiction.GameScreen.ViewModels
                 }
             }
         }
-        private ICampaignObject _relatedItem;
+        private ICampaignObject? _relatedItem;
         /// <summary>
         /// Gets or sets an item related to this one
         /// </summary>
-        public ICampaignObject RelatedItem
+        public ICampaignObject? RelatedItem
         {
             get { return _relatedItem; }
             set
@@ -191,12 +191,15 @@ namespace Fiction.GameScreen.ViewModels
         /// </summary>
         public Effect Save()
         {
-            if (_effect == null)
-                _effect = new Effect(Source, Duration, Targets.ToArray());
+            if (!IsValid)
+                throw new InvalidOperationException("Cannot save an effect that isn't properly configured.");
 
-            _effect.Name = Name;
-            _effect.InitiativeSource = InitiativeSource;
-            _effect.Source = Source;
+            if (_effect == null)
+                _effect = new Effect(Source!, Duration, Targets.ToArray());
+
+            _effect.Name = Name!;
+            _effect.InitiativeSource = InitiativeSource!;
+            _effect.Source = Source!;
             _effect.RelatedItem = RelatedItem;
             _effect.DurationRounds = Duration;
             _effect.RemainingRounds = RemainingRounds;

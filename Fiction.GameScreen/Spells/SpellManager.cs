@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.ObjectModel;
 
 namespace Fiction.GameScreen.Spells
 {
@@ -67,7 +63,7 @@ namespace Fiction.GameScreen.Spells
         public void ReconcileSchools()
         {
             _schools.Clear();
-            foreach (string school in Spells.Select(p => p.School).Distinct(StringComparer.CurrentCultureIgnoreCase))
+            foreach (string school in Spells.Select(p => p.School).Distinct(StringComparer.CurrentCultureIgnoreCase).OfType<string>())
                 _schools.Add(school);
         }
         /// <summary>
@@ -76,7 +72,7 @@ namespace Fiction.GameScreen.Spells
         public void ReconcileSubSchools()
         {
             _subSchools.Clear();
-            foreach (string subSchool in Spells.Select(p => p.SubSchool).Distinct(StringComparer.CurrentCultureIgnoreCase))
+            foreach (string subSchool in Spells.Select(p => p.SubSchool).Distinct(StringComparer.CurrentCultureIgnoreCase).OfType<string>())
                 _subSchools.Add(subSchool);
         }
         /// <summary>
@@ -158,8 +154,10 @@ namespace Fiction.GameScreen.Spells
 
             foreach (Spell spell in Spells)
             {
-                string type = spell.EffectTypes.FirstOrDefault(p => string.Equals(p, effectType, StringComparison.CurrentCultureIgnoreCase));
-                spell.EffectTypes.Remove(type);
+                string? type = spell.EffectTypes.FirstOrDefault(p => string.Equals(p, effectType, StringComparison.CurrentCultureIgnoreCase));
+
+                if (!string.IsNullOrEmpty(type))
+                    spell.EffectTypes.Remove(type);
             }
         }
         /// <summary>
@@ -212,7 +210,7 @@ namespace Fiction.GameScreen.Spells
 
             foreach (Spell spell in Spells)
             {
-                string type = spell.EffectTypes.FirstOrDefault(p => string.Equals(p, oldType, StringComparison.CurrentCultureIgnoreCase));
+                string? type = spell.EffectTypes.FirstOrDefault(p => string.Equals(p, oldType, StringComparison.CurrentCultureIgnoreCase));
                 if (!string.IsNullOrEmpty(type))
                 {
                     spell.EffectTypes.Remove(type);

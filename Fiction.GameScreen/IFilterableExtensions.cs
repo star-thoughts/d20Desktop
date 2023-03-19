@@ -15,7 +15,7 @@ namespace Fiction.GameScreen
         /// </summary>
         /// <param name="filterText">Filter text to test against</param>
         /// <param name="itemToTest">String to test against</param>
-        internal static bool MatchesFilter(this IFilterable item, string filterText, string itemToTest)
+        internal static bool MatchesFilter(this IFilterable item, string? filterText, string? itemToTest)
         {
             return MatchesFilter(filterText, itemToTest);
         }
@@ -24,8 +24,13 @@ namespace Fiction.GameScreen
         /// </summary>
         /// <param name="filterText">Filter text to test against</param>
         /// <param name="itemToTest">String to test against</param>
-        public static bool MatchesFilter(string filterText, string itemToTest)
+        public static bool MatchesFilter(string? filterText, string? itemToTest)
         {
+            if (filterText == null)
+                return false;
+            if (itemToTest == null)
+                return false;
+
             return (!string.IsNullOrEmpty(itemToTest) && CultureInfo.CurrentCulture.CompareInfo.IndexOf(itemToTest, filterText, CompareOptions.IgnoreCase | CompareOptions.IgnoreSymbols) >= 0)
                     || itemToTest.ToUpperInvariant().DistanceFrom(filterText.ToUpperInvariant()) < 2;
         }

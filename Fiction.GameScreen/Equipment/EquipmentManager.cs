@@ -59,7 +59,7 @@ namespace Fiction.GameScreen.Equipment
         public void Reconcile()
         {
             Groups.Clear();
-            foreach (string group in MagicItems.Select(p => p.Group).Distinct(StringComparer.CurrentCultureIgnoreCase))
+            foreach (string group in MagicItems.Select(p => p.Group).Distinct(StringComparer.CurrentCultureIgnoreCase).OfType<string>())
                 Groups.Add(group);
         }
         #endregion

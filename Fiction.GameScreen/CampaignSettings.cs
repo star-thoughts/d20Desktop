@@ -91,7 +91,7 @@ namespace Fiction.GameScreen
         /// <summary>
         /// Event that is triggered when a property changes
         /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 #pragma warning restore 67
         #endregion
         #region Methods
@@ -101,9 +101,9 @@ namespace Fiction.GameScreen
         /// <typeparam name="T">Type of object expected</typeparam>
         /// <param name="id">ID of the object to get</param>
         /// <returns>Item requested, or null if item does not exist or is the wrong type</returns>
-        public T GetCampaignObject<T>(int id) where T : class, ICampaignObject
+        public T? GetCampaignObject<T>(int id) where T : class, ICampaignObject
         {
-            if (_objects.TryGetValue(id, out ICampaignObject item) && item is T result)
+            if (_objects.TryGetValue(id, out ICampaignObject? item) && item is T result)
                 return result;
             return null;
         }
@@ -123,7 +123,7 @@ namespace Fiction.GameScreen
             return _nextId++;
         }
 
-        private void CampaignObject_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void CampaignObject_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
         {
             if (e.NewItems != null)
             {

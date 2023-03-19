@@ -15,7 +15,7 @@ namespace Fiction.GameScreen.Monsters
         /// </summary>
         /// <param name="name">Name of the attribute to retrieve</param>
         /// <returns>Value of the attribute</returns>
-        IMonsterStat this[string name] { get; }
+        IMonsterStat? this[string name] { get; }
         /// <summary>
         /// Adds a given stat
         /// </summary>

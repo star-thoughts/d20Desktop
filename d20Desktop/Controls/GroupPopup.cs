@@ -21,7 +21,7 @@ namespace Fiction.GameScreen.Controls
         }
         #endregion
         #region Member Variables
-        private Popup _parentPopup;
+        private Popup? _parentPopup;
         #endregion
         #region Properties
         /// <summary>
@@ -56,13 +56,16 @@ namespace Fiction.GameScreen.Controls
         {
             if (d is GroupPopup group)
             {
-                if ((bool)e.NewValue)
+                if (group._parentPopup != null)
                 {
-                    group._parentPopup.IsOpen = true;
-                }
-                else
-                {
-                    group._parentPopup.IsOpen = false;
+                    if ((bool)e.NewValue)
+                    {
+                        group._parentPopup.IsOpen = true;
+                    }
+                    else
+                    {
+                        group._parentPopup.IsOpen = false;
+                    }
                 }
             }
         }
@@ -98,7 +101,8 @@ namespace Fiction.GameScreen.Controls
         {
             if (d is GroupItem group)
             {
-                UpdateGroup(group, e.NewValue as GroupPopup);
+                if (e.NewValue is GroupPopup popup)
+                    UpdateGroup(group, popup);
             }
         }
         #endregion
@@ -122,7 +126,7 @@ namespace Fiction.GameScreen.Controls
         {
             if (group.IsLoaded)
             {
-                ContentPresenter presenter = group.Template.FindName("PART_Header", group) as ContentPresenter;
+                ContentPresenter? presenter = group.Template.FindName("PART_Header", group) as ContentPresenter;
                 if (presenter != null)
                     presenter.PreviewMouseLeftButtonDown += Presenter_PreviewMouseLeftButtonDown;
 

@@ -12,7 +12,7 @@ namespace Fiction.GameScreen.Controls
     public static class CombatantDragDrop
     {
         private static Point? _startPoint;
-        private static ItemsControlDropAdorner _adorner;
+        private static ItemsControlDropAdorner? _adorner;
 
         public static readonly DependencyProperty CombatantsProperty = DependencyProperty.RegisterAttached("Combatants", typeof(IInitiativeCollection), typeof(CombatantDragDrop),
             new FrameworkPropertyMetadata(null, CombatantsChanged));
@@ -68,8 +68,8 @@ namespace Fiction.GameScreen.Controls
                     Point currentPoint = e.GetPosition(itemControl);
                     if ((currentPoint - _startPoint.Value).Length > 5)
                     {
-                        FrameworkElement container = VisualTreeHelperEx.GetItemsControlContainerAtPoint(itemControl, _startPoint.Value);
-                        IActiveCombatant combatant = container?.DataContext as IActiveCombatant;
+                        FrameworkElement? container = VisualTreeHelperEx.GetItemsControlContainerAtPoint(itemControl, _startPoint.Value);
+                        IActiveCombatant? combatant = container?.DataContext as IActiveCombatant;
 
                         itemControl.AllowDrop = true;
                         itemControl.Drop += ItemControl_Drop;
@@ -120,8 +120,8 @@ namespace Fiction.GameScreen.Controls
             {
                 if (sender is ItemsControl itemControl && _adorner != null && _adorner.IsDropValid)
                 {
-                    IActiveCombatant target = _adorner.DropTarget as IActiveCombatant;
-                    IActiveCombatant combatant = e.Data.GetData(typeof(IActiveCombatant)) as IActiveCombatant;
+                    IActiveCombatant? target = _adorner.DropTarget as IActiveCombatant;
+                    IActiveCombatant? combatant = e.Data.GetData(typeof(IActiveCombatant)) as IActiveCombatant;
 
                     if (combatant != null)
                     {

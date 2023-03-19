@@ -1,8 +1,9 @@
 ﻿using Fiction.GameScreen.Spells;
-using System.ComponentModel;
 using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.ComponentModel;
 
 namespace Fiction.GameScreen.ViewModels
 {
@@ -32,15 +33,15 @@ namespace Fiction.GameScreen.ViewModels
         public EditSpellViewModel(CampaignSettings campaign)
         {
             Campaign = campaign;
-            SpellLevels = new ObservableCollection<SpellLevel>();
-            EffectTypes = new ObservableCollection<string>();
+            _spellLevels = new ObservableCollection<SpellLevel>();
+            _effectTypes = new ObservableCollection<string>();
         }
         #endregion
         #region Properties
         /// <summary>
         /// Gets the original spell to edit, if any
         /// </summary>
-        public Spell Spell { get; private set; }
+        public Spell? Spell { get; private set; }
         /// <summary>
         /// Gets whether or not this is a copy of another spell
         /// </summary>
@@ -49,11 +50,11 @@ namespace Fiction.GameScreen.ViewModels
         /// Gets the campaign this spell is in
         /// </summary>
         public CampaignSettings Campaign { get; private set; }
-        private string _name;
+        private string? _name;
         /// <summary>
         /// Gets or sets the name of this spell
         /// </summary>
-        public string Name
+        public string? Name
         {
             get { return _name; }
             set
@@ -65,11 +66,11 @@ namespace Fiction.GameScreen.ViewModels
                 }
             }
         }
-        private string _school;
+        private string? _school;
         /// <summary>
         /// Gets or sets the school for this spell
         /// </summary>
-        public string School
+        public string? School
         {
             get { return _school; }
             set
@@ -81,11 +82,11 @@ namespace Fiction.GameScreen.ViewModels
                 }
             }
         }
-        private string _subSchool;
+        private string? _subSchool;
         /// <summary>
         /// Gets or sets the subschool for this spell
         /// </summary>
-        public string SubSchool
+        public string? SubSchool
         {
             get { return _subSchool; }
             set
@@ -113,11 +114,11 @@ namespace Fiction.GameScreen.ViewModels
                 }
             }
         }
-        private string _castingTime;
+        private string? _castingTime;
         /// <summary>
         /// Gets or sets the casting time of this spell
         /// </summary>
-        public string CastingTime
+        public string? CastingTime
         {
             get { return _castingTime; }
             set
@@ -129,11 +130,11 @@ namespace Fiction.GameScreen.ViewModels
                 }
             }
         }
-        private string _components;
+        private string? _components;
         /// <summary>
         /// Gets or sets the components for this spell
         /// </summary>
-        public string Components
+        public string? Components
         {
             get { return _components; }
             set
@@ -145,11 +146,11 @@ namespace Fiction.GameScreen.ViewModels
                 }
             }
         }
-        private string _costlyComponents;
+        private string? _costlyComponents;
         /// <summary>
         /// Gets or sets the costly components for this spell
         /// </summary>
-        public string CostlyComponents
+        public string? CostlyComponents
         {
             get { return _costlyComponents; }
             set
@@ -161,11 +162,11 @@ namespace Fiction.GameScreen.ViewModels
                 }
             }
         }
-        private string _range;
+        private string? _range;
         /// <summary>
         /// Gets or sets the range of this spell
         /// </summary>
-        public string Range
+        public string? Range
         {
             get { return _range; }
             set
@@ -177,11 +178,11 @@ namespace Fiction.GameScreen.ViewModels
                 }
             }
         }
-        private string _area;
+        private string? _area;
         /// <summary>
         /// Gets or sets the spell's area
         /// </summary>
-        public string Area
+        public string? Area
         {
             get { return _area; }
             set
@@ -193,11 +194,11 @@ namespace Fiction.GameScreen.ViewModels
                 }
             }
         }
-        private string _effect;
+        private string? _effect;
         /// <summary>
         /// Gets or sets the effect of the spell
         /// </summary>
-        public string Effect
+        public string? Effect
         {
             get { return _effect; }
             set
@@ -209,11 +210,11 @@ namespace Fiction.GameScreen.ViewModels
                 }
             }
         }
-        private string _targets;
+        private string? _targets;
         /// <summary>
         /// Gets or sets the targets
         /// </summary>
-        public string Targets
+        public string? Targets
         {
             get { return _targets; }
             set
@@ -225,11 +226,11 @@ namespace Fiction.GameScreen.ViewModels
                 }
             }
         }
-        private string _duration;
+        private string? _duration;
         /// <summary>
         /// Gets or sets the spell's duration
         /// </summary>
-        public string Duration
+        public string? Duration
         {
             get { return _duration; }
             set
@@ -273,11 +274,11 @@ namespace Fiction.GameScreen.ViewModels
                 }
             }
         }
-        private string _savingThrow;
+        private string? _savingThrow;
         /// <summary>
         /// Gets or sets the saving throw for this spell
         /// </summary>
-        public string SavingThrow
+        public string? SavingThrow
         {
             get { return _savingThrow; }
             set
@@ -289,11 +290,11 @@ namespace Fiction.GameScreen.ViewModels
                 }
             }
         }
-        private string _spellResistance;
+        private string? _spellResistance;
         /// <summary>
         /// Gets or sets if spell resistance applies to this spell
         /// </summary>
-        public string SpellResistance
+        public string? SpellResistance
         {
             get { return _spellResistance; }
             set
@@ -305,11 +306,11 @@ namespace Fiction.GameScreen.ViewModels
                 }
             }
         }
-        private string _description;
+        private string? _description;
         /// <summary>
         /// Gets or sets the description of this spell
         /// </summary>
-        public string Description
+        public string? Description
         {
             get { return _description; }
             set
@@ -321,11 +322,11 @@ namespace Fiction.GameScreen.ViewModels
                 }
             }
         }
-        private string _source;
+        private string? _source;
         /// <summary>
         /// Gets or sets the source of this spell
         /// </summary>
-        public string Source
+        public string? Source
         {
             get { return _source; }
             set
@@ -337,11 +338,11 @@ namespace Fiction.GameScreen.ViewModels
                 }
             }
         }
-        private string _shortDescription;
+        private string? _shortDescription;
         /// <summary>
         /// Gets or sets the short description of this spell
         /// </summary>
-        public string ShortDescription
+        public string? ShortDescription
         {
             get { return _shortDescription; }
             set
@@ -360,7 +361,7 @@ namespace Fiction.GameScreen.ViewModels
         public ObservableCollection<string> EffectTypes
         {
             get { return _effectTypes; }
-            set
+            private set
             {
                 if (!ReferenceEquals(_effectTypes, value))
                 {
@@ -417,6 +418,7 @@ namespace Fiction.GameScreen.ViewModels
                 Spell.Levels.Add(level);
         }
 
+        [MemberNotNull(nameof(_spellLevels)), MemberNotNull(nameof(_effectTypes))]
         private void AssignSpell(Spell spell)
         {
             Area = spell.Area;
@@ -427,7 +429,7 @@ namespace Fiction.GameScreen.ViewModels
             Dismissible = spell.Dismissible;
             Duration = spell.Duration;
             Effect = spell.Effect;
-            EffectTypes = spell.EffectTypes.ToObservableCollection();
+            _effectTypes = spell.EffectTypes.ToObservableCollection();
             Name = spell.Name;
             Range = spell.Range;
             SavingThrow = spell.SavingThrow;
@@ -435,7 +437,7 @@ namespace Fiction.GameScreen.ViewModels
             Shapeable = spell.Shapeable;
             ShortDescription = spell.ShortDescription;
             Source = spell.Source;
-            SpellLevels = spell.Levels.Select(p => new SpellLevel() { Class = p.Class, Level = p.Level }).ToObservableCollection();
+            _spellLevels = spell.Levels.Select(p => new SpellLevel() { Class = p.Class, Level = p.Level }).ToObservableCollection();
             SpellResistance = spell.SpellResistance;
             SubSchool = spell.SubSchool;
             Targets = spell.Targets;

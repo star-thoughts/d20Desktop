@@ -1,9 +1,9 @@
 ﻿using Fiction.GameScreen.Monsters;
 using Fiction.GameScreen.Players;
-using System.ComponentModel;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.ComponentModel;
 
 namespace Fiction.GameScreen.ViewModels
 {
@@ -20,7 +20,7 @@ namespace Fiction.GameScreen.ViewModels
 
             Campaign = campaign;
             IncludeInCombat = true;
-            HitDice = "1";
+            _hitDice = "1";
             Notes = new ObservableCollection<string>();
         }
         /// <summary>
@@ -35,7 +35,7 @@ namespace Fiction.GameScreen.ViewModels
             Player = character.Player;
             InitiativeModifier = character.InitiativeModifier;
             IncludeInCombat = character.IncludeInCombat;
-            HitDice = character.HitDieString;
+            _hitDice = character.HitDieString;
             Languages = character.Languages;
             Senses = character.Senses;
             LightRadius = character.LightRadius;
@@ -47,16 +47,16 @@ namespace Fiction.GameScreen.ViewModels
         /// <summary>
         /// Gets the campaign the character is in
         /// </summary>
-        public CampaignSettings Campaign { get; private set; }
+        public CampaignSettings? Campaign { get; private set; }
         /// <summary>
         /// Gets the character being edited, or null if adding a character
         /// </summary>
-        public PlayerCharacter Character { get; private set; }
-        private string _name;
+        public PlayerCharacter? Character { get; private set; }
+        private string? _name;
         /// <summary>
         /// Gets or sets the name of the character
         /// </summary>
-        public string Name
+        public string? Name
         {
             get { return _name; }
             set
@@ -68,11 +68,11 @@ namespace Fiction.GameScreen.ViewModels
                 }
             }
         }
-        private string _player;
+        private string? _player;
         /// <summary>
         /// Gets or sets the name of the player
         /// </summary>
-        public string Player
+        public string? Player
         {
             get { return _player; }
             set
@@ -148,11 +148,11 @@ namespace Fiction.GameScreen.ViewModels
                 }
             }
         }
-        private string _senses;
+        private string? _senses;
         /// <summary>
         /// Gets or sets the senses for the character
         /// </summary>
-        public string Senses
+        public string? Senses
         {
             get { return _senses; }
             set
@@ -164,11 +164,11 @@ namespace Fiction.GameScreen.ViewModels
                 }
             }
         }
-        private string _languages;
+        private string? _languages;
         /// <summary>
         /// Gets or sets the languages the character speaks
         /// </summary>
-        public string Languages
+        public string? Languages
         {
             get { return _languages; }
             set
@@ -218,6 +218,9 @@ namespace Fiction.GameScreen.ViewModels
         /// </summary>
         public void Save()
         {
+            if (Campaign == null)
+                throw new InvalidOperationException("Cannot save a PC without a campaign.");
+
             if (Character == null)
             {
                 Character = new PlayerCharacter(Campaign);

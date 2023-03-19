@@ -1,11 +1,7 @@
 ﻿using Fiction.GameScreen.Combat;
 using Fiction.GameScreen.Serialization;
-using System.ComponentModel;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Fiction.GameScreen.ViewModels
@@ -23,13 +19,22 @@ namespace Fiction.GameScreen.ViewModels
         public ViewModelFactory(CampaignSettings campaign)
         {
             Campaign = campaign;
+            CombatScenarios = new CombatScenariosViewModel(this, Campaign);
+            MonsterManager = new ManageMonstersViewModel(this);
+            ManageTypes = new ManageMonsterTypesViewModel(this);
+            Spells = new ManageSpellsViewModel(this);
+            ManageSpellSchools = new ManageSpellSchoolsViewModel(this);
+            ManageSources = new ManageSourcesViewModel(this);
+            MagicItems = new MagicItemsViewModel(this);
+            Conditions = new ConditionsViewModel(this);
+
+            Players = new ManagePlayersViewModel(this);
             if (campaign.Combat.Active != null)
                 ActiveCombat = new ActiveCombatViewModel(this, campaign.Combat.Active);
         }
         #endregion
         #region Member Variables
-        private CombatScenariosViewModel _scenarios;
-        private PrepareCombatViewModel _prepareCombat;
+        private PrepareCombatViewModel? _prepareCombat;
         #endregion
         #region Properties
         /// <summary>
@@ -39,15 +44,7 @@ namespace Fiction.GameScreen.ViewModels
         /// <summary>
         /// Gets the view model for combat scenarios
         /// </summary>
-        public CombatScenariosViewModel CombatScenarios
-        {
-            get
-            {
-                if (_scenarios == null)
-                    _scenarios = new CombatScenariosViewModel(this, Campaign);
-                return _scenarios;
-            }
-        }
+        public CombatScenariosViewModel CombatScenarios { get; }
         /// <summary>
         /// Gets the view model used for preparing for combat
         /// </summary>
@@ -65,14 +62,14 @@ namespace Fiction.GameScreen.ViewModels
                 return _prepareCombat;
             }
         }
-        private ActiveCombatViewModel _activeCombat;
+        private ActiveCombatViewModel? _activeCombat;
         /// <summary>
         /// Gets the active combat
         /// </summary>
         /// <remarks>
         /// To set this, call CreateCombat
         /// </remarks>
-        public ActiveCombatViewModel ActiveCombat
+        public ActiveCombatViewModel? ActiveCombat
         {
             get { return _activeCombat; }
             set
@@ -85,110 +82,38 @@ namespace Fiction.GameScreen.ViewModels
                 }
             }
         }
-        private ManageMonstersViewModel _monsterManager;
         /// <summary>
         /// Gets the manager for monsters in the campaign
         /// </summary>
-        public ManageMonstersViewModel MonsterManager
-        {
-            get
-            {
-                if (_monsterManager == null)
-                    _monsterManager = new ManageMonstersViewModel(this);
-                return _monsterManager;
-            }
-        }
-        private ManagePlayersViewModel _players;
+        public ManageMonstersViewModel MonsterManager { get; }
         /// <summary>
         /// Gets the view model for managing players
         /// </summary>
-        public ManagePlayersViewModel Players
-        {
-            get
-            {
-                if (_players == null)
-                    _players = new ManagePlayersViewModel(this);
-                return _players;
-            }
-        }
-        private ManageMonsterTypesViewModel _manageTypes;
+        public ManagePlayersViewModel Players { get; }
         /// <summary>
         /// Gets the view model for managing monster types and subtypes
         /// </summary>
-        public ManageMonsterTypesViewModel ManageTypes
-        {
-            get
-            {
-                if (_manageTypes == null)
-                    _manageTypes = new ManageMonsterTypesViewModel(this);
-                return _manageTypes;
-            }
-        }
-        private ManageSpellsViewModel _manageSpells;
+        public ManageMonsterTypesViewModel ManageTypes { get; }
         /// <summary>
         /// Gets the view model for managing spells in a campaign
         /// </summary>
-        public ManageSpellsViewModel Spells
-        {
-            get
-            {
-                if (_manageSpells == null)
-                    _manageSpells = new ManageSpellsViewModel(this);
-                return _manageSpells;
-            }
-        }
-        private ManageSpellSchoolsViewModel _manageSchools;
+        public ManageSpellsViewModel Spells { get; }
         /// <summary>
         /// Gets the view model for managing spell schools
         /// </summary>
-        public ManageSpellSchoolsViewModel ManageSpellSchools
-        {
-            get
-            {
-                if (_manageSchools == null)
-                    _manageSchools = new ManageSpellSchoolsViewModel(this);
-                return _manageSchools;
-            }
-        }
-        private ManageSourcesViewModel _manageSources;
+        public ManageSpellSchoolsViewModel ManageSpellSchools { get; }
         /// <summary>
         /// Gets the view model for managing sources in the campaign
         /// </summary>
-        public ManageSourcesViewModel ManageSources
-        {
-            get
-            {
-                if (_manageSources == null)
-                    _manageSources = new ManageSourcesViewModel(this);
-                return _manageSources;
-            }
-        }
-        private MagicItemsViewModel _magicItems;
+        public ManageSourcesViewModel ManageSources { get; }
         /// <summary>
         /// Gets the view model for managing magic items
         /// </summary>
-        public MagicItemsViewModel MagicItems
-        {
-            get
-            {
-                if (_magicItems == null)
-                    _magicItems = new MagicItemsViewModel(this);
-                return _magicItems;
-            }
-        }
-        private ConditionsViewModel _conditions;
+        public MagicItemsViewModel MagicItems { get; }
         /// <summary>
         /// Gets the view model for managing conditions
         /// </summary>
-        public ConditionsViewModel Conditions
-        {
-            get
-            {
-                if (_conditions == null)
-                    _conditions = new ConditionsViewModel(this);
-                return _conditions;
-            }
-        }
+        public ConditionsViewModel Conditions { get; }
         #endregion
         #region Methods
         /// <summary>
@@ -223,7 +148,7 @@ namespace Fiction.GameScreen.ViewModels
         /// <returns>Task for asynchronous completion</returns>
         public async Task EndCombat()
         {
-            ActiveCombatViewModel active = ActiveCombat;
+            ActiveCombatViewModel? active = ActiveCombat;
             ActiveCombat = null;
             _prepareCombat = null;
 
@@ -235,7 +160,7 @@ namespace Fiction.GameScreen.ViewModels
         /// <summary>
         /// Event that is triggered when a property changes
         /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 #pragma warning restore 67
         #endregion
     }

@@ -23,7 +23,7 @@ namespace Fiction.GameScreen.ViewModels.EditMonsterViewModels
         /// <param name="statName">Name of the stat for storage</param>
         /// <param name="source">Source collection to get values from</param>
         /// <param name="canAddNew">Whether not the user can manually enter something to add (which is added to <paramref name="source"/>)</param>
-        public CollectionStatViewModel(string name, string category, Monster monster, string statName, ObservableCollection<string> source, bool canAddNew)
+        public CollectionStatViewModel(string name, string category, Monster monster, string statName, ObservableCollection<string>? source, bool canAddNew)
             : base(name, category, monster, statName)
         {
             Source = source;
@@ -38,7 +38,7 @@ namespace Fiction.GameScreen.ViewModels.EditMonsterViewModels
         /// <summary>
         /// Gets a collection of source objects to choose from
         /// </summary>
-        public ObservableCollection<string> Source { get; private set; }
+        public ObservableCollection<string>? Source { get; private set; }
         #endregion
         #region Methods
         protected override ObservableCollection<string> CreateDefaultValue()

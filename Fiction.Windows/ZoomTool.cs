@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Input;
 
@@ -15,7 +10,7 @@ namespace Fiction.Windows
     public class ZoomTool : IViewTool
     {
         #region Member Variables
-        private ZoomAdorner _adorner;
+        private ZoomAdorner? _adorner;
         #endregion
         #region IUIElementTool Members
         /// <summary>
@@ -41,7 +36,7 @@ namespace Fiction.Windows
         {
             Exceptions.ThrowIfArgumentNull(e, nameof(e));
 
-            ZoomViewer viewer = view as ZoomViewer;
+            ZoomViewer? viewer = view as ZoomViewer;
             if (viewer != null)
             {
                 if (_adorner != null)
@@ -62,19 +57,24 @@ namespace Fiction.Windows
         /// <param name="e">Event information</param>
         public void MouseUp(UIElement view, MouseButtonEventArgs e)
         {
-            ZoomViewer viewer = view as ZoomViewer;
+            ZoomViewer? viewer = view as ZoomViewer;
             if (viewer != null)
             {
                 if (_adorner != null)
+                {
                     AdornerLayer.GetAdornerLayer(view).Remove(_adorner);
 
-                Point start = _adorner.StartPoint.Value;
-                Point end = _adorner.EndPoint.Value;
+                    if (_adorner.StartPoint.HasValue && _adorner.EndPoint.HasValue)
+                    {
+                        Point start = _adorner.StartPoint.Value;
+                        Point end = _adorner.EndPoint.Value;
 
-                start = viewer.GetContentPointAtZoomViewerPoint(start);
-                end = viewer.GetContentPointAtZoomViewerPoint(end);
+                        start = viewer.GetContentPointAtZoomViewerPoint(start);
+                        end = viewer.GetContentPointAtZoomViewerPoint(end);
 
-                viewer.ZoomToRectangle(new Rect(start, end));
+                        viewer.ZoomToRectangle(new Rect(start, end));
+                    }
+                }
 
                 if (view.IsMouseCaptured)
                     view.ReleaseMouseCapture();
@@ -90,7 +90,7 @@ namespace Fiction.Windows
         {
             Exceptions.ThrowIfArgumentNull(e, nameof(e));
 
-            ZoomViewer viewer = view as ZoomViewer;
+            ZoomViewer? viewer = view as ZoomViewer;
             if (viewer != null)
             {
                 if (_adorner != null)

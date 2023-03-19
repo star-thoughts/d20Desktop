@@ -8,33 +8,35 @@ namespace System.Linq
     /// </summary>
     public static class LinqExtensions
     {
-        public static T AfterOrDefault<T>(this IEnumerable<T> source, T after) where T : class
+        public static T? AfterOrDefault<T>(this IEnumerable<T> source, T after) where T : class
         {
             Exceptions.ThrowIfArgumentNull(source, nameof(source));
+
             return source
-                .SkipWhile(p => !object.ReferenceEquals(after, p))
+                .SkipWhile(p => !ReferenceEquals(after, p))
                 .Skip(1)
                 .FirstOrDefault();
         }
-        public static T AfterOrFirstOrDefault<T>(this IEnumerable<T> source, T after) where T : class
+        public static T? AfterOrFirstOrDefault<T>(this IEnumerable<T> source, T after) where T : class
         {
             Exceptions.ThrowIfArgumentNull(source, nameof(source));
-            T result = source.AfterOrDefault(after)
+
+            T? result = source.AfterOrDefault(after)
                 ?? source.FirstOrDefault();
 
             if (ReferenceEquals(result, after))
                 return null;
             return result;
         }
-        public static T PrevOrDefault<T>(this IEnumerable<T> source, T after) where T : class
+        public static T? PrevOrDefault<T>(this IEnumerable<T> source, T after) where T : class
         {
             Exceptions.ThrowIfArgumentNull(source, nameof(source));
             return source.Reverse().AfterOrDefault(after);
         }
-        public static T PrevOrLastOrDefault<T>(this IEnumerable<T> source, T after) where T : class
+        public static T? PrevOrLastOrDefault<T>(this IEnumerable<T> source, T after) where T : class
         {
             Exceptions.ThrowIfArgumentNull(source, nameof(source));
-            T result = source.Reverse().AfterOrFirstOrDefault(after);
+            T? result = source.Reverse().AfterOrFirstOrDefault(after);
 
 
             if (ReferenceEquals(result, after))
@@ -89,7 +91,7 @@ namespace System.Linq
         {
             Exceptions.ThrowIfArgumentNull(source, nameof(source));
 
-            IList<T> list = source as IList<T>;
+            IList<T>? list = source as IList<T>;
 
             if (list != null)
                 return list.IndexOf(item);
@@ -98,7 +100,7 @@ namespace System.Linq
             foreach (T t in source)
             {
                 index++;
-                if (item.Equals(t))
+                if (item != null && item.Equals(t))
                     return index;
             }
             return -1;
@@ -118,7 +120,7 @@ namespace System.Linq
             Exceptions.ThrowIfArgumentNull(source, nameof(source));
             Exceptions.ThrowIfArgumentNull(comparer, nameof(comparer));
 
-            IList<T> list = source as IList<T>;
+            IList<T>? list = source as IList<T>;
 
             if (list != null)
                 return list.IndexOf(item, comparer);

@@ -27,7 +27,7 @@ namespace Fiction.GameScreen.Controls
         }
         #endregion
         #region Member Variables
-        private CollectionViewSource _effectsCollection;
+        private CollectionViewSource? _effectsCollection;
         #endregion
         #region Properties
         /// <summary>
@@ -81,7 +81,7 @@ namespace Fiction.GameScreen.Controls
         {
             base.OnApplyTemplate();
 
-            Panel panel = Template.FindName("PART_RootGrid", this) as Panel;
+            Panel? panel = Template.FindName("PART_RootGrid", this) as Panel;
 
             _effectsCollection = panel?.Resources["EffectsCollection"] as CollectionViewSource;
             if (_effectsCollection != null)
@@ -140,17 +140,20 @@ namespace Fiction.GameScreen.Controls
         {
             Exceptions.FailSafeMethodCall(() =>
             {
-                EditEffectViewModel vm = new EditEffectViewModel(Combatant.Campaign);
-                vm.Source = Combatant;
-                vm.InitiativeSource = Combatant;
+                if (Combatant.Campaign != null)
+                {
+                    EditEffectViewModel vm = new EditEffectViewModel(Combatant.Campaign);
+                    vm.Source = Combatant;
+                    vm.InitiativeSource = Combatant;
 
-                EditWindow window = new EditWindow();
-                window.Owner = Window.GetWindow(this);
-                window.DataContext = vm;
+                    EditWindow window = new EditWindow();
+                    window.Owner = Window.GetWindow(this);
+                    window.DataContext = vm;
 
-                if (window.ShowDialog() == true)
-                    Combat.Effects.Add(vm.Save());
-                RefreshCollections();
+                    if (window.ShowDialog() == true)
+                        Combat.Effects.Add(vm.Save());
+                    RefreshCollections();
+                }
             });
         }
 

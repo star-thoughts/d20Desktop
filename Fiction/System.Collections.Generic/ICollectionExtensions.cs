@@ -63,11 +63,11 @@ namespace System.Collections.Generic
         /// <typeparam name="T2">Second type in the dictionary</typeparam>
         /// <param name="dictionary">Dictionary to remove the value from</param>
         /// <param name="value">Value to remove from teh library</param>
-        public static void RemoveValue<T1, T2>(this Dictionary<T1, T2> dictionary, T2 value)
+        public static void RemoveValue<T1, T2>(this Dictionary<T1, T2> dictionary, T2 value) where T1 : notnull
         {
             Exceptions.ThrowIfArgumentNull(dictionary, nameof(dictionary));
 
-            IEnumerable<KeyValuePair<T1, T2>> where = null;
+            IEnumerable<KeyValuePair<T1, T2>>? where = null;
 
             if (value != null)
                 where = dictionary

@@ -26,9 +26,9 @@ namespace Fiction.GameScreen.Controls
         }
         #endregion
         #region Member Variables
-        private ListCollectionView _source;
-        private TextBox _filterTextBox;
-        private ListBox _itemsList;
+        private ListCollectionView? _source;
+        private TextBox? _filterTextBox;
+        private ListBox? _itemsList;
         private bool _updatingSelection;
         #endregion
         #region Properties
@@ -145,7 +145,7 @@ namespace Fiction.GameScreen.Controls
             Exceptions.FailSafeMethodCall(() =>
             {
                 if (d is FilterableList view)
-                    view?.UpdateItemSelection(e.NewValue as ObservableCollection<ICampaignObject>);
+                    view?.UpdateItemSelection((ObservableCollection<ICampaignObject>)e.NewValue);
             });
         }
         #endregion
@@ -153,7 +153,7 @@ namespace Fiction.GameScreen.Controls
         public override void OnApplyTemplate()
         {
             _filterTextBox = Template.FindName("PART_FilterText", this) as TextBox;
-            Panel root = Template.FindName("PART_RootGrid", this) as Panel;
+            Panel? root = Template.FindName("PART_RootGrid", this) as Panel;
             if (root != null)
                 root.PreviewKeyDown += _filter_PreviewKeyDown;
 
@@ -167,7 +167,7 @@ namespace Fiction.GameScreen.Controls
                 containerStyle.Setters.Add(new EventSetter(MouseDoubleClickEvent, new MouseButtonEventHandler(_itemsList_DoubleClick)));
             }
 
-            Button filterButton = Template.FindName("PART_FilterButton", this) as Button;
+            Button? filterButton = Template.FindName("PART_FilterButton", this) as Button;
             if (filterButton != null)
                 filterButton.Click += FilterButton_Click;
         }

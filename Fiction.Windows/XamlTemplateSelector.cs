@@ -28,7 +28,7 @@ namespace Fiction.Windows
         /// <summary>
         /// Gets a template to fall back on if no other template is found
         /// </summary>
-        public DataTemplate Fallback { get; set; }
+        public DataTemplate? Fallback { get; set; }
 
         /// <summary>
         /// Selects the template for the data
@@ -36,9 +36,9 @@ namespace Fiction.Windows
         /// <param name="item">Data to select template for</param>
         /// <param name="container">Objec containing the data</param>
         /// <returns>Template to use</returns>
-        public override DataTemplate SelectTemplate(object item, DependencyObject container)
+        public override DataTemplate? SelectTemplate(object item, DependencyObject container)
         {
-            DataTemplate template = Templates.OfType<XamlTemplate>().FirstOrDefault(p => p.Type.IsAssignableFrom(item?.GetType()))?.Template;
+            DataTemplate? template = Templates.OfType<XamlTemplate>().FirstOrDefault(p => p.Type?.IsAssignableFrom(item?.GetType()) == true)?.Template;
             if (item != null && template == null)
                 template = Fallback;
 

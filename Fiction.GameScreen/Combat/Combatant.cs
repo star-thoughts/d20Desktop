@@ -1,9 +1,6 @@
-﻿using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Text;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Fiction.GameScreen.Combat
 {
@@ -16,34 +13,23 @@ namespace Fiction.GameScreen.Combat
         /// <summary>
         /// Constructs a new <see cref="Combatant"/>
         /// </summary>
+        /// <param name="campaign">Campaign this combatant is in</param>
         /// <param name="preparedInfo">Preparation info for the combat</param>
-        /// <param name="id">ID of the combatant</param>
-        /// <param name="isPlayer">Whether or not this is for a player</param>
-        public Combatant(CombatantPreparer preparedInfo, int id)
-        {
-            Exceptions.ThrowIfArgumentNull(preparedInfo, nameof(preparedInfo));
-
-            Initialize(preparedInfo, id);
-        }
-        /// <summary>
-        /// Constructs a new <see cref="Combatant"/>
-        /// </summary>
-        /// <param name="campaign">Campaign the combatant is in</param>
-        /// <param name="preparedInfo">Info used to prepare this combatant for combat</param>
-        internal Combatant(CampaignSettings campaign, CombatantPreparer preparedInfo)
-            : this(preparedInfo, campaign.GetNextId())
+        public Combatant(CampaignSettings campaign, CombatantPreparer preparedInfo)
         {
             Exceptions.ThrowIfArgumentNull(campaign, nameof(campaign));
             Exceptions.ThrowIfArgumentNull(preparedInfo, nameof(preparedInfo));
 
-            Initialize(preparedInfo, campaign.GetNextId());
-            Campaign = campaign;
+            Initialize(campaign, preparedInfo);
         }
 
-        private void Initialize(CombatantPreparer preparedInfo, int id)
+        [MemberNotNull(nameof(Campaign)), MemberNotNull(nameof(_name)), MemberNotNull(nameof(PreparedInfo)),
+            MemberNotNull(nameof(Health)), MemberNotNull(nameof(Conditions)), MemberNotNull(nameof(DamageReduction))]
+        private void Initialize(CampaignSettings campaign, CombatantPreparer preparedInfo)
         {
+            Campaign = campaign;
             PreparedInfo = preparedInfo;
-            Name = preparedInfo.Name;
+            _name = preparedInfo.Name;
             Ordinal = preparedInfo.Ordinal;
             InitiativeOrder = preparedInfo.InitiativeOrder;
             DisplayToPlayers = preparedInfo.DisplayToPlayers;
@@ -57,7 +43,7 @@ namespace Fiction.GameScreen.Combat
             Health.DeadAt = preparedInfo.DeadAt;
             Health.UnconsciousAt = preparedInfo.UnconsciousAt;
 
-            Id = id;
+            Id = campaign.GetNextId();
 
             Conditions = new ObservableCollection<AppliedCondition>();
             DamageReduction = preparedInfo.DamageReduction?.Copy()
@@ -72,7 +58,7 @@ namespace Fiction.GameScreen.Combat
         /// <summary>
         /// Gets the combat this combatant is part of
         /// </summary>
-        public ActiveCombat Combat { get { return Campaign.Combat.Active; } }
+        public ActiveCombat? Combat { get { return Campaign.Combat.Active; } }
         /// <summary>
         /// Gets the ID of the combatant
         /// </summary>
@@ -100,7 +86,7 @@ namespace Fiction.GameScreen.Combat
         /// <summary>
         /// Gets the source of this combatant
         /// </summary>
-        public ICombatantTemplate Source { get { return PreparedInfo.Source; } }
+        public ICombatantTemplate? Source { get { return PreparedInfo.Source; } }
         /// <summary>
         /// Gets the info used to prepare this combatant for combat
         /// </summary>
@@ -142,11 +128,11 @@ namespace Fiction.GameScreen.Combat
                 }
             }
         }
-        private string _displayName;
+        private string? _displayName;
         /// <summary>
         /// Gets or sets the name to display to the players during combat
         /// </summary>
-        public string DisplayName
+        public string? DisplayName
         {
             get { return _displayName; }
             set
@@ -249,7 +235,7 @@ namespace Fiction.GameScreen.Combat
         /// <summary>
         /// Event that is triggered when a property changes
         /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 #pragma warning restore 67
     }
 }

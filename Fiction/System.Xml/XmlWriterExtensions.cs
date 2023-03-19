@@ -57,7 +57,7 @@ namespace System.Xml
 
             foreach (object item in items)
             {
-                await writer.WriteElementStringAsync(name, item.ToString());
+                await writer.WriteElementStringAsync(name, item.ToString() ?? string.Empty);
             }
         }
         /// <summary>

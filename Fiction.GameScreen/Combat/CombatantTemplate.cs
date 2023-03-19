@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace Fiction.GameScreen.Combat
@@ -18,15 +19,21 @@ namespace Fiction.GameScreen.Combat
         {
             Exceptions.ThrowIfArgumentNull(campaign, nameof(campaign));
 
+            _name = string.Empty;
+            _hitDieString = string.Empty;
+            _count = string.Empty;
+
             Campaign = campaign;
             Id = campaign.GetNextId();
             Initialize();
         }
 
+
+        [MemberNotNull(nameof(_hitDieRollingStrategy)), MemberNotNull(nameof(DamageReduction))]
         private void Initialize()
         {
-            HitDieRollingStrategy = RollingStrategy.Standard;
-            DisplayToPlayers = true;
+            _hitDieRollingStrategy = RollingStrategy.Standard;
+            _displayToPlayers = true;
             DamageReduction = new ObservableCollection<DamageReduction>();
         }
         #endregion
@@ -135,11 +142,11 @@ namespace Fiction.GameScreen.Combat
                 }
             }
         }
-        private string _displayName;
+        private string? _displayName;
         /// <summary>
         /// Gets or sets the name to display to the players during combat
         /// </summary>
-        public string DisplayName
+        public string? DisplayName
         {
             get { return _displayName; }
             set
@@ -199,11 +206,11 @@ namespace Fiction.GameScreen.Combat
                 }
             }
         }
-        private ICombatantTemplateSource _source;
+        private ICombatantTemplateSource? _source;
         /// <summary>
         /// Gets or sets the source for this combatant template, or null if no source.
         /// </summary>
-        public ICombatantTemplateSource Source
+        public ICombatantTemplateSource? Source
         {
             get { return _source; }
             set
@@ -266,7 +273,7 @@ namespace Fiction.GameScreen.Combat
         /// <summary>
         /// Event that is triggered when a property changes
         /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 #pragma warning restore 67
         #endregion
     }

@@ -75,7 +75,7 @@ namespace Fiction.GameScreen.Serialization
                 await writer.WriteStartElementAsync(Keys.Combat);
 
                 await writer.WriteAttributeStringAsync(Keys.Name, combat.Name);
-                await writer.WriteAttributeStringAsync(Keys.Current, combat.Current.Id.ToString(CultureInfo.InvariantCulture));
+                await writer.WriteAttributeStringAsync(Keys.Current, combat.Current?.Id.ToString(CultureInfo.InvariantCulture) ?? string.Empty);
                 await writer.WriteAttributeStringAsync(Keys.Round, combat.Round.ToString(CultureInfo.InvariantCulture));
 
                 foreach (ICombatant combatant in combat.Combatants)
@@ -86,7 +86,7 @@ namespace Fiction.GameScreen.Serialization
                     await writer.WriteAttributeStringAsync(Keys.Id, combatant.Id.ToString(CultureInfo.InvariantCulture));
                     await writer.WriteAttributeStringAsync(Keys.InitiativeOrder, combatant.InitiativeOrder.ToString(CultureInfo.InvariantCulture));
                     await writer.WriteAttributeStringAsync(Keys.DisplayToPlayers, combatant.DisplayToPlayers.ToString());
-                    await writer.WriteAttributeStringAsync(Keys.DisplayName, combatant.DisplayName);
+                    await writer.WriteAttributeStringAsync(Keys.DisplayName, combatant.DisplayName ?? string.Empty);
                     await writer.WriteAttributeStringAsync(Keys.HasGoneOnce, combatant.HasGoneOnce.ToString());
                     await writer.WriteAttributeStringAsync(Keys.IncludeInCombat, combatant.IncludeInCombat.ToString());
                     await writer.WriteAttributeStringAsync(Keys.MaxHealth, combatant.Health.MaxHealth.ToString(CultureInfo.InvariantCulture));
@@ -113,11 +113,11 @@ namespace Fiction.GameScreen.Serialization
                 {
                     await writer.WriteStartElementAsync(Keys.Effect);
 
-                    await writer.WriteAttributeStringAsync(Keys.Name, effect.Name);
+                    await writer.WriteAttributeStringAsync(Keys.Name, effect.Name ?? string.Empty);
                     await writer.WriteAttributeStringAsync(Keys.Duration, effect.DurationRounds.ToString(CultureInfo.InvariantCulture));
                     await writer.WriteAttributeStringAsync(Keys.Remaining, effect.RemainingRounds.ToString(CultureInfo.InvariantCulture));
-                    await writer.WriteAttributeStringAsync(Keys.Source, effect.Source.Id.ToString(CultureInfo.InvariantCulture));
-                    await writer.WriteAttributeStringAsync(Keys.InitiativeSource, effect.InitiativeSource.Id.ToString(CultureInfo.InvariantCulture));
+                    await writer.WriteAttributeStringAsync(Keys.Source, effect.Source?.Id.ToString(CultureInfo.InvariantCulture) ?? string.Empty);
+                    await writer.WriteAttributeStringAsync(Keys.InitiativeSource, effect.InitiativeSource?.Id.ToString(CultureInfo.InvariantCulture) ?? string.Empty);
                     await writer.WriteAttributeStringAsync(Keys.Related, effect.RelatedItem?.Id.ToString(CultureInfo.InvariantCulture) ?? string.Empty);
                     
                     foreach(ICombatant combatant in effect.Targets)
@@ -147,7 +147,7 @@ namespace Fiction.GameScreen.Serialization
                 IEnumerable<XElement> combatants = element.Descendants(Keys.Combatant);
                 List<ICombatant> updated = new List<ICombatant>(combat.Combatants.Count);
 
-                ICombatant current = combat.Combatants.FirstOrDefault(p => p.Id.Equals(element.ReadAttributeInt(Keys.Current)));
+                ICombatant? current = combat.Combatants.FirstOrDefault(p => p.Id.Equals(element.ReadAttributeInt(Keys.Current)));
                 if (current != null)
                     combat.Current = current;
 
@@ -155,7 +155,7 @@ namespace Fiction.GameScreen.Serialization
 
                 foreach (XElement combatantElement in combatants)
                 {
-                    ICombatant combatant = combat.Combatants.FirstOrDefault(p => p.Id.Equals(combatantElement.ReadAttributeInt(Keys.Id)));
+                    ICombatant? combatant = combat.Combatants.FirstOrDefault(p => p.Id.Equals(combatantElement.ReadAttributeInt(Keys.Id)));
                     if (combatant != null)
                     {
                         updated.Add(combatant);
@@ -174,7 +174,7 @@ namespace Fiction.GameScreen.Serialization
                         combatant.Health.DeadAt = combatantElement.ReadAttributeInt(Keys.DeadAt);
                         combatant.Health.FastHealing = combatantElement.ReadAttributeInt(Keys.FastHealing);
 
-                        XElement damageReduction = combatantElement.Descendants(Keys.DamageReduction)
+                        XElement? damageReduction = combatantElement.Descendants(Keys.DamageReduction)
                             .FirstOrDefault();
 
                         if (damageReduction != null)
@@ -183,7 +183,7 @@ namespace Fiction.GameScreen.Serialization
                         string[] conditionNames = combatantElement.ReadCollectionElement(Keys.Condition).ToArray();
                         foreach(string conditionName in conditionNames)
                         {
-                            Condition condition = _campaign.Conditions.Conditions.FirstOrDefault(p => string.Equals(p.Name, conditionName));
+                            Condition? condition = _campaign.Conditions.Conditions.FirstOrDefault(p => string.Equals(p.Name, conditionName));
                             if (condition != null)
                                 combatant.Conditions.Add(new AppliedCondition(condition));
                         }
@@ -194,7 +194,7 @@ namespace Fiction.GameScreen.Serialization
                 combat.Effects.Clear();
                 foreach (XElement effectElement in effects)
                 {
-                    ICombatant source = combat.Combatants.FirstOrDefault(p => p.Id == effectElement.ReadAttributeInt(Keys.Source));
+                    ICombatant? source = combat.Combatants.FirstOrDefault(p => p.Id == effectElement.ReadAttributeInt(Keys.Source));
                     int[] targetIds = effectElement.Descendants(Keys.Target).Select(p => p.ReadAttributeInt(Keys.Id)).ToArray();
                     ICombatant[] targets = combat.Combatants.Where(p => targetIds.Contains(p.Id)).ToArray();
                     int relatedId = effectElement.ReadAttributeInt(Keys.Related);

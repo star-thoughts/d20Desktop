@@ -25,8 +25,8 @@ namespace Fiction.GameScreen.Controls
         }
         #endregion
         #region Member Variables
-        private ListBox _combatantList;
-        private Panel _inputPanel;
+        private ListBox? _combatantList;
+        private Panel? _inputPanel;
         #endregion
         #region Properties
         /// <summary>
@@ -48,7 +48,7 @@ namespace Fiction.GameScreen.Controls
         /// <summary>
         /// Gets or sets the currently selected combatant
         /// </summary>
-        public CombatantPreparer SelectedCombatant
+        public CombatantPreparer? SelectedCombatant
         {
             get { return (CombatantPreparer)GetValue(SelectedCombatantProperty); }
             set { SetValue(SelectedCombatantProperty, value); }
@@ -117,35 +117,44 @@ namespace Fiction.GameScreen.Controls
              });
         }
 
-        private async Task MoveUp(TextBox textBox)
+        private async Task MoveUp(TextBox? textBox)
         {
-            if (_combatantList != null && !ReferenceEquals(SelectedCombatant, _combatantList.Items.OfType<object>().FirstOrDefault()))
+            if (SelectedCombatant != null
+                && textBox != null
+                && _combatantList != null
+                && !ReferenceEquals(SelectedCombatant, _combatantList.Items.OfType<object>().FirstOrDefault()))
             {
                 SelectedCombatant = _combatantList.Items.OfType<CombatantPreparer>().PrevOrDefault(SelectedCombatant);
                 await DispatchHighlightTextBox(textBox);
             }
         }
 
-        private async Task DispatchHighlightTextBox(TextBox textBox)
+        private async Task DispatchHighlightTextBox(TextBox? textBox)
         {
             await Dispatcher.InvokeAsync(() => HighlightTextBox(textBox), DispatcherPriority.Loaded);
         }
 
-        private void HighlightTextBox(TextBox textBox)
+        private void HighlightTextBox(TextBox? textBox)
         {
             Exceptions.FailSafeMethodCall(() =>
             {
                 if (textBox == null && _inputPanel != null)
                     textBox = VisualTreeHelperEx.GetAllChildren<TextBox>(_inputPanel).FirstOrDefault(p => p.Name == "PART_InitiativeTotal");
 
-                textBox.Focus();
-                textBox.SelectAll();
+                if (textBox != null)
+                {
+                    textBox.Focus();
+                    textBox.SelectAll();
+                }
             });
         }
 
-        private async Task MoveDown(TextBox textBox)
+        private async Task MoveDown(TextBox? textBox)
         {
-            if (_combatantList != null && !ReferenceEquals(SelectedCombatant, _combatantList.Items.OfType<object>().LastOrDefault()))
+            if (textBox != null
+                && SelectedCombatant != null
+                && _combatantList != null
+                && !ReferenceEquals(SelectedCombatant, _combatantList.Items.OfType<object>().LastOrDefault()))
             {
                 SelectedCombatant = _combatantList.Items.OfType<CombatantPreparer>().AfterOrDefault(SelectedCombatant);
                 await DispatchHighlightTextBox(textBox);
@@ -160,7 +169,8 @@ namespace Fiction.GameScreen.Controls
                 if (e.Parameter is PrepareCombatViewModel vm)
                 {
                     vm.Reset();
-                    _combatantList.SelectedIndex = 0;
+                    if (_combatantList != null)
+                        _combatantList.SelectedIndex = 0;
                 }
             });
         }
@@ -187,7 +197,7 @@ namespace Fiction.GameScreen.Controls
             e.CanExecute = SelectedCombatant != null && Dice.IsValidString(SelectedCombatant.HitDieString);
         }
 
-        private async void PrepareCombat_Loaded(object sender, RoutedEventArgs e)
+        private void PrepareCombat_Loaded(object sender, RoutedEventArgs e)
         {
             SelectedCombatant = Preparer?.Combatants.FirstOrDefault();
         }
@@ -203,7 +213,7 @@ namespace Fiction.GameScreen.Controls
                 if (SelectedCombatant != null)
                 {
                     e.Handled = true;
-                    CombatantPreparer next = Preparer.Combatants.AfterOrDefault(SelectedCombatant);
+                    CombatantPreparer? next = Preparer.Combatants.AfterOrDefault(SelectedCombatant);
                     Preparer.Combatants.Remove(SelectedCombatant);
                     if (!ReferenceEquals(next, SelectedCombatant))
                         SelectedCombatant = next;
@@ -229,9 +239,9 @@ namespace Fiction.GameScreen.Controls
                      window.Owner = Window.GetWindow(this);
                      window.DataContext = vm;
 
-                     if (window.ShowDialog() == true)
+                     if (window.ShowDialog() == true && vm.SelectedSource != null)
                      {
-                         CombatantPreparer first = Preparer.Preparer.AddCombatants(vm.SelectedSource).FirstOrDefault();
+                         CombatantPreparer? first = Preparer.Preparer.AddCombatants(vm.SelectedSource).FirstOrDefault();
 
                          if (first != null)
                          {

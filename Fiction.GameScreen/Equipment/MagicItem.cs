@@ -16,6 +16,9 @@ namespace Fiction.GameScreen.Equipment
         /// <param name="campaign">Campaign the item is being added to</param>
         public MagicItem(CampaignSettings campaign)
         {
+            _name = string.Empty;
+            Campaign = campaign;
+
             Id = campaign.GetNextId();
             Auras = new ObservableCollection<string>();
         }
@@ -25,8 +28,9 @@ namespace Fiction.GameScreen.Equipment
         /// <param name="name">Name of the item</param>
         /// <param name="group">Group the item is in</param>
         /// <param name="id">ID of the item in the campaign</param>
-        public MagicItem(string name, string group, int id)
+        public MagicItem(CampaignSettings campaign, string name, string group, int id)
         {
+            Campaign = campaign;
             _name = name;
             _group = group;
             Id = id;
@@ -68,11 +72,11 @@ namespace Fiction.GameScreen.Equipment
             }
         }
 
-        private string _slot;
+        private string? _slot;
         /// <summary>
         /// Gets or sets the slot the item takes up, if any
         /// </summary>
-        public string Slot
+        public string? Slot
         {
             get { return _slot; }
             set
@@ -102,11 +106,11 @@ namespace Fiction.GameScreen.Equipment
             }
         }
 
-        private string _weight;
+        private string? _weight;
         /// <summary>
         /// Gets or sets the weight of this item
         /// </summary>
-        public string Weight
+        public string? Weight
         {
             get { return _weight; }
             set
@@ -119,11 +123,11 @@ namespace Fiction.GameScreen.Equipment
             }
         }
 
-        private string _description;
+        private string? _description;
         /// <summary>
         /// Gets or sets the description of this item
         /// </summary>
-        public string Description
+        public string? Description
         {
             get { return _description; }
             set
@@ -136,11 +140,11 @@ namespace Fiction.GameScreen.Equipment
             }
         }
 
-        private string _requirements;
+        private string? _requirements;
         /// <summary>
         /// Gets or sets the requirements to make the item
         /// </summary>
-        public string Requirements
+        public string? Requirements
         {
             get { return _requirements; }
             set
@@ -169,11 +173,11 @@ namespace Fiction.GameScreen.Equipment
             }
         }
 
-        private string _group;
+        private string? _group;
         /// <summary>
         /// Gets or sets the group (weapon, armor, rings, etc)
         /// </summary>
-        public string Group
+        public string? Group
         {
             get { return _group; }
             set
@@ -196,11 +200,11 @@ namespace Fiction.GameScreen.Equipment
         /// Gets the ID of this item
         /// </summary>
         public int Id { get; private set; }
-        private string _source;
+        private string? _source;
         /// <summary>
         /// Gets or sets the source of this item
         /// </summary>
-        public string Source
+        public string? Source
         {
             get { return _source; }
             set
@@ -302,11 +306,11 @@ namespace Fiction.GameScreen.Equipment
             }
         }
 
-        private string _communication;
+        private string? _communication;
         /// <summary>
         /// Gets or sets the method(s) of communication this item can employ
         /// </summary>
-        public string Communication
+        public string? Communication
         {
             get { return _communication; }
             set
@@ -319,11 +323,11 @@ namespace Fiction.GameScreen.Equipment
             }
         }
 
-        private string _senses;
+        private string? _senses;
         /// <summary>
         /// Gets or sets this item's senses
         /// </summary>
-        public string Senses
+        public string? Senses
         {
             get { return _senses; }
             set
@@ -336,11 +340,11 @@ namespace Fiction.GameScreen.Equipment
             }
         }
 
-        private string _powers;
+        private string? _powers;
         /// <summary>
         /// Gets or sets the powers of this item
         /// </summary>
-        public string Powers
+        public string? Powers
         {
             get { return _powers; }
             set
@@ -353,11 +357,11 @@ namespace Fiction.GameScreen.Equipment
             }
         }
 
-        private string _languages;
+        private string? _languages;
         /// <summary>
         /// Gets or sets the languages
         /// </summary>
-        public string Languages
+        public string? Languages
         {
             get { return _languages; }
             set
@@ -370,11 +374,11 @@ namespace Fiction.GameScreen.Equipment
             }
         }
 
-        private string _destruction;
+        private string? _destruction;
         /// <summary>
         /// Gets or sets the requirements to destroy this item (artifacts only)
         /// </summary>
-        public string Descruction
+        public string? Descruction
         {
             get { return _destruction; }
             set
@@ -408,11 +412,11 @@ namespace Fiction.GameScreen.Equipment
         /// </summary>
         public ObservableCollection<string> Auras { get; private set; }
 
-        private string _auraStrength;
+        private string? _auraStrength;
         /// <summary>
         /// Gets or sets the strength of the aura
         /// </summary>
-        public string AuraStrength
+        public string? AuraStrength
         {
             get { return _auraStrength; }
             set
@@ -445,7 +449,7 @@ namespace Fiction.GameScreen.Equipment
         /// <summary>
         /// Gets the source type for this item
         /// </summary>
-        public string SourceType => Group;
+        public string? SourceType => Group;
         #endregion
         #region Methods
         /// <summary>
@@ -465,7 +469,7 @@ namespace Fiction.GameScreen.Equipment
         /// <summary>
         /// Event that is triggered when a property changes
         /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 #pragma warning restore 67
         #endregion
     }

@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.Text;
 
 namespace Fiction.GameScreen
@@ -15,7 +16,7 @@ namespace Fiction.GameScreen
         /// </summary>
         /// <param name="dieString">String to test</param>
         /// <returns>Whether or not the string is valid</returns>
-        public static bool IsValidString(string dieString)
+        public static bool IsValidString([NotNullWhen(true)] string? dieString)
         {
             if (string.IsNullOrWhiteSpace(dieString))
                 return false;

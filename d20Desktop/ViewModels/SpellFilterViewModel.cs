@@ -1,10 +1,10 @@
 ﻿using Fiction.GameScreen.Spells;
-using System.ComponentModel;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
+using System.ComponentModel;
 
 namespace Fiction.GameScreen.ViewModels
 {
@@ -24,47 +24,55 @@ namespace Fiction.GameScreen.ViewModels
 
             SchoolOptions = spells
                 .Select(p => p.School)
+                .OfType<string>()
                 .Distinct(StringComparer.CurrentCultureIgnoreCase)
                 .ToArray();
 
             SubSchoolOptions = spells
                 .Select(p => p.SubSchool)
+                .OfType<string>()
                 .Distinct(StringComparer.CurrentCultureIgnoreCase)
                 .ToArray();
 
             ClassOptions = spells
-                .SelectMany(p => p.Levels)
+                .SelectMany(p => ((IEnumerable<SpellLevel>?)p.Levels) ?? Array.Empty<SpellLevel>())
                 .Select(p => p.Class)
                 .Distinct(StringComparer.CurrentCultureIgnoreCase)
+                .OfType<string>()
                 .ToArray();
 
             CastingTimeOptions = spells
                 .Select(p => p.CastingTime)
+                .OfType<string>()
                 .Distinct(StringComparer.CurrentCultureIgnoreCase)
                 .ToArray();
 
             RangeOptions = spells
                 .Select(p => p.Range)
+                .OfType<string>()
                 .Distinct(StringComparer.CurrentCultureIgnoreCase)
                 .ToArray();
 
             AreaOptions = spells
                 .Select(p => p.Area)
+                .OfType<string>()
                 .Distinct(StringComparer.CurrentCultureIgnoreCase)
                 .ToArray();
 
             SavingThrowOptions = spells
                 .Select(p => p.SavingThrow)
+                .OfType<string>()
                 .Distinct(StringComparer.CurrentCultureIgnoreCase)
                 .ToArray();
 
             SpellResistanceOptions = spells
                 .Select(p => p.SpellResistance)
+                .OfType<string>()
                 .Distinct(StringComparer.CurrentCultureIgnoreCase)
                 .ToArray();
 
             EffectTypeOptions = spells
-                .SelectMany(p => p.EffectTypes)
+                .SelectMany(p => ((IEnumerable<string>?)p.EffectTypes) ?? Array.Empty<string>())
                 .Distinct(StringComparer.CurrentCultureIgnoreCase)
                 .ToArray();
 
@@ -72,11 +80,11 @@ namespace Fiction.GameScreen.ViewModels
         }
         #endregion
         #region Properties
-        private string _name;
+        private string? _name;
         /// <summary>
         /// Gets or sets the text to filter name by
         /// </summary>
-        public string Name
+        public string? Name
         {
             get { return _name; }
             set
@@ -88,11 +96,11 @@ namespace Fiction.GameScreen.ViewModels
                 }
             }
         }
-        private string _school;
+        private string? _school;
         /// <summary>
         /// Gets or sets the school to filter
         /// </summary>
-        public string School
+        public string? School
         {
             get { return _school; }
             set
@@ -108,11 +116,11 @@ namespace Fiction.GameScreen.ViewModels
         /// Gets a collection of options for <see cref="School"/>
         /// </summary>
         public string[] SchoolOptions { get; private set; }
-        private string _subSchool;
+        private string? _subSchool;
         /// <summary>
         /// Gets or sets the subschool to filter
         /// </summary>
-        public string SubSchool
+        public string? SubSchool
         {
             get { return _subSchool; }
             set
@@ -128,11 +136,11 @@ namespace Fiction.GameScreen.ViewModels
         /// Gets a collection of options for <see cref="SubSchool"/>
         /// </summary>
         public string[] SubSchoolOptions { get; private set; }
-        private string _class;
+        private string? _class;
         /// <summary>
         /// Gets or sets the class to show spells for
         /// </summary>
-        public string Class
+        public string? Class
         {
             get { return _class; }
             set
@@ -148,11 +156,11 @@ namespace Fiction.GameScreen.ViewModels
         /// Gets a collection of options for <see cref="Class"/>
         /// </summary>
         public string[] ClassOptions { get; private set; }
-        private string _classLevel;
+        private string? _classLevel;
         /// <summary>
         /// Gets or sets the class level to show spells for
         /// </summary>
-        public string ClassLevel
+        public string? ClassLevel
         {
             get { return _classLevel; }
             set
@@ -164,11 +172,11 @@ namespace Fiction.GameScreen.ViewModels
                 }
             }
         }
-        private string _castingTime;
+        private string? _castingTime;
         /// <summary>
         /// Gets or sets the casting time
         /// </summary>
-        public string CastingTime
+        public string? CastingTime
         {
             get { return _castingTime; }
             set
@@ -184,11 +192,11 @@ namespace Fiction.GameScreen.ViewModels
         /// Gets a collection of options for <see cref="CastingTime"/>
         /// </summary>
         public string[] CastingTimeOptions { get; private set; }
-        private string _range;
+        private string? _range;
         /// <summary>
         /// Gets or sets the range to show spells for
         /// </summary>
-        public string Range
+        public string? Range
         {
             get { return _range; }
             set
@@ -204,11 +212,11 @@ namespace Fiction.GameScreen.ViewModels
         /// Gets a collection of options for <see cref="Range"/>
         /// </summary>
         public string[] RangeOptions { get; private set; }
-        private string _area;
+        private string? _area;
         /// <summary>
         /// Gets or sets the area to show spells for
         /// </summary>
-        public string Area
+        public string? Area
         {
             get { return _area; }
             set
@@ -240,11 +248,11 @@ namespace Fiction.GameScreen.ViewModels
                 }
             }
         }
-        private string _savingThrow;
+        private string? _savingThrow;
         /// <summary>
         /// Gets or sets the saving throw to show spells for
         /// </summary>
-        public string SavingThrow
+        public string? SavingThrow
         {
             get { return _savingThrow; }
             set
@@ -260,11 +268,11 @@ namespace Fiction.GameScreen.ViewModels
         /// Gets a collection of options for <see cref="SavingThrow"/>
         /// </summary>
         public string[] SavingThrowOptions { get; private set; }
-        private string _spellResistance;
+        private string? _spellResistance;
         /// <summary>
         /// Gets or sets the spell resistance to show spells for
         /// </summary>
-        public string SpellResistance
+        public string? SpellResistance
         {
             get { return _spellResistance; }
             set

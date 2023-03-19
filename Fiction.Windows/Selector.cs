@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Linq;
+﻿using System.ComponentModel;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -48,7 +42,7 @@ namespace Fiction.Windows
 
         private static void CenterOnSelectionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            System.Windows.Controls.Primitives.Selector selector = d as System.Windows.Controls.Primitives.Selector;
+            System.Windows.Controls.Primitives.Selector? selector = d as System.Windows.Controls.Primitives.Selector;
 
             if (selector != null)
             {
@@ -70,14 +64,14 @@ namespace Fiction.Windows
         /// </summary>
         /// <param name="sender">Item that sent the event</param>
         /// <param name="e">Event args</param>
-        private static void CenterOnSelection_ItemsSourceChanged(object sender, EventArgs e)
+        private static void CenterOnSelection_ItemsSourceChanged(object? sender, EventArgs e)
         {
-            ListBox listbox = sender as ListBox;
+            ListBox? listbox = sender as ListBox;
             if (listbox != null)
             {
                 object selectedValue = listbox.SelectedValue;
                 if (selectedValue != null)
-                    listbox.Dispatcher.BeginInvoke((Action)(() => listbox.ScrollIntoViewCentered(selectedValue))).Priority = System.Windows.Threading.DispatcherPriority.Background;
+                    listbox.Dispatcher.BeginInvoke(() => listbox.ScrollIntoViewCentered(selectedValue)).Priority = System.Windows.Threading.DispatcherPriority.Background;
             }
         }
 
@@ -88,12 +82,12 @@ namespace Fiction.Windows
 
         private static void ScrollOnSelectionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            System.Windows.Controls.Primitives.Selector selector = d as System.Windows.Controls.Primitives.Selector;
+            System.Windows.Controls.Primitives.Selector? selector = d as System.Windows.Controls.Primitives.Selector;
             if (selector != null)
             {
                 if ((bool)e.NewValue)
                 {
-                    MethodInfo method = selector.GetType().GetMethod("ScrollIntoView", BindingFlags.Public | BindingFlags.Instance);
+                    MethodInfo? method = selector.GetType().GetMethod("ScrollIntoView", BindingFlags.Public | BindingFlags.Instance);
                     if (method != null)
                     {
                         _scrollIntoViewMethod[selector] = method;
@@ -106,9 +100,9 @@ namespace Fiction.Windows
             }
         }
 
-        private static void TryUnhookSelectorScrollIntoView(System.Windows.Controls.Primitives.Selector selector)
+        private static void TryUnhookSelectorScrollIntoView(System.Windows.Controls.Primitives.Selector? selector)
         {
-            if (_scrollIntoViewMethod.ContainsKey(selector))
+            if (selector != null && _scrollIntoViewMethod.ContainsKey(selector))
             {
                 _scrollIntoViewMethod.Remove(selector);
                 selector.SelectionChanged -= selector_SelectionChangedScrollIntoView;
@@ -118,31 +112,35 @@ namespace Fiction.Windows
 
         static void selector_Unloaded(object sender, RoutedEventArgs e)
         {
-            System.Windows.Controls.Primitives.Selector selector = sender as System.Windows.Controls.Primitives.Selector;
+            System.Windows.Controls.Primitives.Selector? selector = sender as System.Windows.Controls.Primitives.Selector;
             TryUnhookSelectorScrollIntoView(selector);
         }
 
         static void selector_SelectionChangedScrollIntoView(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
-            System.Windows.Controls.Primitives.Selector selector = sender as System.Windows.Controls.Primitives.Selector;
-            ListBox listBox = selector as ListBox;
+            System.Windows.Controls.Primitives.Selector? selector = sender as System.Windows.Controls.Primitives.Selector;
 
-            //  Get the item to scroll to
-            object item = null;
-            if (e.AddedItems != null && e.AddedItems.Count == 1)
-                item = e.AddedItems[0];
-
-            //  Get the ScrollIntoView method
-            MethodInfo scrollIntoView = null;
-            if (_scrollIntoViewMethod.ContainsKey(selector))
-                scrollIntoView = _scrollIntoViewMethod[selector];
-
-            if (item != null && scrollIntoView != null)
+            if (selector != null)
             {
-                if (listBox != null && GetCenterOnSelection(listBox))
-                    listBox.ScrollIntoViewCentered(item);
-                else
-                    scrollIntoView.Invoke(selector, new[] { item });
+                ListBox? listBox = selector as ListBox;
+
+                //  Get the item to scroll to
+                object? item = null;
+                if (e.AddedItems != null && e.AddedItems.Count == 1)
+                    item = e.AddedItems[0];
+
+                //  Get the ScrollIntoView method
+                MethodInfo? scrollIntoView = null;
+                if (_scrollIntoViewMethod.ContainsKey(selector))
+                    scrollIntoView = _scrollIntoViewMethod[selector];
+
+                if (item != null && scrollIntoView != null)
+                {
+                    if (listBox != null && GetCenterOnSelection(listBox))
+                        listBox.ScrollIntoViewCentered(item);
+                    else
+                        scrollIntoView.Invoke(selector, new[] { item });
+                }
             }
         }
 
@@ -218,7 +216,7 @@ namespace Fiction.Windows
 
         private static void FocusFirstControlChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            System.Windows.Controls.Primitives.Selector selector = d as System.Windows.Controls.Primitives.Selector;
+            System.Windows.Controls.Primitives.Selector? selector = d as System.Windows.Controls.Primitives.Selector;
 
             if (selector != null)
             {
@@ -234,7 +232,7 @@ namespace Fiction.Windows
             }
         }
 
-        private static void TryUnhookSelectorFocusFirstControl(System.Windows.Controls.Primitives.Selector selector)
+        private static void TryUnhookSelectorFocusFirstControl(System.Windows.Controls.Primitives.Selector? selector)
         {
             Exceptions.ThrowIfArgumentNull(selector, nameof(selector));
             selector.SelectionChanged -= selector_SelectionChangedFocusControl;
@@ -243,35 +241,35 @@ namespace Fiction.Windows
 
         private static void selector_UnloadedScrollIntoView(object sender, RoutedEventArgs e)
         {
-            System.Windows.Controls.Primitives.Selector selector = sender as System.Windows.Controls.Primitives.Selector;
+            System.Windows.Controls.Primitives.Selector? selector = sender as System.Windows.Controls.Primitives.Selector;
             TryUnhookSelectorFocusFirstControl(selector);
         }
 
         private static void selector_SelectionChangedFocusControl(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
-            System.Windows.Controls.Primitives.Selector selector = sender as System.Windows.Controls.Primitives.Selector;
+            System.Windows.Controls.Primitives.Selector? selector = sender as System.Windows.Controls.Primitives.Selector;
 
             if (selector != null)
             {
-                object item = null;
+                object? item = null;
                 if (e.AddedItems != null && e.AddedItems.Count == 1)
                     item = e.AddedItems[0];
 
                 ItemContainerGenerator generator = selector.ItemContainerGenerator;
                 if (generator != null && item != null)
                 {
-                    selector.Dispatcher.BeginInvoke(((Action)(() =>
+                    selector.Dispatcher.BeginInvoke(() =>
                     {
                         DependencyObject element = generator.ContainerFromItem(item);
                         if (element != null)
                         {
-                            UIElement first = VisualTreeHelperEx.FindFocusableChildren(element).FirstOrDefault(p => p.IsMouseOver);
+                            UIElement? first = VisualTreeHelperEx.FindFocusableChildren(element).FirstOrDefault(p => p.IsMouseOver);
                             if (first == null)
                                 first = VisualTreeHelperEx.FindFocusableChildren(element).FirstOrDefault();
                             if (first != null)
                                 first.Focus();
                         }
-                    }))).Priority = System.Windows.Threading.DispatcherPriority.Background;
+                    }).Priority = System.Windows.Threading.DispatcherPriority.Background;
 
                 }
             }
@@ -287,7 +285,7 @@ namespace Fiction.Windows
 
         private static void IsSortableChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
         {
-            ListView listView = o as ListView;
+            ListView? listView = o as ListView;
             bool? sortable = e.NewValue as bool?;
             if ((listView != null) && sortable.HasValue)
             {
@@ -306,7 +304,7 @@ namespace Fiction.Windows
 
         private static void IsGroupableChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
         {
-            ListView listView = o as ListView;
+            ListView? listView = o as ListView;
             bool? groupable = e.NewValue as bool?;
             if ((listView != null) && groupable.HasValue)
             {
@@ -325,8 +323,8 @@ namespace Fiction.Windows
 
         private static void DefaultSortPropertyChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
         {
-            ListView listView = o as ListView;
-            string property = e.NewValue as string;
+            ListView? listView = o as ListView;
+            string? property = e.NewValue as string;
 
             if ((listView != null) && !string.IsNullOrEmpty(property))
             {
@@ -338,8 +336,8 @@ namespace Fiction.Windows
         }
         private static void DefaultGroupPropertyChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
         {
-            ListView listView = o as ListView;
-            string property = e.NewValue as string;
+            ListView? listView = o as ListView;
+            string? property = e.NewValue as string;
 
             if ((listView != null) && !string.IsNullOrEmpty(property))
             {
@@ -352,8 +350,8 @@ namespace Fiction.Windows
 
         private static void CurrentSortPropertyChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
         {
-            ListView listView = o as ListView;
-            string property = e.NewValue as string;
+            ListView? listView = o as ListView;
+            string? property = e.NewValue as string;
             if ((listView != null) && !property.IsNullOrEmpty())
             {
                 if (listView.View == null)
@@ -458,7 +456,7 @@ namespace Fiction.Windows
                     view.Items.SortDescriptions.Clear();
                     view.Items.SortDescriptions.Add(new SortDescription(propertyName, ListSortDirection.Ascending));
                 }
-                ICollectionViewLiveShaping shaping = view.Items as ICollectionViewLiveShaping;
+                ICollectionViewLiveShaping shaping = view.Items;
                 if (shaping != null && shaping.CanChangeLiveSorting)
                 {
                     shaping.LiveSortingProperties.Clear();
@@ -491,31 +489,33 @@ namespace Fiction.Windows
 
         private static void SetDefaultSortOrderForListView(ListView listView, string property)
         {
-            GridView view = listView.View as GridView;
-            GridViewColumn column = null;
+            GridView? view = listView.View as GridView;
+            GridViewColumn? column = null;
 
             if (view != null)
                 column = view.Columns.FirstOrDefault(p => GetSortPropertyName(p) == property);
+
+            if (column != null)
             SetSortOrder(column, listView, property);
         }
 
         private static void SetDefaultGroupOrderForListView(ListView listView, string property)
         {
-            GridViewColumn column = null;
+            GridViewColumn? column = null;
 
             SetGroupOrder(column, listView, property, true);
         }
 
-        private static void SetGroupOrder(GridViewColumn gridViewColumn, ListView view, string propertyName, bool always)
+        private static void SetGroupOrder(GridViewColumn? gridViewColumn, ListView view, string propertyName, bool always)
         {
-            PropertyGroupDescription description = view.Items.GroupDescriptions.FirstOrDefault() as PropertyGroupDescription;
+            PropertyGroupDescription? description = view.Items.GroupDescriptions.FirstOrDefault() as PropertyGroupDescription;
             view.Items.GroupDescriptions.Clear();
             if ((description == null) || (description.PropertyName != propertyName) || always)
             {
                 description = new PropertyGroupDescription(propertyName);
                 view.Items.GroupDescriptions.Add(description);
             }
-            ICollectionViewLiveShaping shaping = view.Items as ICollectionViewLiveShaping;
+            ICollectionViewLiveShaping shaping = view.Items;
             if (shaping != null && shaping.CanChangeLiveGrouping)
             {
                 shaping.LiveGroupingProperties.Clear();
@@ -525,33 +525,34 @@ namespace Fiction.Windows
             view.Items.Refresh();
         }
 
-        private static void FindAndSortColumn(ListView listView, string property)
+        private static void FindAndSortColumn(ListView listView, string? property)
         {
-            GridView view = listView.View as GridView;
+            GridView? view = listView.View as GridView;
             if (view != null)
             {
-                GridViewColumn column = view.Columns.FirstOrDefault(p => GetSortPropertyName(p) == property);
+                GridViewColumn? column = view.Columns.FirstOrDefault(p => GetSortPropertyName(p) == property);
                 SortDescription description = listView.Items.SortDescriptions.FirstOrDefault();
                 string previous = string.Empty;
-                if (description != null)
-                    previous = description.PropertyName;
+
+                previous = description.PropertyName;
 
                 if (!previous.IsNullOrEmpty())
                 {
-                    GridViewColumn previousColumn = view.Columns.FirstOrDefault(p => GetSortPropertyName(p) == previous);
+                    GridViewColumn? previousColumn = view.Columns.FirstOrDefault(p => GetSortPropertyName(p) == previous);
                     if (previousColumn != null)
                         previousColumn.HeaderTemplate = null;
                     listView.Items.SortDescriptions.Clear();
                 }
 
-                SetSortOrder(column, listView, property);
+                if (column != null && property != null)
+                    SetSortOrder(column, listView, property);
             }
         }
 
         private static void ColumnHeaderClicked(object sender, RoutedEventArgs e)
         {
-            GridViewColumnHeader header = e.OriginalSource as GridViewColumnHeader;
-            ListView view = sender as ListView;
+            GridViewColumnHeader? header = e.OriginalSource as GridViewColumnHeader;
+            ListView? view = sender as ListView;
             if ((header != null) && (header.Column != null) && (view != null))
             {
                 string propertyName = GetSortPropertyName(header.Column);
@@ -567,7 +568,7 @@ namespace Fiction.Windows
 
         static void listView_LoadedSort(object sender, RoutedEventArgs e)
         {
-            ListView listView = sender as ListView;
+            ListView? listView = sender as ListView;
             if (listView != null)
             {
                 listView.Loaded -= listView_LoadedSort;
@@ -578,7 +579,7 @@ namespace Fiction.Windows
 
         static void listView_LoadedGroup(object sender, RoutedEventArgs e)
         {
-            ListView listView = sender as ListView;
+            ListView? listView = sender as ListView;
             if (listView != null)
             {
                 listView.Loaded -= listView_LoadedGroup;
@@ -589,7 +590,7 @@ namespace Fiction.Windows
 
         private static void listView_LoadedForCurrentSortProperty(object sender, RoutedEventArgs e)
         {
-            ListView listView = sender as ListView;
+            ListView? listView = sender as ListView;
             if (listView != null)
             {
                 listView.Loaded -= listView_LoadedSort;
@@ -636,7 +637,7 @@ namespace Fiction.Windows
                 Rect rect = new Rect(new Point(), container.RenderSize);
 
                 // Find constraining parent (either the nearest ScrollContentPresenter or the ListBox itself)
-                FrameworkElement constrainingParent = container;
+                FrameworkElement? constrainingParent = container;
                 do
                 {
                     constrainingParent = VisualTreeHelper.GetParent(constrainingParent) as FrameworkElement;
@@ -694,7 +695,7 @@ namespace Fiction.Windows
 
         private static void FocusSelectedItemChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            System.Windows.Controls.Primitives.Selector selector = d as System.Windows.Controls.Primitives.Selector;
+            System.Windows.Controls.Primitives.Selector? selector = d as System.Windows.Controls.Primitives.Selector;
 
             if (selector != null)
             {
@@ -734,8 +735,8 @@ namespace Fiction.Windows
 
         private static void FocusSelectedItem_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            System.Windows.Controls.Primitives.Selector selector = sender as System.Windows.Controls.Primitives.Selector;
-            if ((bool)e.NewValue)
+            System.Windows.Controls.Primitives.Selector? selector = sender as System.Windows.Controls.Primitives.Selector;
+            if ((bool)e.NewValue && selector != null)
                 FocusSelectedItem(selector);
         }
 
@@ -747,15 +748,15 @@ namespace Fiction.Windows
         {
             if (selector?.SelectedItem != null)
             {
-                ContentControl control = selector.ItemContainerGenerator.ContainerFromItem(selector.SelectedItem) as ContentControl;
+                ContentControl? control = selector.ItemContainerGenerator.ContainerFromItem(selector.SelectedItem) as ContentControl;
                 if (control == null)
                 {
                     if (retryIfNotFound)
                     {
                         selector.ItemContainerGenerator.StatusChanged += (s, e) =>
                         {
-                            ItemContainerGenerator gen = s as ItemContainerGenerator;
-                            if (gen.Status == GeneratorStatus.ContainersGenerated)
+                            ItemContainerGenerator? gen = s as ItemContainerGenerator;
+                            if (gen?.Status == GeneratorStatus.ContainersGenerated)
                                 FocusSelectedItem(selector, false);
                         };
                     }
@@ -851,6 +852,7 @@ namespace Fiction.Windows
                 .OfType<object>()
                 .Select(p => generator.GetContentPresenterFor(p))
                 .Where(p => p != null && VisualTreeHelperEx.IsItemCompletelyVisibleIn(selector, p))
+                .OfType<ContentControl>()
                 .ToArray();
         }
 
@@ -860,10 +862,10 @@ namespace Fiction.Windows
         /// <param name="generator">Selector's item container generator containing the item</param>
         /// <param name="item">Item to get content presenter for</param>
         /// <returns>Content presenter for the item</returns>
-        private static ContentControl GetContentPresenterFor(this ItemContainerGenerator generator, object item)
+        private static ContentControl? GetContentPresenterFor(this ItemContainerGenerator generator, object item)
         {
             if (item is ContentControl)
-                return item as ContentControl;
+                return (ContentControl)item;
 
             return generator.ContainerFromItem(item) as ContentControl;
         }
@@ -898,10 +900,10 @@ namespace Fiction.Windows
         /// <exception cref="InvalidOperationException">The panel in the ItemsControl doesn't have an orientation.</exception>
         public static Orientation GetOrientation(this ItemsControl itemsControl)
         {
-            ItemsPresenter presenter = VisualTreeHelperEx.GetAllChildren<ItemsPresenter>(itemsControl).FirstOrDefault();
+            ItemsPresenter? presenter = VisualTreeHelperEx.GetAllChildren<ItemsPresenter>(itemsControl).FirstOrDefault();
             if (presenter != null)
             {
-                Panel panel = VisualTreeHelperEx.GetAllChildren<Panel>(presenter).FirstOrDefault();
+                Panel? panel = VisualTreeHelperEx.GetAllChildren<Panel>(presenter).FirstOrDefault();
                 switch (panel)
                 {
                     case StackPanel stack:

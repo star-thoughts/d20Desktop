@@ -85,12 +85,14 @@ namespace Fiction.GameScreen.Combat
                 }
             }
         }
+        #endregion
+        #region Methods
 
-        private void Combatants_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        private void Combatants_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             if (e.NewItems != null)
             {
-                foreach(CombatantHealInformation heal in e.NewItems)
+                foreach (CombatantHealInformation heal in e.NewItems)
                 {
                     heal.Amount = Amount;
                     heal.IsMagical = IsMagical;
@@ -104,7 +106,7 @@ namespace Fiction.GameScreen.Combat
         /// <summary>
         /// Event that is triggered when a property changes
         /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 #pragma warning restore 67
         #endregion
     }

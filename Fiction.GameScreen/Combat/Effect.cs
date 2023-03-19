@@ -28,11 +28,11 @@ namespace Fiction.GameScreen.Combat
         }
         #endregion
         #region Properties
-        private string _name;
+        private string? _name;
         /// <summary>
         /// Gets or sets the name of the effect
         /// </summary>
-        public string Name
+        public string? Name
         {
             get { return _name; }
             set
@@ -44,7 +44,7 @@ namespace Fiction.GameScreen.Combat
                 }
             }
         }
-        private ICombatant _initiativeSource;
+        private ICombatant? _initiativeSource;
         /// <summary>
         /// Gets or sets the initiative source
         /// </summary>
@@ -53,7 +53,7 @@ namespace Fiction.GameScreen.Combat
         /// the <see cref="Source"/>, but can move to another if the <see cref="Source"/> moves to another spot
         /// in initiative.
         /// </remarks>
-        public ICombatant InitiativeSource
+        public ICombatant? InitiativeSource
         {
             get { return _initiativeSource; }
             set
@@ -65,11 +65,11 @@ namespace Fiction.GameScreen.Combat
                 }
             }
         }
-        private ICampaignObject _relatedItem;
+        private ICampaignObject? _relatedItem;
         /// <summary>
         /// Gets an item related to this effect
         /// </summary>
-        public ICampaignObject RelatedItem
+        public ICampaignObject? RelatedItem
         {
             get { return _relatedItem; }
             set
@@ -81,11 +81,11 @@ namespace Fiction.GameScreen.Combat
                 }
             }
         }
-        private ICombatant _source;
+        private ICombatant? _source;
         /// <summary>
         /// Gets or sets the source of the effect, if any
         /// </summary>
-        public ICombatant Source
+        public ICombatant? Source
         {
             get { return _source; }
             set
@@ -145,7 +145,7 @@ namespace Fiction.GameScreen.Combat
         /// <summary>
         /// Event that is triggered when a property changes
         /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 #pragma warning restore 67
         #endregion
     }

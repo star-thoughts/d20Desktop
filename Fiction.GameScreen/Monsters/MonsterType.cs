@@ -8,11 +8,11 @@ namespace Fiction.GameScreen.Monsters
     public sealed class MonsterType : INotifyPropertyChanged
     {
         #region Properties
-        private string _name;
+        private string? _name;
         /// <summary>
         /// Gets or sets the name of the monster type
         /// </summary>
-        public string Name
+        public string? Name
         {
             get { return _name; }
             set
@@ -30,7 +30,7 @@ namespace Fiction.GameScreen.Monsters
         /// <summary>
         /// Event that is triggered when a property changes
         /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 #pragma warning restore 67
         #endregion
     }

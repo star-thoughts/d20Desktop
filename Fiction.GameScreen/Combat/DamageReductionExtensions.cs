@@ -68,7 +68,7 @@ namespace Fiction.GameScreen.Combat
         /// <param name="items">Damage reduction items</param>
         /// <param name="types">Damage types</param>
         /// <returns>Best match damage reduction</returns>
-        public static DamageReduction GetDamageReduction(this IEnumerable<DamageReduction> items, params string[] types)
+        public static DamageReduction? GetDamageReduction(this IEnumerable<DamageReduction> items, params string[] types)
         {
             return items
                 ?.Where(p => p.DoesApply(types))

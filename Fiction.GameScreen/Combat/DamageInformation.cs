@@ -29,11 +29,11 @@ namespace Fiction.GameScreen.Combat
         /// Gets a collection of combatants to damage
         /// </summary>
         public ObservableCollection<CombatantDamageInformation> Combatants { get; }
-        private string _amount;
+        private string? _amount;
         /// <summary>
         /// Gets or sets the amount of damage done
         /// </summary>
-        public string Amount
+        public string? Amount
         {
             get { return _amount; }
             set
@@ -106,7 +106,7 @@ namespace Fiction.GameScreen.Combat
         #endregion
         #region Methods
 
-        private void Combatants_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        private void Combatants_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             if (e.NewItems != null)
             {
@@ -127,7 +127,7 @@ namespace Fiction.GameScreen.Combat
         /// <summary>
         /// Event that is triggered when a property changes
         /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 #pragma warning restore 67
         #endregion
     }

@@ -15,8 +15,11 @@ namespace System.ComponentModel
             TestProperty(item, property);
 
             TypeInfo itemType = item.GetType().GetTypeInfo();
-            EventInfo info = itemType.GetDeclaredEvent("PropertyChanged")
+            EventInfo? info = itemType.GetDeclaredEvent("PropertyChanged")
                 ?? item.GetType().GetRuntimeEvent("PropertyChanged");
+
+            if (info == null)
+                throw new InvalidOperationException($"Class of type {item.GetType().Name} does not properly implement INotifyPropertyChanged.");
 
             RaisePropertyChanged(item, info, itemType, property);
         }
@@ -26,33 +29,41 @@ namespace System.ComponentModel
             //  We'll assume if it implements INotifyPropertyChanged that it has the event
             //if (info.IsMulticast)
             {
-                TypeInfo notifyType = itemType;
-                FieldInfo field = null;
+                TypeInfo? notifyType = itemType;
+                FieldInfo? field = null;
+
                 while (field == null && notifyType != null)
                 {
                     field = notifyType.DeclaredFields.FirstOrDefault(p => !p.IsPublic && !p.IsStatic && p.Name == info.Name);
                     if (field == null)
-                        notifyType = notifyType.BaseType.GetTypeInfo();
+                        notifyType = notifyType?.BaseType?.GetTypeInfo();
                 }
-                Type t = info.EventHandlerType;
-                MethodInfo invocListInfo = t.GetRuntimeMethods().First(p => p.Name == "GetInvocationList");
-                object target = field.GetValue(item);
-                if (target != null)
+
+                Type? t = info.EventHandlerType;
+                if (t != null)
                 {
-                    Delegate[] delegates = invocListInfo.Invoke(target, null) as Delegate[];
-                    foreach (string property in properties)
+                    MethodInfo invocListInfo = t.GetRuntimeMethods().First(p => p.Name == "GetInvocationList");
+                    object? target = field?.GetValue(item);
+                    if (target != null)
                     {
-                        object[] parameters = new object[]
+                        Delegate[]? delegates = invocListInfo.Invoke(target, null) as Delegate[];
+                        if (delegates != null)
                         {
+                            foreach (string property in properties)
+                            {
+                                object[] parameters = new object[]
+                                {
                             item,
                             new PropertyChangedEventArgs(property),
-                        };
+                                };
 
 
-                        foreach (Delegate del in delegates)
-                        {
-                            try { del.DynamicInvoke(parameters); }
-                            catch (Exception exc) { Exceptions.RaiseIgnoredException(exc); }
+                                foreach (Delegate del in delegates)
+                                {
+                                    try { del.DynamicInvoke(parameters); }
+                                    catch (Exception exc) { Exceptions.RaiseIgnoredException(exc); }
+                                }
+                            }
                         }
                     }
                 }
@@ -83,8 +94,11 @@ namespace System.ComponentModel
             TestProperties(item, properties);
 
             TypeInfo itemType = item.GetType().GetTypeInfo();
-            EventInfo info = itemType.GetDeclaredEvent("PropertyChanged")
+            EventInfo? info = itemType.GetDeclaredEvent("PropertyChanged")
                 ?? item.GetType().GetRuntimeEvent("PropertyChanged");
+
+            if (info == null)
+                throw new InvalidOperationException($"Class of type {item.GetType().Name} does not properly implement INotifyPropertyChanged.");
 
             RaisePropertyChanged(item, info, itemType, properties);
         }

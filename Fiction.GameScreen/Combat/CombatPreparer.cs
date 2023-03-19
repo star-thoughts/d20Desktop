@@ -20,6 +20,7 @@ namespace Fiction.GameScreen.Combat
         public CombatPreparer(CombatScenario scenario)
         {
             Exceptions.ThrowIfArgumentNull(scenario, nameof(scenario));
+            _campaign = scenario.Campaign;
 
             Combatants = new ObservableCollection<CombatantPreparer>();
             AddCombatants(scenario);
@@ -38,10 +39,13 @@ namespace Fiction.GameScreen.Combat
         /// <summary>
         /// Constructs a new <see cref="CombatPreparer"/> for adding to an existing combat
         /// </summary>
+        /// <param name="campaign">Campaign this combat is taking place in</param>
         /// <param name="combat">Combat to add to</param>
-        public CombatPreparer(ActiveCombat combat)
+        public CombatPreparer(CampaignSettings campaign, ActiveCombat combat)
         {
             Exceptions.ThrowIfArgumentNull(combat, nameof(combat));
+
+            _campaign = campaign;
 
             SourceCombat = combat;
             Combatants = new ObservableCollection<CombatantPreparer>();
@@ -54,7 +58,7 @@ namespace Fiction.GameScreen.Combat
         /// <summary>
         /// Gets or sets the combat that this preparation is for
         /// </summary>
-        public ActiveCombat SourceCombat { get; private set; }
+        public ActiveCombat? SourceCombat { get; private set; }
         /// <summary>
         /// Gets a collection of combatants for the battle
         /// </summary>
@@ -192,7 +196,8 @@ namespace Fiction.GameScreen.Combat
         public ICombatant[] CreateCombatants()
         {
             return Combatants
-                .Select(p => p.Source.CreateCombatant(p))
+                .Select(p => p.Source?.CreateCombatant(p))
+                .OfType<Combatant>()
                 .ToArray();
         }
         #endregion
@@ -201,7 +206,7 @@ namespace Fiction.GameScreen.Combat
         /// <summary>
         /// Event that is triggered when a property changes
         /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 #pragma warning restore 67
         #endregion
     }

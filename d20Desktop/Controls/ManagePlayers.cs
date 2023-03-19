@@ -44,7 +44,7 @@ namespace Fiction.GameScreen.Controls
             CommandBindings.Add(new CommandBinding(Commands.Remove, Remove_Executed, Remove_CanExecute));
             CommandBindings.Add(new CommandBinding(Commands.Edit, Edit_Executed, Edit_CanExecute));
 
-            ListBox listBox = Template.FindName("PART_PlayerCharacterList", this) as ListBox;
+            ListBox? listBox = Template.FindName("PART_PlayerCharacterList", this) as ListBox;
             if (listBox != null)
             {
                 Style style = listBox.GetOrCreateItemContainerStyle<ListBoxItem>();

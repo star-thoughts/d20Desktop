@@ -29,9 +29,9 @@ namespace Fiction.GameScreen.Controls
         /// <summary>
         /// Gets or sets the currently selected condition
         /// </summary>
-        public Combat.Condition SelectedCondition
+        public Combat.Condition? SelectedCondition
         {
-            get { return (Combat.Condition)GetValue(SelectedConditionProperty); }
+            get { return (Combat.Condition?)GetValue(SelectedConditionProperty); }
             set { SetValue(SelectedConditionProperty, value);}
         }
         #endregion
@@ -57,10 +57,11 @@ namespace Fiction.GameScreen.Controls
         private void RemoveCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             e.Handled = true;
-            if (Conditions?.Conditions != null)
+            if (Conditions?.Conditions != null
+                && SelectedCondition != null)
             {
-                Combat.Condition next = Conditions.Conditions.AfterOrFirstOrDefault(SelectedCondition);
-                Conditions.Conditions.Remove(SelectedCondition);
+                Combat.Condition? next = Conditions.Conditions?.AfterOrFirstOrDefault(SelectedCondition);
+                Conditions.Conditions?.Remove(SelectedCondition);
                 SelectedCondition = next;
             }
         }

@@ -24,7 +24,7 @@ namespace System.Windows.Media
 		{
 			foreach (DependencyObject current in GetChildren(source))
 			{
-				UIElement element = current as UIElement;
+				UIElement? element = current as UIElement;
 				if (element != null && element.Focusable)
 					yield return element;
 				foreach (UIElement child in FindFocusableChildren(current))
@@ -68,7 +68,7 @@ namespace System.Windows.Media
         /// <returns>Parent item of the given type, or null if no parent of that type exists</returns>
         public static T GetParent<T>(DependencyObject source) where T : DependencyObject
         {
-            T result = null;
+            T? result = null;
             DependencyObject item = source;
             while (result == null)
             {
@@ -144,10 +144,10 @@ namespace System.Windows.Media
         /// <param name="itemsControl">Items control to get container from</param>
         /// <param name="pt">Point to find container at</param>
         /// <returns>Container found, or null if no container could be located</returns>
-        public static FrameworkElement GetItemsControlContainerAtPoint(ItemsControl itemsControl, Point pt)
+        public static FrameworkElement? GetItemsControlContainerAtPoint(ItemsControl itemsControl, Point pt)
         {
-            DependencyObject element = itemsControl.InputHitTest(pt) as DependencyObject;
-            DependencyObject container = null;
+            DependencyObject? element = itemsControl.InputHitTest(pt) as DependencyObject;
+            DependencyObject? container = null;
             while (container == null && element != null)
             {
                 if (itemsControl.IsItemItsOwnContainer(element))

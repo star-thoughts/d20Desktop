@@ -25,7 +25,8 @@ namespace Fiction.GameScreen.Monsters
 
             Campaign = campaign;
             _name = name;
-            Stats = stats;
+            _stats = stats;
+            _hitDieString = string.Empty;
             Id = Campaign.GetNextId();
         }
         /// <summary>
@@ -39,7 +40,8 @@ namespace Fiction.GameScreen.Monsters
         {
             Campaign = campaign;
             _name = name;
-            Stats = stats;
+            _stats = stats;
+            _hitDieString = string.Empty;
             Id = id;
         }
         #endregion
@@ -182,11 +184,11 @@ namespace Fiction.GameScreen.Monsters
         /// Gets whether or not this is a player character
         /// </summary>
         public bool IsPlayer { get { return false; } }
-        private string _source;
+        private string? _source;
         /// <summary>
         /// Gets or sets the source of this monster
         /// </summary>
-        public string Source
+        public string? Source
         {
             get { return _source; }
             set
@@ -223,7 +225,7 @@ namespace Fiction.GameScreen.Monsters
         /// <summary>
         /// Event that is triggered when a property changes
         /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
         #endregion
     }
 }

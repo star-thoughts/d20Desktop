@@ -42,7 +42,7 @@ namespace Fiction.GameScreen.Controls
         #region Methods
         public override void OnApplyTemplate()
         {
-            StringListEditor editor = Template.FindName("PART_Types", this) as StringListEditor;
+            StringListEditor? editor = Template.FindName("PART_Types", this) as StringListEditor;
             if (editor != null)
             editor.StringEdited += TypesEditor_StringEdited;
 
@@ -55,7 +55,7 @@ namespace Fiction.GameScreen.Controls
         {
             Exceptions.FailSafeMethodCall(() =>
             {
-                if (e.EventType == StringEditEventType.Removed)
+                if (e.EventType == StringEditEventType.Removed && !string.IsNullOrEmpty(e.String))
                     ViewModel.Factory.Campaign.MonsterManager.RemoveSubType(e.String);
             });
         }
@@ -64,7 +64,7 @@ namespace Fiction.GameScreen.Controls
         {
             Exceptions.FailSafeMethodCall(() =>
             {
-                if (e.EventType == StringEditEventType.Removed)
+                if (e.EventType == StringEditEventType.Removed && !string.IsNullOrEmpty(e.String))
                     ViewModel.Factory.Campaign.MonsterManager.RemoveType(e.String);
             });
         }

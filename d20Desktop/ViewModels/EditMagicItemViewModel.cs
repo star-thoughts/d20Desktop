@@ -1,7 +1,8 @@
 ﻿using Fiction.GameScreen.Equipment;
 using Fiction.GameScreen.Monsters;
-using System.ComponentModel;
 using System.Collections.ObjectModel;
+using System;
+using System.ComponentModel;
 
 namespace Fiction.GameScreen.ViewModels
 {
@@ -20,29 +21,29 @@ namespace Fiction.GameScreen.ViewModels
             _item = item;
             Campaign = campaign;
 
-            Name = item.Name;
+            _name = item.Name;
             CasterLevel = item.CasterLevel;
-            Slot = item.Slot;
+            _slot = item.Slot;
             PriceInCopper = item.PriceInCopper;
-            Weight = item.Weight;
-            Description = item.Description;
-            Requirements = item.Requirements;
+            _weight = item.Weight;
+            _description = item.Description;
+            _requirements = item.Requirements;
             CostInCopper = item.CostInCopper;
-            Group = item.Group;
-            Source = item.Source;
+            _group = item.Group;
+            _source = item.Source;
             IsIntelligent = item.IsIntelligent;
             Alignment = item.Alignment;
             Intelligence = item.Intelligence;
             Wisdom = item.Wisdom;
             Charisma = item.Charisma;
             Ego = item.Ego;
-            Communication = item.Communication;
-            Senses = item.Senses;
-            Powers = item.Powers;
-            Languages = item.Languages;
-            Descruction = item.Descruction;
+            _communication = item.Communication;
+            _senses = item.Senses;
+            _powers = item.Powers;
+            _languages = item.Languages;
+            _destruction = item.Descruction;
             ArtifactLevel = item.ArtifactLevel;
-            AuraStrength = item.AuraStrength;
+            _auraStrength = item.AuraStrength;
             Mythic = item.Mythic;
 
             Auras = new ObservableCollection<string>();
@@ -56,21 +57,22 @@ namespace Fiction.GameScreen.ViewModels
         public EditMagicItemViewModel(CampaignSettings campaign)
         {
             Campaign = campaign;
+            Auras = new ObservableCollection<string>();
         }
         #endregion
         #region Member Variables
-        private MagicItem _item;
+        private MagicItem? _item;
         #endregion
         #region Properties
         /// <summary>
         /// Gets the campaign
         /// </summary>
         public CampaignSettings Campaign { get; private set; }
-        private string _name;
+        private string? _name;
         /// <summary>
         /// Gets or sets the name of this magic item
         /// </summary>
-        public string Name
+        public string? Name
         {
             get { return _name; }
             set
@@ -100,11 +102,11 @@ namespace Fiction.GameScreen.ViewModels
             }
         }
 
-        private string _slot;
+        private string? _slot;
         /// <summary>
         /// Gets or sets the slot the item takes up, if any
         /// </summary>
-        public string Slot
+        public string? Slot
         {
             get { return _slot; }
             set
@@ -134,11 +136,11 @@ namespace Fiction.GameScreen.ViewModels
             }
         }
 
-        private string _weight;
+        private string? _weight;
         /// <summary>
         /// Gets or sets the weight of this item
         /// </summary>
-        public string Weight
+        public string? Weight
         {
             get { return _weight; }
             set
@@ -151,11 +153,11 @@ namespace Fiction.GameScreen.ViewModels
             }
         }
 
-        private string _description;
+        private string? _description;
         /// <summary>
         /// Gets or sets the description of this item
         /// </summary>
-        public string Description
+        public string? Description
         {
             get { return _description; }
             set
@@ -168,11 +170,11 @@ namespace Fiction.GameScreen.ViewModels
             }
         }
 
-        private string _requirements;
+        private string? _requirements;
         /// <summary>
         /// Gets or sets the requirements to make the item
         /// </summary>
-        public string Requirements
+        public string? Requirements
         {
             get { return _requirements; }
             set
@@ -202,11 +204,11 @@ namespace Fiction.GameScreen.ViewModels
             }
         }
 
-        private string _group;
+        private string? _group;
         /// <summary>
         /// Gets or sets the group (weapon, armor, rings, etc)
         /// </summary>
-        public string Group
+        public string? Group
         {
             get { return _group; }
             set
@@ -219,11 +221,11 @@ namespace Fiction.GameScreen.ViewModels
             }
         }
 
-        private string _source;
+        private string? _source;
         /// <summary>
         /// Gets or sets the source of this item
         /// </summary>
-        public string Source
+        public string? Source
         {
             get { return _source; }
             set
@@ -338,11 +340,11 @@ namespace Fiction.GameScreen.ViewModels
             }
         }
 
-        private string _communication;
+        private string? _communication;
         /// <summary>
         /// Gets or sets the method(s) of communication this item can employ
         /// </summary>
-        public string Communication
+        public string? Communication
         {
             get { return _communication; }
             set
@@ -355,11 +357,11 @@ namespace Fiction.GameScreen.ViewModels
             }
         }
 
-        private string _senses;
+        private string? _senses;
         /// <summary>
         /// Gets or sets this item's senses
         /// </summary>
-        public string Senses
+        public string? Senses
         {
             get { return _senses; }
             set
@@ -372,11 +374,11 @@ namespace Fiction.GameScreen.ViewModels
             }
         }
 
-        private string _powers;
+        private string? _powers;
         /// <summary>
         /// Gets or sets the powers of this item
         /// </summary>
-        public string Powers
+        public string? Powers
         {
             get { return _powers; }
             set
@@ -389,11 +391,11 @@ namespace Fiction.GameScreen.ViewModels
             }
         }
 
-        private string _languages;
+        private string? _languages;
         /// <summary>
         /// Gets or sets the languages
         /// </summary>
-        public string Languages
+        public string? Languages
         {
             get { return _languages; }
             set
@@ -406,11 +408,11 @@ namespace Fiction.GameScreen.ViewModels
             }
         }
 
-        private string _destruction;
+        private string? _destruction;
         /// <summary>
         /// Gets or sets the requirements to destroy this item (artifacts only)
         /// </summary>
-        public string Descruction
+        public string? Descruction
         {
             get { return _destruction; }
             set
@@ -444,11 +446,11 @@ namespace Fiction.GameScreen.ViewModels
         /// </summary>
         public ObservableCollection<string> Auras { get; private set; }
 
-        private string _auraStrength;
+        private string? _auraStrength;
         /// <summary>
         /// Gets or sets the strength of the aura
         /// </summary>
-        public string AuraStrength
+        public string? AuraStrength
         {
             get { return _auraStrength; }
             set
@@ -496,13 +498,16 @@ namespace Fiction.GameScreen.ViewModels
         /// </summary>
         public void Save()
         {
+            if (!IsValid)
+                throw new InvalidOperationException("Cannot save magic item without a proper name.");
+
             if (_item == null)
             {
                 _item = new MagicItem(Campaign);
                 Campaign.EquipmentManager.MagicItems.Add(_item);
             }
 
-            _item.Name = Name;
+            _item.Name = Name!;
             _item.CasterLevel = CasterLevel;
             _item.Slot = Slot;
             _item.PriceInCopper = PriceInCopper;

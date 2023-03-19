@@ -31,12 +31,12 @@ namespace Fiction.Expressions
 		/// Calls the expression and return the result
 		/// </summary>
 		/// <returns>Result of the expression</returns>
-		public TResult Call()
+		public TResult? Call()
 		{
 			//  If no assemblies assigned, just use the calling method's assemblies
 			if (Assemblies == null)
 				SetAssemblies(Assembly.GetCallingAssembly().GetReferencedAssemblies());
-			return (TResult)Invoke(null);
+			return (TResult?)Invoke(null);
 		}
 		/// <summary>
 		/// Compiles the expression into a single assembly so that it can be called

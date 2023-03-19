@@ -23,12 +23,12 @@ namespace Fiction.GameScreen.Combat
         /// Gets a collection of scenarios for combat
         /// </summary>
         public ObservableCollection<CombatScenario> Scenarios { get; private set; }
-        private ActiveCombat _active;
+        private ActiveCombat? _active;
 
         /// <summary>
         /// Gets or sets the currently active combat
         /// </summary>
-        public ActiveCombat Active
+        public ActiveCombat? Active
         {
             get { return _active; }
             set
@@ -66,7 +66,7 @@ namespace Fiction.GameScreen.Combat
         /// <summary>
         /// Event that is triggered when a property changes
         /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 #pragma warning restore 67
         #endregion
     }

@@ -23,7 +23,7 @@ namespace Fiction.GameScreen.Controls
         }
         #endregion
         #region Member Variables
-        private ListBox _combatantList;
+        private ListBox? _combatantList;
         private bool _updatingSelection;
         #endregion
         #region Properties
@@ -103,8 +103,8 @@ namespace Fiction.GameScreen.Controls
         #region Methods
         public override void OnApplyTemplate()
         {
-            Panel panel = Template.FindName("RootGrid", this) as Panel;
-            CollectionViewSource collection = panel?.Resources["CombatantsCollection"] as CollectionViewSource;
+            Panel? panel = Template.FindName("RootGrid", this) as Panel;
+            CollectionViewSource? collection = panel?.Resources["CombatantsCollection"] as CollectionViewSource;
             if (collection != null)
                 collection.Filter += Collection_Filter;
 
@@ -137,7 +137,7 @@ namespace Fiction.GameScreen.Controls
             });
         }
 
-        private async Task UpdateCombatantSelection(ObservableCollection<ICombatant> combatants)
+        private async Task UpdateCombatantSelection(ObservableCollection<ICombatant>? combatants)
         {
             if (!IsLoaded)
                 await Dispatcher.InvokeAsync(() => InnerUpdateCombatantSelection(combatants), System.Windows.Threading.DispatcherPriority.Render);
@@ -145,7 +145,7 @@ namespace Fiction.GameScreen.Controls
                 InnerUpdateCombatantSelection(combatants);
         }
 
-        private void InnerUpdateCombatantSelection(ObservableCollection<ICombatant> combatants)
+        private void InnerUpdateCombatantSelection(ObservableCollection<ICombatant>? combatants)
         {
             Exceptions.FailSafeMethodCall(() =>
             {

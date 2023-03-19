@@ -12,7 +12,7 @@ namespace Fiction.GameScreen.Combat
         /// </summary>
         /// <param name="combatant">Combatant that was attempted</param>
         /// <param name="effects">Effects that expired as a result of this combatant going</param>
-        public GotoNextCombatant(ICombatant combatant, params Effect[] effects)
+        public GotoNextCombatant(ICombatant? combatant, params Effect[] effects)
         {
             Combatant = combatant;
             ExpiredEffects = effects.ToArray();
@@ -20,7 +20,7 @@ namespace Fiction.GameScreen.Combat
         /// <summary>
         /// Gets the combatant that went
         /// </summary>
-        public ICombatant Combatant { get; private set; }
+        public ICombatant? Combatant { get; private set; }
         /// <summary>
         /// Gets a collection of effects that expired
         /// </summary>

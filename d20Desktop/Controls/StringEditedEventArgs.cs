@@ -52,11 +52,11 @@ namespace Fiction.GameScreen.Controls
         /// <summary>
         /// Gets the string associated with this event
         /// </summary>
-        public string String { get; private set; }
+        public string? String { get; private set; }
         /// <summary>
         /// Gets the new value of the string if it is edited
         /// </summary>
-        public string NewValue { get; private set; }
+        public string? NewValue { get; private set; }
         /// <summary>
         /// Gets the type of event that occurred
         /// </summary>

@@ -16,20 +16,19 @@ namespace Fiction.GameScreen.Combat
         /// <summary>
         /// Constructs a new <see cref="CombatantPreparer"/>
         /// </summary>
-        /// <param name="combat">The associated combat preparer</param>
         /// <param name="source">Source of the combatant</param>
-        public CombatantPreparer(ICombatantTemplate source)
+        public CombatantPreparer(ICombatantTemplate? source)
         {
             Source = source;
 
             if (source != null)
             {
-                Name = source.Name;
+                _name = source.Name;
                 InitiativeModifier = source.InitiativeModifier;
                 DisplayToPlayers = source.DisplayToPlayers;
                 DisplayName = source.DisplayName;
                 HitDiceStrategy = source.HitDieRollingStrategy;
-                HitDieString = source.HitDieString;
+                _hitDieString = source.HitDieString;
                 FastHealing = source.FastHealing;
                 IsPlayer = source.Source?.IsPlayer ?? false;
                 DeadAt = source.DeadAt;
@@ -38,12 +37,18 @@ namespace Fiction.GameScreen.Combat
                 DamageReduction = source.DamageReduction?.Copy()
                     ?? new ObservableCollection<DamageReduction>();
             }
+            else
+            {
+                _name = string.Empty;
+                _hitDieString = string.Empty;
+                DamageReduction = new ObservableCollection<DamageReduction>();
+            }
         }
         #endregion
         #region Member Variables
         #endregion
         #region Properties
-        CampaignSettings ICampaignObject.Campaign { get; }
+        CampaignSettings? ICampaignObject.Campaign { get; }
         /// <summary>
         /// Gets the id of this combatant
         /// </summary>
@@ -51,7 +56,7 @@ namespace Fiction.GameScreen.Combat
         /// <summary>
         /// Gets the template associated with this combatant
         /// </summary>
-        public ICombatantTemplate Source { get; private set; }
+        public ICombatantTemplate? Source { get; private set; }
         private string _name;
         /// <summary>
         /// Gets or sets the name of this combatant
@@ -260,11 +265,11 @@ namespace Fiction.GameScreen.Combat
                 }
             }
         }
-        private string _displayName;
+        private string? _displayName;
         /// <summary>
         /// Gets or sets the name to display to the players during combat
         /// </summary>
-        public string DisplayName
+        public string? DisplayName
         {
             get { return _displayName; }
             set
@@ -323,9 +328,9 @@ namespace Fiction.GameScreen.Combat
         /// Creates a combatant for an active combat
         /// </summary>
         /// <returns>Combatant created</returns>
-        public virtual ICombatant CreateCombatant()
+        public virtual ICombatant? CreateCombatant()
         {
-            return Source.CreateCombatant(this);
+            return Source?.CreateCombatant(this);
         }
         #endregion
         #region Events
@@ -333,7 +338,7 @@ namespace Fiction.GameScreen.Combat
         /// <summary>
         /// Event that is triggered when a property changes
         /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 #pragma warning restore 67
         #endregion
     }

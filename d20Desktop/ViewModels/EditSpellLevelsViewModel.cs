@@ -1,11 +1,11 @@
 ﻿using Fiction.GameScreen.Spells;
-using System.ComponentModel;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel;
 
 namespace Fiction.GameScreen.ViewModels
 {
@@ -20,11 +20,13 @@ namespace Fiction.GameScreen.ViewModels
         /// </summary>
         /// <param name="campaign">Campaign the spell is in</param>
         /// <param name="spell">Spell to edit the levels for</param>
-        public EditSpellLevelsViewModel(CampaignSettings campaign, ObservableCollection<SpellLevel> levels)
+        public EditSpellLevelsViewModel(CampaignSettings campaign, ObservableCollection<SpellLevel>? levels)
         {
             _campaign = campaign;
-            _levels = levels;
-            Levels = levels.Select(p => new SpellLevel() { Class = p.Class, Level = p.Level }).ToObservableCollection();
+            _levels = levels?
+                .Select(p => new SpellLevel() { Class = p.Class, Level = p.Level })
+                .ToObservableCollection()
+                ?? new ObservableCollection<SpellLevel>();
         }
         #endregion
         #region Member Variables
@@ -55,8 +57,9 @@ namespace Fiction.GameScreen.ViewModels
             get
             {
                 return _campaign.Spells.Spells
-                    .SelectMany(p => p.Levels.Select(i => i.Class)).
-                    Distinct(StringComparer.CurrentCultureIgnoreCase)
+                    .SelectMany(p => p.Levels?.Select(i => i.Class) ?? Array.Empty<string>())
+                    .Distinct(StringComparer.CurrentCultureIgnoreCase)
+                    .OfType<string>()
                     .ToArray();
             }
         }

@@ -1,5 +1,4 @@
 ﻿using Fiction.GameScreen.Combat;
-using System.ComponentModel;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -19,19 +18,19 @@ namespace Fiction.GameScreen.ViewModels
         /// <param name="combatant">Combatant to edit</param>
         public CombatantTemplateEditViewModel(ICombatantTemplate combatant)
         {
-            Source = combatant.Source;
+            _source = combatant.Source;
             Combatant = combatant;
-            Name = combatant.Name;
-            HitDieString = combatant.HitDieString;
-            HitDieRollingStrategy = combatant.HitDieRollingStrategy;
+            _name = combatant.Name;
+            _hitDieString = combatant.HitDieString;
+            _hitDieRollingStrategy = combatant.HitDieRollingStrategy;
             InitiativeModifier = combatant.InitiativeModifier;
-            Count = combatant.Count;
+            _count = combatant.Count;
             DisplayToPlayers = combatant.DisplayToPlayers;
-            DisplayName = combatant.DisplayName;
+            _displayName = combatant.DisplayName;
             FastHealing = combatant.FastHealing;
             DeadAt = combatant.DeadAt;
             UnconsciousAt = combatant.UnconsciousAt;
-            DamageReduction = combatant.DamageReduction.Copy();
+            _damageReduction = combatant.DamageReduction.Copy();
 
             DamageReduction.CollectionChanged += (s, e) => this.RaisePropertyChanged(nameof(DamageReduction));
         }
@@ -172,11 +171,11 @@ namespace Fiction.GameScreen.ViewModels
                 }
             }
         }
-        private ICombatantTemplateSource _source;
+        private ICombatantTemplateSource? _source;
         /// <summary>
         /// Gets or sets the source for this combatant
         /// </summary>
-        public ICombatantTemplateSource Source
+        public ICombatantTemplateSource? Source
         {
             get { return _source; }
             set
@@ -188,13 +187,13 @@ namespace Fiction.GameScreen.ViewModels
                 }
                 if (_source != null)
                 {
-                    Name = _source.Name;
+                    Name = _source.Name ?? string.Empty;
                     HitDieString = _source.HitDieString;
                     InitiativeModifier = _source.InitiativeModifier;
                     FastHealing = _source.FastHealing;
                     DeadAt = _source.DeadAt;
                     UnconsciousAt = _source.UnconsciousAt;
-                    DamageReduction = Combat.DamageReduction.Parse(value, "damageReduction").ToObservableCollection();
+                    DamageReduction = Combat.DamageReduction.Parse(_source, "damageReduction").ToObservableCollection();
                 }
             }
         }
@@ -226,11 +225,11 @@ namespace Fiction.GameScreen.ViewModels
                 }
             }
         }
-        private string _displayName;
+        private string? _displayName;
         /// <summary>
         /// Gets or sets the name to display to players when combat starts
         /// </summary>
-        public string DisplayName
+        public string? DisplayName
         {
             get { return _displayName; }
             set
@@ -290,7 +289,7 @@ namespace Fiction.GameScreen.ViewModels
         /// <summary>
         /// Event that is triggered when a property changes
         /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 #pragma warning restore 67
         #endregion
     }

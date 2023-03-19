@@ -10,7 +10,7 @@ namespace System
         /// </summary>
         /// <param name="s">String to test</param>
         /// <returns>Whether or not this string is null or empty</returns>
-        public static bool IsNullOrEmpty(this string s)
+        public static bool IsNullOrEmpty(this string? s)
         {
             return String.IsNullOrEmpty(s);
         }
@@ -19,7 +19,7 @@ namespace System
         /// </summary>
         /// <param name="s">String to test</param>
         /// <returns>Whether or not this string is null or Whitespace</returns>
-        public static bool IsNullOrWhiteSpace(this string s)
+        public static bool IsNullOrWhiteSpace(this string? s)
         {
             return String.IsNullOrWhiteSpace(s);
         }

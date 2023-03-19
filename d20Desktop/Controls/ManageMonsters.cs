@@ -32,7 +32,7 @@ namespace Fiction.GameScreen.Controls
         }
         #endregion
         #region Member Variables
-        private MonsterList _monsterList;
+        private MonsterList? _monsterList;
         #endregion
         #region Properties
         /// <summary>
@@ -148,7 +148,7 @@ namespace Fiction.GameScreen.Controls
             if (createCopy)
                 viewModel.MarkAsCopy();
 
-            if (window.ShowDialog() == true)
+            if (window.ShowDialog() == true && viewModel?.Monster != null)
             {
                 viewModel.Save();
                     ViewModel.Monsters.Add(viewModel.Monster);
@@ -201,7 +201,7 @@ namespace Fiction.GameScreen.Controls
                 switch (e.Item)
                 {
                     case CollectionStatViewModel stat:
-                        e.Accepted = stat.Value.Any();
+                        e.Accepted = stat.Value?.Any() == true;
                         break;
                     case StringStatViewModel stat:
                         e.Accepted = !string.IsNullOrWhiteSpace(stat.Value);
@@ -230,7 +230,7 @@ namespace Fiction.GameScreen.Controls
                 switch (e.Item)
                 {
                     case CollectionStatViewModel stat:
-                        e.Accepted = stat.Value.Any();
+                        e.Accepted = stat.Value?.Any() == true;
                         break;
                     case StringStatViewModel stat:
                         e.Accepted = !string.IsNullOrWhiteSpace(stat.Value);

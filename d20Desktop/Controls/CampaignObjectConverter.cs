@@ -10,7 +10,7 @@ namespace Fiction.GameScreen.Controls
 {
     public sealed class CampaignObjectConverter : IValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public object? Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value is NoCampaignObject)
                 return null;

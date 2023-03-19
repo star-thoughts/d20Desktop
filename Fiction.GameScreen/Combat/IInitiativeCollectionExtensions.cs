@@ -17,7 +17,7 @@ namespace Fiction.GameScreen.Combat
         /// <param name="collection">Collection of combatants</param>
         /// <param name="initOrder">Initiative order to get</param>
         /// <returns>Combatant at the given initiative order, or null if no combatant at that initiative order</returns>
-        public static T CombatantAtInitiative<T>(this IInitiativeCollection collection, int initOrder) where T : IActiveCombatant
+        public static T? CombatantAtInitiative<T>(this IInitiativeCollection collection, int initOrder) where T : IActiveCombatant
         {
             return collection.Combatants.OfType<T>().FirstOrDefault(p => p.InitiativeOrder == initOrder);
         }
@@ -28,7 +28,7 @@ namespace Fiction.GameScreen.Combat
         /// <param name="collection">Collection of combatants</param>
         /// <param name="combatant">Source combatant</param>
         /// <returns>Combatant after the given combatant, or null if none available</returns>
-        public static T CombatantAfter<T>(this IInitiativeCollection collection, T combatant) where T : IActiveCombatant
+        public static T? CombatantAfter<T>(this IInitiativeCollection collection, T combatant) where T : IActiveCombatant
         {
             return collection.CombatantAtInitiative<T>(combatant.InitiativeOrder + 1);
         }
@@ -39,7 +39,7 @@ namespace Fiction.GameScreen.Combat
         /// <param name="collection">Collection of combatants</param>
         /// <param name="combatant">Source combatant</param>
         /// <returns>Combatant before the given combatant, or null if none available</returns>
-        public static T CombatantBefore<T>(this IInitiativeCollection collection, T combatant) where T : IActiveCombatant
+        public static T? CombatantBefore<T>(this IInitiativeCollection collection, T combatant) where T : IActiveCombatant
         {
             return collection.CombatantAtInitiative<T>(combatant.InitiativeOrder - 1);
         }
@@ -68,7 +68,7 @@ namespace Fiction.GameScreen.Combat
             Exceptions.ThrowIfArgumentNull(collection, nameof(collection));
             Exceptions.ThrowIfArgumentNull(combatant, nameof(combatant));
 
-            IActiveCombatant combatant2 = collection.CombatantBefore(combatant);
+            IActiveCombatant? combatant2 = collection.CombatantBefore(combatant);
             if (combatant2 != null)
                 collection.Swap(combatant, combatant2);
         }
@@ -81,7 +81,7 @@ namespace Fiction.GameScreen.Combat
             Exceptions.ThrowIfArgumentNull(collection, nameof(collection));
             Exceptions.ThrowIfArgumentNull(combatant, nameof(combatant));
 
-            IActiveCombatant combatant2 = collection.CombatantAfter(combatant);
+            IActiveCombatant? combatant2 = collection.CombatantAfter(combatant);
             if (combatant2 != null)
                 collection.Swap(combatant, combatant2);
         }
@@ -153,7 +153,7 @@ namespace Fiction.GameScreen.Combat
             Exceptions.ThrowIfArgumentNull(combatant, nameof(combatant));
             Exceptions.ThrowIfArgumentNull(after, nameof(after));
 
-            IActiveCombatant before = collection.CombatantAfter(after);
+            IActiveCombatant? before = collection.CombatantAfter(after);
 
             //  If there is no next, then move to the end
             if (before == null)

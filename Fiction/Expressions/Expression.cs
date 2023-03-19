@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Reflection;
 using System.Text;
@@ -34,7 +35,7 @@ namespace Fiction.Expressions
         /// <summary>
         /// Gets the actual compiled source code
         /// </summary>
-        public string CompiledText { get; protected set; }
+        public string? CompiledText { get; protected set; }
         /// <summary>
         /// Gets whether or not this has been compiled
         /// </summary>
@@ -46,7 +47,7 @@ namespace Fiction.Expressions
         /// <summary>
         /// Gets or sets the MethodInfo of the created expression
         /// </summary>
-        public MethodInfo MethodInfo { get; internal set; }
+        public MethodInfo? MethodInfo { get; internal set; }
         /// <summary>
         /// Gets or sets whether or not the expression is a single line
         /// </summary>
@@ -54,13 +55,14 @@ namespace Fiction.Expressions
         /// <summary>
         /// Gets or sets a list of assemblies to include
         /// </summary>
-        protected ReadOnlyCollection<AssemblyName> Assemblies { get; private set; }
+        protected ReadOnlyCollection<AssemblyName>? Assemblies { get; private set; }
         #endregion
         #region Methods
         /// <summary>
         /// Sets the assemblies to reference in the compiled code
         /// </summary>
         /// <param name="assemblies">Assemblies to reference</param>
+        [MemberNotNull(nameof(Assemblies))]
         public void SetAssemblies(IEnumerable<AssemblyName> assemblies)
         {
             Assemblies = new ReadOnlyCollection<AssemblyName>(assemblies.ToArray());
@@ -77,7 +79,7 @@ namespace Fiction.Expressions
         /// </summary>
         /// <param name="parms">Parameters to pass to the expression</param>
         /// <returns>Return value of the expression</returns>
-        public object Invoke(params object[] parms)
+        public object? Invoke(params object?[]? parms)
         {
             //  If not compiled already, compile it
             if (MethodInfo == null)
@@ -93,6 +95,7 @@ namespace Fiction.Expressions
         /// <summary>
         /// Compiles the expression into a single assembly so that it can be called
         /// </summary>
+        [MemberNotNull(nameof(MethodInfo))]
         public abstract void Compile();
         /// <summary>
         /// Creates a method signature to run the expression
@@ -104,6 +107,7 @@ namespace Fiction.Expressions
         /// </summary>
         /// <param name="returnType">Return type of the method being created</param>
         /// <param name="parameters">Parameter information</param>
+        [MemberNotNull(nameof(MethodInfo))]
         internal void Compile(Type returnType, params ExpressionParameter[] parameters)
         {
             //  If no assemblies assigned, just use the calling method's assemblies
@@ -129,6 +133,10 @@ namespace Fiction.Expressions
 
             CompiledText = source;
             MethodInfo = type.GetMethod(Name);
+
+            if (MethodInfo is null)
+                throw new InvalidOperationException("Could not compile method.");
+
             IsCompiled = true;
         }
         /// <summary>
@@ -138,7 +146,7 @@ namespace Fiction.Expressions
         /// <param name="parameters">Parameter information</param>
         internal string BuildMethodSignature(Type returnType, params ExpressionParameter[] parameters)
         {
-            string parameterText = string.Join(", ", parameters.Select(p => p.ParameterType.ToString() + " " + p.Name));
+            string parameterText = string.Join(", ", parameters.Select(p => p.ParameterType?.ToString() + " " + p.Name));
             string returnString = returnType.ToString();
             if (object.ReferenceEquals(typeof(void), returnType))
                 returnString = "void";

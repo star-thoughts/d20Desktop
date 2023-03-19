@@ -82,7 +82,7 @@ namespace Fiction.GameScreen.Controls
             CommandBindings.Add(new CommandBinding(Commands.Up, UpCommand_Executed, UpCommand_CanExecute));
             CommandBindings.Add(new CommandBinding(Commands.Down, DownCommand_Executed, DownCommand_CanExecute));
 
-            InitiativeBrushConverter converter = Template.Resources["InitiativeBrush"] as InitiativeBrushConverter;
+            InitiativeBrushConverter? converter = Template.Resources["InitiativeBrush"] as InitiativeBrushConverter;
             if (converter != null)
             {
                 Binding binding = new Binding(nameof(InitiativeBrushes));
@@ -216,11 +216,11 @@ namespace Fiction.GameScreen.Controls
         }
         public static readonly DependencyProperty BrushesProperty = DependencyProperty.Register(nameof(Brushes), typeof(Dictionary<int, Brush>), typeof(InitiativeBrushConverter));
 
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public object? Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value is CombatantPreparer combatant && Brushes != null)
             {
-                if (Brushes.TryGetValue(combatant.InitiativeTotal, out Brush brush))
+                if (Brushes.TryGetValue(combatant.InitiativeTotal, out Brush? brush))
                     return brush;
                 //  If no brush, make it transparent
                 return System.Windows.Media.Brushes.Transparent;

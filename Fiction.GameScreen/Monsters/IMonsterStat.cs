@@ -12,6 +12,6 @@
         /// <summary>
         /// Gets the value of the stat
         /// </summary>
-        object Value { get; }
+        object? Value { get; }
     }
 }

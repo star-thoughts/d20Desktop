@@ -1,31 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Fiction
+﻿namespace Fiction
 {
-	/// <summary>
-	/// Event handler for an ignored exception event
-	/// </summary>
-	/// <param name="sender">Object that triggered the event</param>
-	/// <param name="e">Arguments for the event</param>
-	public delegate void IgnoredExceptionEventHandler(object sender, IgnoredExceptionEventArgs e);
+    /// <summary>
+    /// Event handler for an ignored exception event
+    /// </summary>
+    /// <param name="sender">Object that triggered the event</param>
+    /// <param name="e">Arguments for the event</param>
+    public delegate void IgnoredExceptionEventHandler(object sender, IgnoredExceptionEventArgs e);
 
-	/// <summary>
-	/// Event arguments for an ignored exception event
-	/// </summary>
-	public class IgnoredExceptionEventArgs : EventArgs
-	{
+    /// <summary>
+    /// Event arguments for an ignored exception event
+    /// </summary>
+    public class IgnoredExceptionEventArgs : EventArgs
+    {
         #region Constructors
         /// <summary>
         /// Constructs an <see cref="IgnoredExceptionEventArgs"/> object
         /// </summary>
         /// <param name="exception">Exception that was ignored</param>
         public IgnoredExceptionEventArgs(Exception exception)
-		{
-			Exception = exception;
-		}
+        {
+            Exception = exception;
+        }
         /// <summary>
         /// Constructs an <see cref="IgnoredExceptionEventArgs"/> object
         /// </summary>
@@ -36,16 +31,16 @@ namespace Fiction
             Exception = exception;
             ExtraInfo = extraInfo;
         }
-		#endregion
-		#region Properties
-		/// <summary>
-		/// Gets the exception that was ignored
-		/// </summary>
-		public Exception Exception { get; private set; }
+        #endregion
+        #region Properties
+        /// <summary>
+        /// Gets the exception that was ignored
+        /// </summary>
+        public Exception Exception { get; private set; }
         /// <summary>
         /// Gets extra information associated with this exception
         /// </summary>
-        public string ExtraInfo { get; private set; }
-		#endregion
-	}
+        public string? ExtraInfo { get; private set; }
+        #endregion
+    }
 }

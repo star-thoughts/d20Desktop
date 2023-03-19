@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 
 namespace Fiction.Windows
 {
@@ -46,21 +41,21 @@ namespace Fiction.Windows
         {
             if (tool != null)
             {
-                FrameworkElement view = _attached
+                FrameworkElement? view = _attached
                     .Where(p => object.ReferenceEquals(tool, p.Value))
                     .Select(p => p.Key)
                     .FirstOrDefault();
 
                 if (view != null)
                 {
-                    _attached.Remove(view as FrameworkElement);
+                    _attached.Remove(view);
 
                     view.PreviewMouseDown -= view_MouseDown;
                     view.PreviewMouseMove -= view_MouseMove;
                     view.PreviewMouseUp -= view_MouseUp;
                     view.Unloaded -= view_Unloaded;
 
-                    tool.Deactivate(view as UIElement);
+                    tool.Deactivate(view);
                 }
             }
         }
@@ -77,31 +72,43 @@ namespace Fiction.Windows
 
         static void view_Unloaded(object sender, RoutedEventArgs e)
         {
-            IViewTool tool = _attached[sender as FrameworkElement];
-            if (tool != null)
-                tool.DetachFromView();
+            if (sender is FrameworkElement)
+            {
+                IViewTool tool = _attached[(FrameworkElement)sender];
+                if (tool != null)
+                    tool.DetachFromView();
+            }
         }
 
         static void view_MouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            IViewTool tool = _attached[sender as FrameworkElement];
-            if (tool != null)
-                tool.MouseUp(sender as UIElement, e);
+            if (sender is FrameworkElement)
+            {
+                IViewTool tool = _attached[(FrameworkElement)sender];
+                if (tool != null)
+                    tool.MouseUp((UIElement)sender, e);
+            }
         }
 
         static void view_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
         {
-            IViewTool tool = _attached[sender as FrameworkElement];
-            if (tool != null)
-                tool.MouseMove(sender as UIElement, e);
+            if (sender is FrameworkElement)
+            {
+                IViewTool tool = _attached[(FrameworkElement)sender];
+                if (tool != null)
+                    tool.MouseMove((UIElement)sender, e);
+            }
         }
 
         static void view_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            IViewTool tool = _attached[sender as FrameworkElement];
-            if (tool != null)
-                tool.MouseDown(sender as UIElement, e);
+            if (sender is FrameworkElement)
+            {
+                IViewTool tool = _attached[(FrameworkElement)sender];
+                if (tool != null)
+                    tool.MouseDown((UIElement)sender, e);
 
+            }
         }
     }
 }

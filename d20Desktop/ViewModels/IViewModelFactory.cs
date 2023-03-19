@@ -21,7 +21,7 @@
         /// <summary>
         /// Gets the currently active combat
         /// </summary>
-        ActiveCombatViewModel ActiveCombat { get; }
+        ActiveCombatViewModel? ActiveCombat { get; }
         /// <summary>
         /// Gets the view model for managing monsters
         /// </summary>

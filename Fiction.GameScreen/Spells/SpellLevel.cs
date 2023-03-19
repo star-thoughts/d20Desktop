@@ -10,11 +10,11 @@ namespace Fiction.GameScreen.Spells
         #region Constructors
         #endregion
         #region Properties
-        private string _class;
+        private string? _class;
         /// <summary>
         /// Gets or sets the class for this spell
         /// </summary>
-        public string Class
+        public string? Class
         {
             get { return _class; }
             set
@@ -48,7 +48,7 @@ namespace Fiction.GameScreen.Spells
         /// <summary>
         /// Event that is triggered when a property changes
         /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 #pragma warning restore 67
         #endregion
     }

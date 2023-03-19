@@ -20,14 +20,14 @@ namespace System.ComponentModel
         {
             _collection = collection;
             _collection.CollectionChanged += _collection_CollectionChanged;
-            AttachItems(collection as IEnumerable);
+            AttachItems((IEnumerable)collection);
         }
         #endregion
         #region Member Variables
         private INotifyCollectionChanged _collection;
         #endregion
         #region Methods
-        private void _collection_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void _collection_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
         {
             if (e.NewItems != null)
             {
@@ -53,7 +53,7 @@ namespace System.ComponentModel
             }
         }
 
-        private void Member_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void Member_PropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
             //  Re-raise it so the monitor shows that the item changed
             PropertyChanged?.Invoke(sender, e);
@@ -75,11 +75,11 @@ namespace System.ComponentModel
         /// <summary>
         /// Event that is triggered when a property changes
         /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
         /// <summary>
         /// Event that is triggered when a property changes
         /// </summary>
-        public event NotifyCollectionChangedEventHandler CollectionChanged;
+        public event NotifyCollectionChangedEventHandler? CollectionChanged;
         #endregion
     }
 }
