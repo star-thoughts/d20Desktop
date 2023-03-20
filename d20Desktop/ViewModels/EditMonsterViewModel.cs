@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Fiction.GameScreen.ViewModels
 {
@@ -310,6 +311,7 @@ namespace Fiction.GameScreen.ViewModels
         /// Saves the information in this view model into the associated monster, adding it to the campaign if necessary
         /// </summary>
         /// <exception cref="InvalidOperationException">Attempt to save a monster that was loaded as readonly</exception>
+        [MemberNotNull(nameof(Monster))]
         public void Save()
         {
             if (Campaign == null)

@@ -1,19 +1,12 @@
 ﻿using Fiction.GameScreen.Monsters;
 using Fiction.GameScreen.ViewModels;
 using Fiction.GameScreen.ViewModels.EditMonsterViewModels;
-using Fiction.Windows;
 using System;
-using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
-using System.Windows.Threading;
 
 namespace Fiction.GameScreen.Controls
 {
@@ -41,7 +34,7 @@ namespace Fiction.GameScreen.Controls
         public ManageMonstersViewModel ViewModel
         {
             get { return (ManageMonstersViewModel)GetValue(ViewModelProperty); }
-            set { SetValue(ViewModelProperty, value);}
+            set { SetValue(ViewModelProperty, value); }
         }
         /// <summary>
         /// Gets or sets the currently selected monster
@@ -49,7 +42,7 @@ namespace Fiction.GameScreen.Controls
         public Monster SelectedMonster
         {
             get { return (Monster)GetValue(SelectedMonsterProperty); }
-            set { SetValue(SelectedMonsterProperty, value);}
+            set { SetValue(SelectedMonsterProperty, value); }
         }
         #endregion
         #region Dependency Properties
@@ -86,20 +79,20 @@ namespace Fiction.GameScreen.Controls
 
         private void CreateCopy_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-           Exceptions.FailSafeMethodCall(() =>
-            {
-                e.Handled = true;
-                if (e.Parameter is Monster monster)
-                {
-                    EditMonster(monster, createCopy: true);
-                }
-            });
+            Exceptions.FailSafeMethodCall(() =>
+             {
+                 e.Handled = true;
+                 if (e.Parameter is Monster monster)
+                 {
+                     EditMonster(monster, createCopy: true);
+                 }
+             });
         }
 
         private void CreateCopy_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.Handled = true;
-            e.CanExecute = (e.Parameter is Monster);
+            e.CanExecute = e.Parameter is Monster;
         }
 
         private void Remove_Executed(object sender, ExecutedRoutedEventArgs e)
@@ -148,10 +141,10 @@ namespace Fiction.GameScreen.Controls
             if (createCopy)
                 viewModel.MarkAsCopy();
 
-            if (window.ShowDialog() == true && viewModel?.Monster != null)
+            if (window.ShowDialog() == true)
             {
                 viewModel.Save();
-                    ViewModel.Monsters.Add(viewModel.Monster);
+
                 SelectedMonster = viewModel.Monster;
                 ViewModel?.Campaign?.MonsterManager?.Reconcile();
             }
