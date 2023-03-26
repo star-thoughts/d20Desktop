@@ -26,10 +26,12 @@ namespace Fiction.GameScreen.ViewModels
         /// <summary>
         /// Constructs a new <see cref="EditPlayerCharacterViewModel"/> for editing an existing character
         /// </summary>
-        /// <param name="character"></param>
-        public EditPlayerCharacterViewModel(PlayerCharacter character)
+        /// <param name="campaign">Campaign containing the character</param>
+        /// <param name="character">Character to edit</param>
+        public EditPlayerCharacterViewModel(CampaignSettings campaign, PlayerCharacter character)
         {
             Character = character;
+            Campaign = campaign;
 
             Name = character.Name;
             Player = character.Player;

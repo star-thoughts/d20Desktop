@@ -57,7 +57,7 @@ namespace Fiction.GameScreen.Controls
             Exceptions.FailSafeMethodCall(() =>
             {
                 if (sender is ListBoxItem item && item.DataContext is PlayerCharacter pc)
-                    EditCharacter(new EditPlayerCharacterViewModel(pc));
+                    EditCharacter(new EditPlayerCharacterViewModel(ViewModel.Campaign, pc));
             });
         }
 
@@ -73,7 +73,7 @@ namespace Fiction.GameScreen.Controls
             {
                 e.Handled = true;
                 if (e.Parameter is PlayerCharacter pc)
-                    EditCharacter(new EditPlayerCharacterViewModel(pc));
+                    EditCharacter(new EditPlayerCharacterViewModel(ViewModel.Campaign, pc));
             });
         }
 
