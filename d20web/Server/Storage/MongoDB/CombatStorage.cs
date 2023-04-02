@@ -80,7 +80,12 @@ namespace d20Web.Storage.MongoDB
 
             IMongoCollection<MongoCombat> combatCollection = GetCombatsCollection();
 
-            MongoCombat mongoCombat = MongoCombat.Create(combat);
+            MongoCombat mongoCombat = MongoCombat.Create(campaignObjectID, combatObjectID, combat);
+
+            FilterDefinition<MongoCombat> filter = Builders<MongoCombat>.Filter
+                .Eq(p => p.ID, combatObjectID);
+
+            await combatCollection.FindOneAndReplaceAsync(filter, mongoCombat, null, cancellationToken);
         }
 
         /// <summary>
