@@ -15,6 +15,13 @@ namespace d20Web.Hubs
 
             return hub.Clients.All.SendAsync(Constants.CombatCreated, campaignID, combatID, combatName);
         }
+        public static Task CombatUpdated(this IHubContext<CampaignHub> hub, string campaignID, Combat combat)
+        {
+            if (hub == null)
+                throw new ArgumentNullException(nameof(hub));
+
+            return hub.Clients.All.SendAsync(Constants.CombatUpdated, campaignID, combat);
+        }
 
         public static Task CombatantCreated(this IHubContext<CampaignHub> hub, string campaignID, IEnumerable<string> combatantIDs)
         {

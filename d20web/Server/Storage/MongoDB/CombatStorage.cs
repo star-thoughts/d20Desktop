@@ -170,7 +170,7 @@ namespace d20Web.Storage.MongoDB
             if (string.IsNullOrWhiteSpace(campaignID))
                 throw new ArgumentNullException(nameof(campaignID));
             if (!ObjectId.TryParse(campaignID, out ObjectId campaignObjectID))
-                throw new ItemNotFoundException(ItemType.Campaign, campaignID)
+                throw new ItemNotFoundException(ItemType.Campaign, campaignID);
             if (string.IsNullOrWhiteSpace(combatID))
                 throw new ArgumentNullException(nameof(combatID));
             if (!ObjectId.TryParse(combatID, out ObjectId combatObjectID))

@@ -19,6 +19,14 @@ namespace d20Web.Services
         /// <exception cref="ArgumentNullException">One or more parameters was null or empty</exception>
         Task<string> CreateCombat(string campaignID, string name, CancellationToken cancellationToken = default);
         /// <summary>
+        /// Updates the information for a combat
+        /// </summary>
+        /// <param name="campaignID">ID of the campaign containing the combat</param>
+        /// <param name="combat">Combat information to update</param>
+        /// <param name="cancellationToken">Token for cancelling the operation</param>
+        /// <returns>Task for asynchronous completion</returns>
+        Task UpdateCombat(string campaignID, Combat combat, CancellationToken cancellationToken = default);
+        /// <summary>
         /// Gets information for a combat
         /// </summary>
         /// <param name="combatID">ID of the combat to get information for</param>
