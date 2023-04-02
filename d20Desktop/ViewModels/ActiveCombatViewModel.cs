@@ -1,4 +1,5 @@
 ﻿using Fiction.GameScreen.Combat;
+using Fiction.GameScreen.Server;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

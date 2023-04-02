@@ -1,5 +1,6 @@
 ﻿using Fiction.GameScreen.Combat;
 using Fiction.GameScreen.Serialization;
+using Fiction.GameScreen.Server;
 using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
@@ -72,7 +73,7 @@ namespace Fiction.GameScreen.ViewModels
         public ActiveCombatViewModel? ActiveCombat
         {
             get { return _activeCombat; }
-            set
+            private set
             {
                 if (!ReferenceEquals(_activeCombat, value))
                 {
@@ -114,8 +115,23 @@ namespace Fiction.GameScreen.ViewModels
         /// Gets the view model for managing conditions
         /// </summary>
         public ConditionsViewModel Conditions { get; }
+        /// <summary>
+        /// Gets the server connection for campaign and combat management
+        /// </summary>
+        public CampaignManagement Server { get; private set; }
         #endregion
         #region Methods
+        /// <summary>
+        /// Sets the server to use for campaign and combat management
+        /// </summary>
+        /// <param name="campaignServer"></param>
+        public void SetServer(CampaignManagement campaignServer)
+        {
+            if (campaignServer == null)
+                throw new ArgumentNullException(nameof(campaignServer));
+
+            Server = campaignServer;
+        }
         /// <summary>
         /// Creates a new combat
         /// </summary>

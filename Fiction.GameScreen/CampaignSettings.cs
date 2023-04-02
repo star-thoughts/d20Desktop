@@ -85,6 +85,38 @@ namespace Fiction.GameScreen
         /// Gets the options for this campaign
         /// </summary>
         public CampaignOptions Options { get; private set; }
+        private string? _serverUri;
+        /// <summary>
+        /// Gets or sets the URI to use for connecting to a campaign server
+        /// </summary>
+        public string? ServerUri
+        {
+            get { return _serverUri; }
+            set
+            {
+                if (!string.Equals(_serverUri, value))
+                {
+                    _serverUri = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ServerUri)));
+                }
+            }
+        }
+        private string? _campaignID;
+        /// <summary>
+        /// Gets or sets the ID of the campaign from the campaign server
+        /// </summary>
+        public string? CampaignID
+        {
+            get { return _campaignID; }
+            set
+            {
+                if (!string.Equals(_campaignID, value))
+                {
+                    _campaignID = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CampaignID)));
+                }
+            }
+        }
         #endregion
         #region Events
 #pragma warning disable 67

@@ -62,6 +62,9 @@
         <CommandBinding Command="local:Commands.ManageConditions"
                         CanExecute="ManageConditionsCommand_CanExecute"
                         Executed="ManageConditionsCommand_Executed" />
+        <CommandBinding Command="local:Commands.ConnectToServer"
+                        CanExecute="ConnectToServerCommand_CanExecute"
+                        Executed="ConnectToServerCommand_Executed" />
     </Window.CommandBindings>
     <Border Background="Black"
             BorderBrush="White"

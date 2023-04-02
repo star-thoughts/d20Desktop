@@ -1,4 +1,6 @@
-﻿namespace Fiction.GameScreen.ViewModels
+﻿using Fiction.GameScreen.Server;
+
+namespace Fiction.GameScreen.ViewModels
 {
     /// <summary>
     /// Base interface for view model factory
@@ -50,6 +52,10 @@
         /// Gets the view model for managing magic items
         /// </summary>
         MagicItemsViewModel MagicItems { get; }
+        /// <summary>
+        /// Gets the server to use for campaign management
+        /// </summary>
+        ICampaignManagement Server { get; }
         #endregion
         #region Methods
         #endregion

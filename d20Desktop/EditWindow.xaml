@@ -57,6 +57,9 @@
                     <DataTemplate DataType="{x:Type vm:EditMonsterViewModel}">
                         <controls:MonsterEditor ViewModel="{Binding}" />
                     </DataTemplate>
+                    <DataTemplate DataType="{x:Type vm:ServerConfigViewModel}">
+                        <controls:ServerConfigView ViewModel="{Binding}" />
+                    </DataTemplate>
                     <DataTemplate DataType="{x:Type vm:EnterValueViewModel}">
                         <Grid Focusable="False">
                             <Grid.Resources>

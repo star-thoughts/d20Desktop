@@ -25,6 +25,10 @@ namespace Fiction.GameScreen
         /// </summary>
         public static RoutedCommand SaveCampaign { get; } = new RoutedCommand(nameof(SaveCampaign), typeof(Commands));
         /// <summary>
+        /// Command to configure a server connection for the campaign
+        /// </summary>
+        public static RoutedCommand ConnectToServer { get; } = new RoutedCommand(nameof(ConnectToServer), typeof(Commands));
+        /// <summary>
         /// Command to configure campaign attributes
         /// </summary>
         public static RoutedCommand CampaignAttributes { get; private set; } = new RoutedCommand(nameof(CampaignAttributes), typeof(Commands));
