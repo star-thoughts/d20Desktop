@@ -12,6 +12,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\d20web\Shared\d20web.Shared.csproj" />
 		<ProjectReference Include="..\Fiction\Fiction.csproj" />
 	</ItemGroup>
 

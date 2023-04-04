@@ -2,6 +2,7 @@
 using d20Web.Models;
 using d20Web.Storage;
 using Microsoft.AspNetCore.SignalR;
+using MongoDB.Bson;
 
 namespace d20Web.Services
 {
@@ -41,6 +42,25 @@ namespace d20Web.Services
             _ = _hub.CombatCreated(campaignID, id, name);
 
             return id;
+        }
+
+        /// <summary>
+        /// Ends a combat
+        /// </summary>
+        /// <param name="campaignID">ID of the campaign containing the combat</param>
+        /// <param name="combatID">ID of the combat to end</param>
+        /// <param name="cancellationToken">Token for cancelling the operation</param>
+        /// <returns>Task for asynchronous completion</returns>
+        public async Task EndCombat(string campaignID, string combatID, CancellationToken cancellationToken = default)
+        {
+            if (string.IsNullOrWhiteSpace(combatID))
+                throw new ArgumentNullException(nameof(combatID));
+            if (string.IsNullOrWhiteSpace(campaignID))
+                throw new ArgumentNullException(nameof(campaignID));
+
+            await _storage.EndCombat(campaignID, combatID, cancellationToken);
+
+            _ = _hub.CombatDeleted(campaignID, combatID);
         }
 
         /// <summary>

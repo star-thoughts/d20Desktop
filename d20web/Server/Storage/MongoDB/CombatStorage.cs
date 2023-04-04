@@ -61,6 +61,34 @@ namespace d20Web.Storage.MongoDB
             return combat.ID.ToString();
         }
         /// <summary>
+        /// Ends a combat
+        /// </summary>
+        /// <param name="campaignID">ID of the campaign containing the combat</param>
+        /// <param name="combatID">ID of the combat to end</param>
+        /// <param name="cancellationToken">Token for cancelling the operation</param>
+        /// <returns>Task for asynchronous completion</returns>
+        public async Task EndCombat(string campaignID, string combatID, CancellationToken cancellationToken = default)
+        {
+            if (string.IsNullOrWhiteSpace(campaignID))
+                throw new ArgumentNullException(nameof(campaignID));
+            if (!ObjectId.TryParse(campaignID, out ObjectId campaignObjectID))
+                throw new ItemNotFoundException(ItemType.Campaign, campaignID);
+            if (string.IsNullOrWhiteSpace(combatID))
+                throw new ArgumentNullException(nameof(combatID));
+
+            //  In this case, we succeed if the delete doesn't find any records
+            if (ObjectId.TryParse(combatID, out ObjectId combatObjectID))
+            {
+
+                IMongoCollection<MongoCombat> combatCollection = GetCombatsCollection();
+
+                FilterDefinition<MongoCombat> filter = Builders<MongoCombat>.Filter
+                    .Eq(p => p.ID, combatObjectID);
+
+                await combatCollection.DeleteOneAsync(filter, cancellationToken);
+            }
+        }
+        /// <summary>
         /// Updates a given combat
         /// </summary>
         /// <param name="campaignID">ID of the campaign containing the combat</param>
@@ -85,7 +113,10 @@ namespace d20Web.Storage.MongoDB
             FilterDefinition<MongoCombat> filter = Builders<MongoCombat>.Filter
                 .Eq(p => p.ID, combatObjectID);
 
-            await combatCollection.FindOneAndReplaceAsync(filter, mongoCombat, null, cancellationToken);
+            ReplaceOneResult result = await combatCollection.ReplaceOneAsync(filter, mongoCombat, new ReplaceOptions(), cancellationToken);
+
+            if (result.MatchedCount == 0)
+                throw new ItemNotFoundException(ItemType.Combat, combat.ID);
         }
 
         /// <summary>

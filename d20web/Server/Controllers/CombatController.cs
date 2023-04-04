@@ -38,6 +38,18 @@ namespace d20Web.Controllers
         }
 
         /// <summary>
+        /// Removes the given combat
+        /// </summary>
+        /// <param name="combatID">ID of the combat to remove</param>
+        /// <returns>Result of the operation</returns>
+        [HttpDelete("{combatID}")]
+        public async Task<IActionResult> EndCombat([Required] string combatID)
+        {
+            await _combatService.EndCombat(combatID, HttpContext.RequestAborted);
+            return NoContent();
+        }
+
+        /// <summary>
         /// Updates a combat's information
         /// </summary>
         /// <param name="campaignID">ID of the campaign the combat is in</param>

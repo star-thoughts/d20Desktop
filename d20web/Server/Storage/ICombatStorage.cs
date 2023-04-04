@@ -17,6 +17,14 @@ namespace d20Web.Storage
         /// <returns>ID of the combat</returns>
         Task<string> BeginCombat(string campaignID, string name, CancellationToken cancellationToken = default);
         /// <summary>
+        /// Ends a combat
+        /// </summary>
+        /// <param name="campaignID">ID of the campaign containing the combat</param>
+        /// <param name="combatID">ID of the combat to end</param>
+        /// <param name="cancellationToken">Token for cancelling the operation</param>
+        /// <returns>Task for asynchronous completion</returns>
+        Task EndCombat(string campaignID, string combatID, CancellationToken cancellationToken = default);
+        /// <summary>
         /// Updates a given combat
         /// </summary>
         /// <param name="campaignID">ID of the campaign containing the combat</param>
