@@ -165,7 +165,7 @@ namespace Fiction.GameScreen
 
         private void BeginCombatCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            Exceptions.FailSafeMethodCall(() =>
+            Exceptions.FailSafeMethodCall(async () =>
             {
                 if (Campaign != null)
                 {
@@ -181,7 +181,7 @@ namespace Fiction.GameScreen
                         e.Handled = true;
                         if (ResolveInitiatives(preparer))
                         {
-                            ActiveCombatViewModel combat = Campaign.CreateOrUpdateCombat(preparer);
+                            ActiveCombatViewModel combat = await Campaign.CreateOrUpdateCombat(preparer);
 
                             AddPageIfNotOpen(combat);
                             ViewModels.Remove(preparer);
