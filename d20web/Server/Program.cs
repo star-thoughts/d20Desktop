@@ -1,3 +1,4 @@
+using d20Web.Services;
 using d20Web.Storage;
 using d20Web.Storage.MongoDB;
 using Microsoft.Extensions.Options;
@@ -18,7 +19,7 @@ namespace d20web
 
             StorageSettings storageSettings = new StorageSettings();
             builder.Configuration.Bind("Storage", storageSettings);
-            builder.Services.AddSingleton<StorageSettings>(storageSettings);
+            builder.Services.AddSingleton(storageSettings);
 
             switch (storageSettings.Type)
             {
@@ -27,6 +28,8 @@ namespace d20web
                     builder.Services.AddSingleton<ICampaignStorage, CampaignStorage>();
                     break;
             }
+
+            builder.Services.AddTransient<ICampaignsService, CampaignsService>();
 
             WebApplication app = builder.Build();
 

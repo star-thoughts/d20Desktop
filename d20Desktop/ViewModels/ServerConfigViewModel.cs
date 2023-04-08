@@ -9,7 +9,7 @@ namespace Fiction.GameScreen.ViewModels
     /// <summary>
     /// View model for configuring a server connection
     /// </summary>
-    public sealed class ServerConfigViewModel : INotifyPropertyChanged
+    public sealed class ServerConfigViewModel : ViewModelCore
     {
         /// <summary>
         /// Constructs a new <see cref="ServerConfigViewModel"/>
@@ -39,7 +39,7 @@ namespace Fiction.GameScreen.ViewModels
                 if (!string.Equals(_campaignName, value, StringComparison.Ordinal))
                 {
                     _campaignName = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CampaignName)));
+                    this.RaisePropertyChanged(nameof(CampaignName));
                 }
             }
         }
@@ -57,10 +57,15 @@ namespace Fiction.GameScreen.ViewModels
                 if (!string.Equals(_serverUri, value, StringComparison.Ordinal))
                 {
                     _serverUri = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ServerUri)));
+                    this.RaisePropertyChanged(nameof(ServerUri));
                 }
             }
         }
+
+        /// <summary>
+        /// Gets whether or not the configuration is valid
+        /// </summary>
+        public override bool IsValid => true;
 
         /// <summary>
         /// Saves the settings to the campaign and gets a campaign ID
@@ -86,10 +91,5 @@ namespace Fiction.GameScreen.ViewModels
             else
                 _campaign.ServerUri = null;
         }
-
-        /// <summary>
-        /// Event that is triggered when a property is changed
-        /// </summary>
-        public event PropertyChangedEventHandler? PropertyChanged;
     }
 }

@@ -406,6 +406,10 @@
   <data name="ConditionsViewModelName" xml:space="preserve">
     <value>Conditions</value>
   </data>
+  <data name="ConnectToServerMenuHeader" xml:space="preserve">
+    <value>Connect To Server</value>
+    <comment>Menu header for configuring server connection</comment>
+  </data>
   <data name="ConstitutionLabel" xml:space="preserve">
     <value>Constitution</value>
     <comment>Label for constitution</comment>
@@ -1147,9 +1151,6 @@
   <data name="SensesLabel" xml:space="preserve">
     <value>Senses</value>
     <comment>Label for senses</comment>
-  </data>
-  <data name="SensesLabel1" xml:space="preserve">
-    <value>Senses</value>
   </data>
   <data name="SettingsMenuHeader" xml:space="preserve">
     <value>Settings</value>

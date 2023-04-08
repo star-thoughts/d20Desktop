@@ -718,6 +718,15 @@ namespace Fiction.GameScreen.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Connect To Server.
+        /// </summary>
+        public static string ConnectToServerMenuHeader {
+            get {
+                return ResourceManager.GetString("ConnectToServerMenuHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Constitution.
         /// </summary>
         public static string ConstitutionLabel {
@@ -2388,15 +2397,6 @@ namespace Fiction.GameScreen.Resources {
         public static string SensesLabel {
             get {
                 return ResourceManager.GetString("SensesLabel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Senses.
-        /// </summary>
-        public static string SensesLabel1 {
-            get {
-                return ResourceManager.GetString("SensesLabel1", resourceCulture);
             }
         }
         

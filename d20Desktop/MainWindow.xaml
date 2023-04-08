@@ -93,6 +93,9 @@
                               Command="local:Commands.ManagePlayers" />
                     <MenuItem Header="{Binding Source={x:Static resources:Resources.ManageSourcesMenuItem}}"
                               Command="local:Commands.ManageSources" />
+                    <Separator />
+                    <MenuItem Header="{Binding Source={x:Static resources:Resources.ConnectToServerMenuHeader}}"
+                              Command="local:Commands.ConnectToServer" />
                 </MenuItem>
                 <MenuItem Header="{Binding Source={x:Static resources:Resources.EquipmentMenuHeader}}">
                     <MenuItem Header="{Binding Source={x:Static resources:Resources.MagicItemsMenuHeader}}"

@@ -1,4 +1,5 @@
 ﻿using MongoDB.Driver;
+using System.Diagnostics.CodeAnalysis;
 
 namespace d20Web.Storage.MongoDB
 {
@@ -22,9 +23,10 @@ namespace d20Web.Storage.MongoDB
         protected static readonly InsertOneOptions InsertOneOptions = new InsertOneOptions();
         protected static readonly InsertManyOptions InsertManyOptions = new InsertManyOptions();
 
+        [MemberNotNull(nameof(_client)), MemberNotNull(nameof(_database))]
         public Task ConnectAsync(CancellationToken cancellationToken = default)
         {
-            if (_client == null && _database == null)
+            if (_client == null || _database == null)
             {
                 _client = new MongoClient(_settings.ConnectionString);
                 _database = _client.GetDatabase(_settings.DatabaseName);
@@ -32,10 +34,10 @@ namespace d20Web.Storage.MongoDB
             return Task.CompletedTask;
         }
 
-        protected IMongoDatabase GetDatabase()
+        protected async Task<IMongoDatabase> GetDatabase(CancellationToken cancellationToken = default)
         {
             if (_database == null)
-                throw new InvalidOperationException("Database must be initialized before it is used.");
+                await ConnectAsync(cancellationToken);
 
             return _database;
         }

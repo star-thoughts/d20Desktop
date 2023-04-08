@@ -27,7 +27,7 @@ namespace Fiction.GameScreen.Server
         /// <returns>ID of the campaign that was created</returns>
         public async Task<string> CreateCampaign(string name)
         {
-            string uri = QueryHelpers.AddQueryString("/campaign", "name", name);
+            string uri = QueryHelpers.AddQueryString("api/campaign", "name", name);
 
             using (StringContent content = new StringContent(string.Empty))
             {
@@ -35,8 +35,13 @@ namespace Fiction.GameScreen.Server
                 result.EnsureSuccessStatusCode();
 
                 string json = await result.Content.ReadAsStringAsync();
-                return JsonSerializer.Deserialize<string>(json) ?? string.Empty;
+                return JsonSerializer.Deserialize<NewCampaign>(json)?.campaignID ?? string.Empty;
             }
+        }
+
+        class NewCampaign
+        {
+            public string? campaignID { get; set; }
         }
     }
 }

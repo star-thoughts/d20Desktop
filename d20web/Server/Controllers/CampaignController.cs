@@ -11,14 +11,14 @@ namespace d20Web.Controllers
     [ApiController]
     [Route("api/[controller]")]
     [Produces(MediaTypeNames.Application.Json)]
-    public class CampaignsController : ControllerBase
+    public class CampaignController : ControllerBase
     {
         /// <summary>
-        /// Constructs a new <see cref="CampaignsController"/>
+        /// Constructs a new <see cref="CampaignController"/>
         /// </summary>
         /// <param name="campaignsService">Interface for managing campaigns</param>
         /// <param name="logger">Interface to use for logging</param>
-        public CampaignsController(ICampaignsService campaignsService, ILogger<CampaignsController> logger)
+        public CampaignController(ICampaignsService campaignsService, ILogger<CampaignController> logger)
         {
             _logger = logger;
             _campaignsService = campaignsService;
@@ -37,7 +37,7 @@ namespace d20Web.Controllers
         {
             string id = await _campaignsService.CreateCampaign(name, HttpContext.RequestAborted);
 
-            return CreatedAtAction(nameof(GetCampaign), new { campaignID = id });
+            return CreatedAtAction(nameof(GetCampaign), new { campaignID = id }, new { campaignID = id });
         }
 
         /// <summary>

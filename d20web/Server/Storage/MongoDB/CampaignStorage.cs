@@ -17,9 +17,9 @@ namespace d20Web.Storage.MongoDB
 
         private const string CampaignsCollection = "campaigns";
 
-        private IMongoCollection<MongoCampaign> GetCampaignsCollection()
+        private async Task<IMongoCollection<MongoCampaign>> GetCampaignsCollection()
         {
-            return GetDatabase().GetCollection<MongoCampaign>(CampaignsCollection);
+            return (await GetDatabase()).GetCollection<MongoCampaign>(CampaignsCollection);
         }
         
         /// <summary>
@@ -33,7 +33,7 @@ namespace d20Web.Storage.MongoDB
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentNullException(nameof(name));
 
-            IMongoCollection<MongoCampaign> collection = GetCampaignsCollection();
+            IMongoCollection<MongoCampaign> collection = await GetCampaignsCollection();
 
             MongoCampaign campaign = new MongoCampaign()
             {
@@ -57,7 +57,7 @@ namespace d20Web.Storage.MongoDB
             if (!ObjectId.TryParse(campaignID, out ObjectId objectID))
                 throw new ArgumentException("Invalid campaign ID", nameof(campaignID));
 
-            IMongoCollection<MongoCampaign> collection = GetCampaignsCollection();
+            IMongoCollection<MongoCampaign> collection = await GetCampaignsCollection();
 
             FilterDefinition<MongoCampaign> filter = Builders<MongoCampaign>.Filter
                 .Eq(p => p.ID, objectID);
