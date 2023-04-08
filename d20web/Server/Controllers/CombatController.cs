@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 namespace d20Web.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/Campaign/{campaignID}/[controller]")]
     public class CombatController : ControllerBase
     {
         /// <summary>
@@ -40,12 +40,13 @@ namespace d20Web.Controllers
         /// <summary>
         /// Removes the given combat
         /// </summary>
+        /// <param name="campaignID">ID of the campaign the combat is in</param>
         /// <param name="combatID">ID of the combat to remove</param>
         /// <returns>Result of the operation</returns>
         [HttpDelete("{combatID}")]
-        public async Task<IActionResult> EndCombat([Required] string combatID)
+        public async Task<IActionResult> EndCombat([Required] string campaignID, [Required] string combatID)
         {
-            await _combatService.EndCombat(combatID, HttpContext.RequestAborted);
+            await _combatService.EndCombat(campaignID, combatID, HttpContext.RequestAborted);
             return NoContent();
         }
 
@@ -55,7 +56,7 @@ namespace d20Web.Controllers
         /// <param name="campaignID">ID of the campaign the combat is in</param>
         /// <param name="combat">Information about the combat to update</param>
         /// <returns></returns>
-        [HttpPut]
+        [HttpPut("{combatID}")]
         public async Task<IActionResult> UpdateCombat([Required] string campaignID, [Required] Combat combat)
         {
             await _combatService.UpdateCombat(campaignID, combat, HttpContext.RequestAborted);
@@ -66,10 +67,11 @@ namespace d20Web.Controllers
         /// <summary>
         /// Gets the given combat information
         /// </summary>
+        /// <param name="campaignID">ID of the campaign the combat is in</param>
         /// <param name="combatID">ID of the combat to get</param>
         /// <returns>Information about the combat</returns>
-        [HttpGet]
-        public async Task<IActionResult> GetCombat([Required] string combatID)
+        [HttpGet("{combatID}")]
+        public async Task<IActionResult> GetCombat([Required] string campaignID, [Required] string combatID)
         {
             return Ok(await _combatService.GetCombat(combatID, HttpContext.RequestAborted));
         }
@@ -81,7 +83,7 @@ namespace d20Web.Controllers
         /// <param name="combatants">Combatant information to create</param>
         /// <returns>ID of the created combatant</returns>
         [HttpPost("{combatID}/combatant")]
-        public async Task<IActionResult> CreateCombatants([Required] string combatID, [Required] Combatant[] combatants)
+        public async Task<IActionResult> CreateCombatants([Required] string campaignID, [Required] string combatID, [Required] Combatant[] combatants)
         {
             IEnumerable<string> ids = await _combatService.CreateCombatant(combatID, combatants, HttpContext.RequestAborted);
 
@@ -89,7 +91,7 @@ namespace d20Web.Controllers
         }
 
         [HttpGet("{combatID}/combatant")]
-        public async Task<IActionResult> GetCombatants([Required] string combatID)
+        public async Task<IActionResult> GetCombatants([Required] string campaignID, [Required] string combatID)
         {
             return Ok(await _combatService.GetCombatants(combatID, HttpContext.RequestAborted));
         }
@@ -101,14 +103,30 @@ namespace d20Web.Controllers
         /// <param name="combatantID">ID of the combatant</param>
         /// <returns>Combatant information</returns>
         [HttpGet("{combatID}/combatant/{combatantID}")]
-        public async Task<IActionResult> GetCombatant([Required] string combatID, [Required] string combatantID)
+        public async Task<IActionResult> GetCombatant([Required] string campaignID, [Required] string combatID, [Required] string combatantID)
         {
             return Ok(await _combatService.GetCombatant(combatID, combatantID, HttpContext.RequestAborted));
         }
 
+        [HttpPost("{combatID}/combatant/{combatantID}")]
         public async Task<IActionResult> UpdateCombatant([Required] string campaignID, [Required] string combatID, [Required] Combatant combatant)
         {
             await _combatService.UpdateCombatant(campaignID, combatID, combatant, HttpContext.RequestAborted);
+
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Deletes the combatant given
+        /// </summary>
+        /// <param name="campaignID">ID of the campaign containing the combat the combatant is in</param>
+        /// <param name="combatID">ID of the combat</param>
+        /// <param name="combatantIDs">ID of the combatants to delete</param>
+        /// <returns></returns>
+        [HttpDelete("{combatID}/combatant")]
+        public async Task<IActionResult> DeleteCombatants([Required] string campaignID, [Required] string combatID, [Required] string[] combatantIDs)
+        {
+            await _combatService.DeleteCombatant(campaignID, combatID, combatantIDs, HttpContext.RequestAborted);
 
             return NoContent();
         }

@@ -1,6 +1,4 @@
 ﻿using d20Web.Models;
-using Microsoft.AspNetCore.Mvc;
-using System.ComponentModel.DataAnnotations;
 
 namespace d20Web.Services
 {
@@ -73,5 +71,14 @@ namespace d20Web.Services
         /// <param name="cancellationToken">Token for cancelling the operation</param>
         /// <returns>Task for asynchronous completion</returns>
         Task UpdateCombatant(string campaignID, string combatID, Combatant combatant, CancellationToken cancellationToken = default);
+        /// <summary>
+        /// Deletes the combatant from the combat
+        /// </summary>
+        /// <param name="campaignID">ID of the campaign the combat is in</param>
+        /// <param name="combatID">ID of the combat the combatant is in</param>
+        /// <param name="combatantIDs">ID of the combatant to remove</param>
+        /// <param name="cancellationToken">Token for cancelling the operation</param>
+        /// <returns>Task for asynchronous completion</returns>
+        Task DeleteCombatant(string campaignID, string combatID, IEnumerable<string> combatantIDs, CancellationToken cancellationToken = default);
     }
 }

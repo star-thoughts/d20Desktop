@@ -3,6 +3,8 @@ using Fiction.GameScreen.Serialization;
 using Fiction.GameScreen.Server;
 using System;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace Fiction.GameScreen.ViewModels
@@ -63,6 +65,7 @@ namespace Fiction.GameScreen.ViewModels
                 return _prepareCombat;
             }
         }
+        private CombatWatcher? _combatWatcher;
         private ActiveCombatViewModel? _activeCombat;
         /// <summary>
         /// Gets the active combat
@@ -118,14 +121,14 @@ namespace Fiction.GameScreen.ViewModels
         /// <summary>
         /// Gets the server connection for campaign and combat management
         /// </summary>
-        public CampaignManagement Server { get; private set; }
+        public ICampaignManagement? Server { get; private set; }
         #endregion
         #region Methods
         /// <summary>
         /// Sets the server to use for campaign and combat management
         /// </summary>
         /// <param name="campaignServer"></param>
-        public void SetServer(CampaignManagement campaignServer)
+        public void SetServer(ICampaignManagement campaignServer)
         {
             if (campaignServer == null)
                 throw new ArgumentNullException(nameof(campaignServer));
@@ -146,8 +149,7 @@ namespace Fiction.GameScreen.ViewModels
 
             if (ActiveCombat == null)
             {
-                ActiveCombat combat = new ActiveCombat("Active Combat", preparer.Preparer, new XmlActiveCombatSerializer(Campaign));
-                ActiveCombat = new ActiveCombatViewModel(this, combat);
+                CreateCombat(preparer);
             }
             else
             {
@@ -158,6 +160,36 @@ namespace Fiction.GameScreen.ViewModels
             this.RaisePropertyChanged(nameof(ActiveCombat));
             return ActiveCombat;
         }
+
+        [MemberNotNull(nameof(ActiveCombat))]
+        private void CreateCombat(PrepareCombatViewModel preparer)
+        {
+            ActiveCombat combat = new ActiveCombat("Active Combat", preparer.Preparer, new XmlActiveCombatSerializer(Campaign));
+            ActiveCombat = new ActiveCombatViewModel(this, combat);
+
+            if (!string.IsNullOrWhiteSpace(Campaign.CampaignID))
+            {
+                ICombatManagement? combatManagement = null;
+                try
+                {
+                    if (!string.IsNullOrWhiteSpace(Campaign.ServerUri))
+                    {
+                        HttpClient client = new HttpClient();
+                        client.BaseAddress = new Uri(Campaign.ServerUri);
+
+                        combatManagement = new CombatManagement(client);
+                        CombatWatcher watcher = new CombatWatcher(Campaign.CampaignID, combat, combatManagement);
+                        _combatWatcher = watcher;
+                    }
+                }
+                catch
+                {
+                    combatManagement?.Dispose();
+                    combatManagement = null;
+                }
+            }
+        }
+
         /// <summary>
         /// Terminates combat
         /// </summary>
@@ -167,6 +199,12 @@ namespace Fiction.GameScreen.ViewModels
             ActiveCombatViewModel? active = ActiveCombat;
             ActiveCombat = null;
             _prepareCombat = null;
+
+            if (_combatWatcher!= null)
+            {
+                await _combatWatcher.EndCombat();
+                await _combatWatcher.DisposeAsync();
+            }
 
             await Task.Yield();
         }

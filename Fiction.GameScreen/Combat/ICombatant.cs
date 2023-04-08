@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Text;
+﻿using System.Collections.ObjectModel;
 
 namespace Fiction.GameScreen.Combat
 {
@@ -11,6 +8,7 @@ namespace Fiction.GameScreen.Combat
     public interface ICombatant : IActiveCombatant
     {
         #region Properties
+        string? ServerID { get; set; }
         /// <summary>
         /// Gets the source information for this combatant
         /// </summary>

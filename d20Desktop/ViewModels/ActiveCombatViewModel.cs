@@ -50,6 +50,7 @@ namespace Fiction.GameScreen.ViewModels
         /// Gets the display name for this view model
         /// </summary>
         public override string ViewModelDisplayName { get { return Combat.Name; } }
+
         /// <summary>
         /// Gets whether or not information is being sent to a server
         /// </summary>

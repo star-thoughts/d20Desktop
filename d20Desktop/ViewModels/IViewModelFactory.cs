@@ -55,7 +55,7 @@ namespace Fiction.GameScreen.ViewModels
         /// <summary>
         /// Gets the server to use for campaign management
         /// </summary>
-        ICampaignManagement Server { get; }
+        ICampaignManagement? Server { get; }
         #endregion
         #region Methods
         #endregion

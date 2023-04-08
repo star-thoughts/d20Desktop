@@ -1,30 +1,25 @@
 {
-    "iisSettings": {
-      "windowsAuthentication": false,
-      "anonymousAuthentication": true,
-      "iisExpress": {
-        "applicationUrl": "http://localhost:53585",
-        "sslPort": 0
-      }
-    },
-    "profiles": {
-      "http": {
-        "commandName": "Project",
-        "dotnetRunMessages": true,
-        "launchBrowser": true,
-        "inspectUri": "{wsProtocol}://{url.hostname}:{url.port}/_framework/debug/ws-proxy?browser={browserInspectUri}",
-        "applicationUrl": "http://localhost:5277",
-        "environmentVariables": {
-          "ASPNETCORE_ENVIRONMENT": "Development"
-        }
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:53585",
+      "sslPort": 0
+    }
+  },
+  "profiles": {
+    "d20web.Server": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "Storage__ConnectionString": "mongodb://mongoadmin:adminpassword@nas-home:27017/admin",
+        "Storage__Type": "MongoDB",
+        "Storage__DatabaseName": "beta_d20web",
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "Certificate__Type": "Developer"
       },
-      "IIS Express": {
-        "commandName": "IISExpress",
-        "launchBrowser": true,
-        "inspectUri": "{wsProtocol}://{url.hostname}:{url.port}/_framework/debug/ws-proxy?browser={browserInspectUri}",
-        "environmentVariables": {
-          "ASPNETCORE_ENVIRONMENT": "Development"
-        }
-      }
+      "applicationUrl": "https://localhost:5001;http://localhost:5000",
+      "inspectUri": "{wsProtocol}://{url.hostname}:{url.port}/_framework/debug/ws-proxy?browser={browserInspectUri}"
     }
   }
+}

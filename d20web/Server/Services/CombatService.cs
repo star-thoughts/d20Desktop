@@ -179,5 +179,22 @@ namespace d20Web.Services
 
             return result;
         }
+        /// <summary>
+        /// Deletes the combatant from the combat
+        /// </summary>
+        /// <param name="campaignID">ID of the campaign the combat is in</param>
+        /// <param name="combatID">ID of the combat the combatant is in</param>
+        /// <param name="combatantIDs">ID of the combatants to remove</param>
+        /// <param name="cancellationToken">Token for cancelling the operation</param>
+        /// <returns>Task for asynchronous completion</returns>
+        public async Task DeleteCombatant(string campaignID, string combatID, IEnumerable<string> combatantIDs, CancellationToken cancellationToken = default)
+        {
+            if (string.IsNullOrWhiteSpace(combatID))
+                throw new ArgumentNullException(nameof(combatID));
+            if (string.IsNullOrWhiteSpace(campaignID))
+                throw new ArgumentNullException(nameof(campaignID));
+
+            await _storage.DeleteCombatant(campaignID, combatID, combatantIDs, cancellationToken);
+        }
     }
 }

@@ -23,7 +23,7 @@ namespace Fiction.GameScreen.Server
             _combatantsMonitor = new CollectionMonitor(_combat.Combatants);
 
             _combat.PropertyChanged += _combat_PropertyChanged;
-            _combatantsMonitor.PropertyChanged += _combat_PropertyChanged;
+            _combatantsMonitor.PropertyChanged += _combatantsMonitor_PropertyChangedAsync; ;
             _combatantsMonitor.CollectionChanged += _combatantsMonitor_CollectionChanged;
         }
 
@@ -57,7 +57,7 @@ namespace Fiction.GameScreen.Server
             {
                 try
                 {
-                    await _combatManagement.UpdateCombat(_combat.ID, _combat.ToServerCombat());
+                    await _combatManagement.UpdateCombat(_campaignID, _combat.ID, _combat.ToServerCombat());
                 }
                 catch
                 {
@@ -65,8 +65,75 @@ namespace Fiction.GameScreen.Server
             }
         }
 
-        private void _combatantsMonitor_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        private async void _combatantsMonitor_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
         {
+            if (!string.IsNullOrEmpty(_combat.ID))
+            {
+                try
+                {
+                    d20Web.Models.Combatant[]? newCombatants = e.NewItems?.OfType<ICombatant>().Select(p => p.ToServerCombatant()).ToArray();
+                    string[]? oldCombatants = e.OldItems?.OfType<ICombatant>()
+                        .Select(p => p.ServerID)
+                        .Where(p => !string.IsNullOrWhiteSpace(p))
+                        .OfType<string>()
+                        .ToArray();
+
+                    if (newCombatants != null)
+                        await AddCombatants(newCombatants);
+                    if (oldCombatants != null)
+                        await RemoveCombatants(oldCombatants);
+                }
+                catch
+                {
+                }
+            }
+        }
+
+        private async Task RemoveCombatants(string[] combatantIDs)
+        {
+            if (!string.IsNullOrEmpty(_combat.ID))
+            {
+                await _combatManagement.RemoveCombatants(_campaignID, _combat.ID, combatantIDs);
+            }
+        }
+
+        private async Task AddCombatants(d20Web.Models.Combatant[] newCombatants)
+        {
+            if (!string.IsNullOrEmpty(_combat.ID))
+            {
+                string[] ids = (await _combatManagement.AddCombatants(_campaignID, _combat.ID, newCombatants)).ToArray();
+
+                if (ids.Length == newCombatants.Length)
+                {
+                    for (int i = 0; i < newCombatants.Length; i++)
+                    {
+                        d20Web.Models.Combatant combatant = newCombatants[i];
+                        ICombatant? oldCombatant = _combat.Combatants
+                            .FirstOrDefault(p => string.Equals(p.Name, combatant.Name, StringComparison.Ordinal) && p.Ordinal == combatant.Ordinal);
+
+                        if (oldCombatant != null)
+                            oldCombatant.ServerID = ids[i];
+                    }
+                }
+            }
+        }
+
+        private async void _combatantsMonitor_PropertyChangedAsync(object? sender, PropertyChangedEventArgs e)
+        {
+            if (!string.IsNullOrEmpty(_combat.ID))
+            {
+                try
+                {
+                    if (sender is ICombatant combatant
+                        && !string.IsNullOrWhiteSpace(combatant.ServerID))
+                    {
+                        await _combatManagement.UpdateCombatant(_campaignID, _combat.ID, combatant.ToServerCombatant());
+                    }
+                }
+                catch
+                {
+                }
+            }
         }
 
         public async ValueTask DisposeAsync()
@@ -76,6 +143,20 @@ namespace Fiction.GameScreen.Server
                 try
                 {
                     await _combatManagement.EndCombat(_campaignID, _combat.ID);
+                }
+                catch
+                {
+                }
+            }
+        }
+
+        public async Task EndCombat(CancellationToken cancellationToken = default)
+        {
+            if (!string.IsNullOrWhiteSpace(_combat.ID))
+            {
+                try
+                {
+                    await _combatManagement.EndCombat(_campaignID, _combat.ID, cancellationToken);
                 }
                 catch
                 {

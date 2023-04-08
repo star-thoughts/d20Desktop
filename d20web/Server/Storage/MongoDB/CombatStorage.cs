@@ -290,5 +290,43 @@ namespace d20Web.Storage.MongoDB
 
             return combatants;
         }
+
+        /// <summary>
+        /// Deletes the combatant from the combat
+        /// </summary>
+        /// <param name="campaignID">ID of the campaign the combat is in</param>
+        /// <param name="combatID">ID of the combat the combatant is in</param>
+        /// <param name="combatantIDs">ID of the combatant to remove</param>
+        /// <param name="cancellationToken">Token for cancelling the operation</param>
+        /// <returns>Task for asynchronous completion</returns>
+        public async Task DeleteCombatant(string campaignID, string combatID, IEnumerable<string> combatantIDs, CancellationToken cancellationToken = default)
+        {
+            if (string.IsNullOrWhiteSpace(campaignID))
+                throw new ArgumentNullException(nameof(campaignID));
+            if (!ObjectId.TryParse(campaignID, out ObjectId campaignObjectID))
+                throw new ArgumentException("Invalid combat ID", nameof(campaignID));
+            if (string.IsNullOrWhiteSpace(combatID))
+                throw new ArgumentNullException(nameof(combatID));
+            if (!ObjectId.TryParse(combatID, out ObjectId combatObjectID))
+                throw new ArgumentException("Invalid combat ID", nameof(combatID));
+
+            IEnumerable<ObjectId> combatantObjectIDs = combatantIDs.Select(p => {
+                {
+                    if (string.IsNullOrWhiteSpace(p))
+                        throw new ArgumentNullException(nameof(p));
+                    if (!ObjectId.TryParse(p, out ObjectId combatantObjectID))
+                        throw new ArgumentException("Invalid combat ID", nameof(p));
+                    return combatantObjectID;
+                }
+            }).ToArray();
+
+            var combatantsCollection = GetCombatantsCollection();
+
+            FilterDefinition<MongoCombatant> filter = Builders<MongoCombatant>.Filter.In(p => p.ID, combatantObjectIDs)
+                & Builders<MongoCombatant>.Filter.Eq(p => p.CampaignID, campaignObjectID)
+                & Builders<MongoCombatant>.Filter.Eq(p => p.CombatID, combatObjectID);
+
+            await combatantsCollection.DeleteManyAsync(filter, cancellationToken);
+        }
     }
 }

@@ -1,12 +1,11 @@
-﻿using Microsoft.AspNetCore.WebUtilities;
-using System.Text.Json;
+﻿using System.Text.Json;
 
 namespace Fiction.GameScreen.Server
 {
     /// <summary>
     /// Handles communicating with the server for campaign management
     /// </summary>
-    public sealed class CampaignManagement
+    public sealed class CampaignManagement : ICampaignManagement
     {
         public CampaignManagement(HttpClient client)
         {

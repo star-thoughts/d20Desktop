@@ -18,18 +18,14 @@ namespace Fiction.GameScreen.Combat
         /// <param name="name">Name of the combat</param>
         /// <param name="preparer">CombatPreparer used to set up the combat</param>
         /// <param name="serializer">Serializer to use for backing up and restoring combat for undo operations</param>
-        /// <param name="server">Server for combat management</param>
-        public ActiveCombat(string name, CombatPreparer preparer, IXmlActiveCombatSerializer serializer, ICombatManagement server)
+        public ActiveCombat(string name, CombatPreparer preparer, IXmlActiveCombatSerializer serializer)
         {
             Exceptions.ThrowIfArgumentNullOrEmpty(name, nameof(name));
             Exceptions.ThrowIfArgumentNull(preparer, nameof(preparer));
-            Exceptions.ThrowIfArgumentNull(server, nameof(server));
 
             _name = name;
             preparer.ResolveOrdinals();
             _serializer = serializer;
-
-            _server = server;
 
             AddCombatants(preparer);
 
@@ -41,17 +37,15 @@ namespace Fiction.GameScreen.Combat
         /// </summary>
         /// <param name="name">Name of the combat</param>
         /// <param name="combatants">Collection of combatants</param>
-        public ActiveCombat(string name, IXmlActiveCombatSerializer serializer, IEnumerable<ICombatant> combatants, ICombatManagement server)
+        public ActiveCombat(string name, IXmlActiveCombatSerializer serializer, IEnumerable<ICombatant> combatants)
         {
             Exceptions.ThrowIfArgumentNullOrEmpty(name, nameof(name));
             Exceptions.ThrowIfArgumentNull(combatants, nameof(combatants));
-            Exceptions.ThrowIfArgumentNull(server, nameof(server));
 
             _name = name;
             _combatants = combatants.ToObservableCollection();
             Combatants = new ReadOnlyObservableCollection<ICombatant>(_combatants);
             _serializer = serializer;
-            _server = server;
 
             Initialize();
         }
@@ -79,7 +73,6 @@ namespace Fiction.GameScreen.Combat
         }
         #endregion
         #region Member Variables
-        private readonly ICombatManagement _server;
         private ObservableCollection<ICombatant> _combatants;
         private CollectionMonitor _combatantsMonitor;
         private List<ICombatant> _goneThisTurn;
@@ -355,18 +348,6 @@ namespace Fiction.GameScreen.Combat
                     damageInfo.Combatant.Health.ApplyLethalDamage(amount);
                 else
                     damageInfo.Combatant.Health.ApplyNonlethalDamage(amount);
-            }
-        }
-        #endregion
-        #region Server Methods
-        private async void UpdateCombat()
-        {
-            try
-            {
-                await _server.UpdateCombat(this);
-            }
-            catch
-            {
             }
         }
         #endregion
