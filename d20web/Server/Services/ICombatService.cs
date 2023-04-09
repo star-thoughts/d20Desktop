@@ -42,11 +42,12 @@ namespace d20Web.Services
         /// <summary>
         /// Creates a combatant with the given statistics
         /// </summary>
+        /// <param name="campaignID">ID of the campaign containing the combat</param>
         /// <param name="combatID">ID of the combat to create the combatant in</param>
         /// <param name="combatants">Combatant information to create</param>
         /// <param name="cancellationToken">Token for cancelling the operation</param>
         /// <returns>ID of the combatant</returns>
-        Task<IEnumerable<string>> CreateCombatant(string combatID, IEnumerable<Combatant> combatants, CancellationToken cancellationToken = default);
+        Task<IEnumerable<string>> CreateCombatant(string campaignID, string combatID, IEnumerable<Combatant> combatants, CancellationToken cancellationToken = default);
         /// <summary>
         /// Gets combatant information
         /// </summary>

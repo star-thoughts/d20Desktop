@@ -30,6 +30,7 @@ namespace d20web
             }
 
             builder.Services.AddTransient<ICampaignsService, CampaignsService>();
+            builder.Services.AddTransient<ICombatService, CombatService>();
 
             WebApplication app = builder.Build();
 

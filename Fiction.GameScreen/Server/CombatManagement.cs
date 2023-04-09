@@ -81,7 +81,7 @@ namespace Fiction.GameScreen.Server
         /// <returns>IDs of the combatants added, in order they were put in <paramref name="combatants"/></returns>
         public async Task<IEnumerable<string>> AddCombatants(string campaignID, string combatID, IEnumerable<d20Web.Models.Combatant> combatants, CancellationToken cancellationToken = default)
         {
-            string uri = $"/api/campaign/{HttpUtility.UrlEncode(campaignID)}/combat/{HttpUtility.UrlEncode(combatID)}";
+            string uri = $"/api/campaign/{HttpUtility.UrlEncode(campaignID)}/combat/{HttpUtility.UrlEncode(combatID)}/combatant";
 
             HttpResponseMessage result = await _client.PostAsJsonAsync(uri, combatants, cancellationToken);
             result.EnsureSuccessStatusCode();

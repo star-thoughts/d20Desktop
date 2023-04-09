@@ -98,11 +98,12 @@ namespace d20Web.Services
         /// <summary>
         /// Creates a combatant with the given statistics
         /// </summary>
+        /// <param name="campaignID">ID of the campaign containing the combat</param>
         /// <param name="combatID">ID of the combat to create the combatant in</param>
-        /// <param name="combatant">Combatant information to create</param>
+        /// <param name="combatants">Combatant information to create</param>
         /// <param name="cancellationToken">Token for cancelling the operation</param>
         /// <returns>ID of the combatant</returns>
-        public async Task<IEnumerable<string>> CreateCombatant(string combatID, IEnumerable<Combatant> combatants, CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<string>> CreateCombatant(string campaignID, string combatID, IEnumerable<Combatant> combatants, CancellationToken cancellationToken = default)
         {
             if (string.IsNullOrWhiteSpace(combatID))
                 throw new ArgumentNullException(nameof(combatID));
@@ -119,7 +120,7 @@ namespace d20Web.Services
                     throw new ArgumentNullException(nameof(combatant.Health));
             }
 
-            (string campaignID, IEnumerable<string> ids) = await _storage.CreateCombatants(combatID, combatants, cancellationToken);
+            IEnumerable<string> ids = await _storage.CreateCombatants(campaignID, combatID, combatants, cancellationToken);
 
             _ = _hub.CombatantCreated(campaignID, ids);
 

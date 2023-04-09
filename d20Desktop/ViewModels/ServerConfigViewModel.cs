@@ -82,9 +82,12 @@ namespace Fiction.GameScreen.ViewModels
                     };
 
                     CampaignManagement server = new CampaignManagement(client);
-                    string id = await server.CreateCampaign(_campaignName);
-                    _campaign.CampaignID = id;
-                    _campaign.ServerUri = _serverUri;
+                    if (string.IsNullOrWhiteSpace(_campaign.CampaignID))
+                    {
+                        string id = await server.CreateCampaign(_campaignName);
+                        _campaign.CampaignID = id;
+                        _campaign.ServerUri = _serverUri;
+                    }
                     _modelFactory.SetServer(server);
                 }
             }

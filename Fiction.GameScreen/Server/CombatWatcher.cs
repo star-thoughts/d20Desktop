@@ -41,8 +41,21 @@ namespace Fiction.GameScreen.Server
         {
             try
             {
-                string? id = await _combatManagement.BeginCombat(_campaignID, _combat.Name, cancellationToken);
-                _combat.ID = id;
+                if (string.IsNullOrEmpty(_combat.ID))
+                {
+                    string? id = await _combatManagement.BeginCombat(_campaignID, _combat.Name, cancellationToken);
+                    _combat.ID = id;
+
+                    if (id != null)
+                    {
+                        string[] combatantIDs = (await _combatManagement.AddCombatants(_campaignID, id, _combat.Combatants.Select(p => p.ToServerCombatant()), cancellationToken)).ToArray();
+                        for (int i = 0; i < combatantIDs.Length; i++)
+                        {
+                            ICombatant combatant = _combat.Combatants[i];
+                            combatant.ServerID = combatantIDs[i];
+                        }
+                    }
+                }
                 return !string.IsNullOrEmpty(_combat.ID);
             }
             catch

@@ -81,11 +81,17 @@ namespace d20Web.Storage.MongoDB
             {
 
                 IMongoCollection<MongoCombat> combatCollection = (await GetCombatsCollection());
+                IMongoCollection<MongoCombatant> combatantsCollection = await GetCombatantsCollection();
 
                 FilterDefinition<MongoCombat> filter = Builders<MongoCombat>.Filter
                     .Eq(p => p.ID, combatObjectID);
 
                 await combatCollection.DeleteOneAsync(filter, cancellationToken);
+
+                FilterDefinition<MongoCombatant> combatantsFilter = Builders<MongoCombatant>.Filter
+                    .Eq(p => p.CombatID, combatObjectID);
+
+                await combatantsCollection.DeleteManyAsync(combatantsFilter, cancellationToken);
             }
         }
         /// <summary>
@@ -151,15 +157,20 @@ namespace d20Web.Storage.MongoDB
         /// <summary>
         /// Adds the given combatant to a combat
         /// </summary>
+        /// <param name="campaignID">ID of the campaign containing the combat</param>
         /// <param name="combatID">ID of the combat</param>
         /// <param name="combatants">Combatant information to add to the combat</param>
         /// <param name="cancellationToken">Token for cancelling the operation</param>
         /// <returns>ID of the campaign, as well as the IDs of the newly created combatants</returns>
         /// <exception cref="ArgumentNullException">One or more parameters was null</exception>
         /// <exception cref="ArgumentException">One or more of the IDs could not be converted to a MongoDB ObjectID</exception>
-        public async Task<(string, IEnumerable<string>)> CreateCombatants(string combatID, IEnumerable<Combatant> combatants, CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<string>> CreateCombatants(string campaignID, string combatID, IEnumerable<Combatant> combatants, CancellationToken cancellationToken = default)
         {
 
+            if (string.IsNullOrWhiteSpace(campaignID))
+                throw new ArgumentNullException(nameof(campaignID));
+            if (!ObjectId.TryParse(campaignID, out ObjectId campaignObjectID))
+                throw new ItemNotFoundException(ItemType.Campaign, campaignID);
             if (string.IsNullOrWhiteSpace(combatID))
                 throw new ArgumentNullException(nameof(combatID));
             if (!ObjectId.TryParse(combatID, out ObjectId combatObjectID))
@@ -174,18 +185,14 @@ namespace d20Web.Storage.MongoDB
             FilterDefinition<MongoCombat> combatFilter = Builders<MongoCombat>.Filter
                 .Eq(p => p.ID, combatObjectID);
 
-            ObjectId campaignID = await combatsCollection.Find(combatFilter)
-                .Project(p => p.CampaignID)
-                .FirstOrDefaultAsync();
-
-            if (ObjectId.Empty.Equals(campaignID))
+            if ((await combatsCollection.CountDocumentsAsync(combatFilter, null, cancellationToken)) == 0)
                 throw new ItemNotFoundException(ItemType.Combat, combatID);
 
-            MongoCombatant[] dbCombatants = combatants.Select(p => MongoCombatant.Create(campaignID, combatObjectID, p)).ToArray();
+            MongoCombatant[] dbCombatants = combatants.Select(p => MongoCombatant.Create(campaignObjectID, combatObjectID, p)).ToArray();
 
             await combatantsCollection.InsertManyAsync(dbCombatants, InsertManyOptions, cancellationToken);
 
-            return (campaignID.ToString(), dbCombatants.Select(p => p.ID.ToString()).ToArray());
+            return dbCombatants.Select(p => p.ID.ToString()).ToArray();
         }
 
         /// <summary>

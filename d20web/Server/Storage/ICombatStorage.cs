@@ -40,13 +40,16 @@ namespace d20Web.Storage
         /// <returns>Combat information</returns>
         Task<Combat> GetCombat(string combatID, CancellationToken cancellationToken = default);
         /// <summary>
-        /// Creates a combatant with the given statistics
+        /// Adds the given combatant to a combat
         /// </summary>
-        /// <param name="combatID">ID of the combat to create the combatant in</param>
-        /// <param name="combatants">Combatant information to create</param>
+        /// <param name="campaignID">ID of the campaign containing the combat</param>
+        /// <param name="combatID">ID of the combat</param>
+        /// <param name="combatants">Combatant information to add to the combat</param>
         /// <param name="cancellationToken">Token for cancelling the operation</param>
-        /// <returns>ID of the campaign, as well as the IDs of the combatants</returns>
-        Task<(string, IEnumerable<string>)> CreateCombatants(string combatID, IEnumerable<Combatant> combatants, CancellationToken cancellationToken = default);
+        /// <returns>ID of the campaign, as well as the IDs of the newly created combatants</returns>
+        /// <exception cref="ArgumentNullException">One or more parameters was null</exception>
+        /// <exception cref="ArgumentException">One or more of the IDs could not be converted to a MongoDB ObjectID</exception>
+        Task<IEnumerable<string>> CreateCombatants(string campaignID, string combatID, IEnumerable<Combatant> combatants, CancellationToken cancellationToken = default);
         /// <summary>
         /// Updates the details of a combatant
         /// </summary>

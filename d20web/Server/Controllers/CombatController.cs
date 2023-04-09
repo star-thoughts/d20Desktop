@@ -34,7 +34,7 @@ namespace d20Web.Controllers
         {
             string id = await _combatService.CreateCombat(campaignID, name, HttpContext.RequestAborted);
 
-            return CreatedAtAction(nameof(GetCombat), new { combatID = id });
+            return CreatedAtAction(nameof(GetCombat), new { campaignID = campaignID, combatID = id }, new { combatID = id });
         }
 
         /// <summary>
@@ -85,7 +85,7 @@ namespace d20Web.Controllers
         [HttpPost("{combatID}/combatant")]
         public async Task<IActionResult> CreateCombatants([Required] string campaignID, [Required] string combatID, [Required] Combatant[] combatants)
         {
-            IEnumerable<string> ids = await _combatService.CreateCombatant(combatID, combatants, HttpContext.RequestAborted);
+            IEnumerable<string> ids = await _combatService.CreateCombatant(campaignID, combatID, combatants, HttpContext.RequestAborted);
 
             return Ok(new { combatantIDs = ids });
         }
