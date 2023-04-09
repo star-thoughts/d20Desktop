@@ -117,7 +117,7 @@ namespace System.Xml
         /// <param name="name">Name of the attribute to write</param>
         /// <param name="value">Value to write</param>
         /// <returns>Task for task completion</returns>
-        public async static Task WriteOptionalAttributeStringAsync(this XmlWriter writer, string name, string value)
+        public async static Task WriteOptionalAttributeStringAsync(this XmlWriter writer, string name, string? value)
         {
             Exceptions.ThrowIfArgumentNull(writer, nameof(writer));
 
@@ -131,7 +131,7 @@ namespace System.Xml
         /// <param name="name">Name of the attribute to write</param>
         /// <param name="value">Value to write</param>
         /// <returns>Task for task completion</returns>
-        public static void WriteOptionalAttributeString(this XmlWriter writer, string name, string value)
+        public static void WriteOptionalAttributeString(this XmlWriter writer, string name, string? value)
         {
             Exceptions.ThrowIfArgumentNull(writer, nameof(writer));
 
