@@ -108,7 +108,7 @@ namespace d20Web.Controllers
             return Ok(await _combatService.GetCombatant(combatID, combatantID, HttpContext.RequestAborted));
         }
 
-        [HttpPost("{combatID}/combatant/{combatantID}")]
+        [HttpPut("{combatID}/combatant/{combatantID}")]
         public async Task<IActionResult> UpdateCombatant([Required] string campaignID, [Required] string combatID, [Required] Combatant combatant)
         {
             await _combatService.UpdateCombatant(campaignID, combatID, combatant, HttpContext.RequestAborted);

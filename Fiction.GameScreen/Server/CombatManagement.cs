@@ -52,7 +52,8 @@ namespace Fiction.GameScreen.Server
         {
             string uri = $"/api/campaign/{HttpUtility.UrlEncode(campaignID)}/combat/{HttpUtility.UrlEncode(combatID)}";
 
-            await _client.DeleteAsync(uri, cancellationToken);
+            using (var result = await _client.DeleteAsync(uri, cancellationToken))
+                result.EnsureSuccessStatusCode();
         }
 
         /// <summary>
@@ -67,8 +68,10 @@ namespace Fiction.GameScreen.Server
         {
             string uri = $"/api/campaign/{HttpUtility.UrlEncode(campaignID)}/combat/{HttpUtility.UrlEncode(combatID)}";
 
-            HttpResponseMessage result = await _client.PutAsJsonAsync(uri, combat, cancellationToken);
-            result.EnsureSuccessStatusCode();
+            using (HttpResponseMessage result = await _client.PutAsJsonAsync(uri, combat, cancellationToken))
+            {
+                result.EnsureSuccessStatusCode();
+            }
         }
 
         /// <summary>
@@ -83,10 +86,12 @@ namespace Fiction.GameScreen.Server
         {
             string uri = $"/api/campaign/{HttpUtility.UrlEncode(campaignID)}/combat/{HttpUtility.UrlEncode(combatID)}/combatant";
 
-            HttpResponseMessage result = await _client.PostAsJsonAsync(uri, combatants, cancellationToken);
-            result.EnsureSuccessStatusCode();
+            using (HttpResponseMessage result = await _client.PostAsJsonAsync(uri, combatants, cancellationToken))
+            {
+                result.EnsureSuccessStatusCode();
 
-            return JsonSerializer.Deserialize<NewCombatants>(await result.Content.ReadAsStringAsync())?.combatantIDs ?? Enumerable.Empty<string>();
+                return JsonSerializer.Deserialize<NewCombatants>(await result.Content.ReadAsStringAsync())?.combatantIDs ?? Enumerable.Empty<string>();
+            }
         }
 
         /// <summary>
@@ -101,7 +106,8 @@ namespace Fiction.GameScreen.Server
             string uri = $"/api/campaign/{HttpUtility.UrlEncode(campaignID)}/combat/{HttpUtility.UrlEncode(combatID)}/combatant";
             uri = QueryHelpers.AddQueryString(uri, combatantIDs.Select(p => new KeyValuePair<string, string>("combatantIDs", p)));
 
-            await _client.DeleteAsync(uri, cancellationToken);
+            using (HttpResponseMessage result = await _client.DeleteAsync(uri, cancellationToken))
+                result.EnsureSuccessStatusCode();
         }
 
         /// <summary>
@@ -116,7 +122,8 @@ namespace Fiction.GameScreen.Server
         {
             string uri = $"/api/campaign/{HttpUtility.UrlEncode(campaignID)}/combat/{HttpUtility.UrlEncode(combatID)}/combatant/{HttpUtility.UrlEncode(combatant.ID)}";
 
-            await _client.PutAsJsonAsync(uri, combatant, cancellationToken);
+            using (HttpResponseMessage result = await _client.PutAsJsonAsync(uri, combatant, cancellationToken))
+                result.EnsureSuccessStatusCode();
         }
 
         public void Dispose()

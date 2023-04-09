@@ -77,8 +77,12 @@ namespace d20Web.Storage.MongoDB.Models
         /// <returns></returns>
         public static MongoCombatant Create(ObjectId campaignID, ObjectId combatID, Combatant combatant)
         {
+            ObjectId combatantID = ObjectId.Empty;
+            ObjectId.TryParse(combatant.ID, out combatantID);
+
             MongoCombatant result = new MongoCombatant()
             {
+                ID = combatantID,
                 CampaignID = campaignID,
                 CombatID = combatID,
                 Name = combatant.Name,

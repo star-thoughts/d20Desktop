@@ -86,8 +86,8 @@ namespace Fiction.GameScreen.ViewModels
                     {
                         string id = await server.CreateCampaign(_campaignName);
                         _campaign.CampaignID = id;
-                        _campaign.ServerUri = _serverUri;
                     }
+                    _campaign.ServerUri = _serverUri;
                     _modelFactory.SetServer(server);
                 }
             }
