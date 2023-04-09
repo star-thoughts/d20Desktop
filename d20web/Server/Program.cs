@@ -1,3 +1,4 @@
+using d20Web.Hubs;
 using d20Web.Services;
 using d20Web.Storage;
 using d20Web.Storage.MongoDB;
@@ -52,6 +53,7 @@ namespace d20web
 
             app.MapRazorPages();
             app.MapControllers();
+            app.MapHub<CampaignHub>("/campaign");
             app.MapFallbackToFile("index.html");
 
             app.Run();

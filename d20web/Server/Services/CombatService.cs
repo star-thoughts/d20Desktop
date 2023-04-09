@@ -122,7 +122,7 @@ namespace d20Web.Services
 
             IEnumerable<string> ids = await _storage.CreateCombatants(campaignID, combatID, combatants, cancellationToken);
 
-            _ = _hub.CombatantCreated(campaignID, ids);
+            _ = _hub.CombatantCreated(campaignID, combatID, ids);
 
             return ids;
         }
@@ -143,7 +143,7 @@ namespace d20Web.Services
 
             await _storage.UpdateCombatant(campaignID, combatID, combatant, cancellationToken);
 
-            _ = _hub.CombatantUpdated(campaignID, combatant.ToPlayerView());
+            _ = _hub.CombatantUpdated(campaignID, combatID, combatant.ToPlayerView());
         }
         /// <summary>
         /// Gets combatant information
@@ -196,6 +196,8 @@ namespace d20Web.Services
                 throw new ArgumentNullException(nameof(campaignID));
 
             await _storage.DeleteCombatant(campaignID, combatID, combatantIDs, cancellationToken);
+
+            _ = _hub.CombatantsDeleted(campaignID, combatID, combatantIDs);
         }
     }
 }

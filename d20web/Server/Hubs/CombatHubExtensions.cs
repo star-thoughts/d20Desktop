@@ -30,20 +30,28 @@ namespace d20Web.Hubs
             return hub.Clients.All.SendAsync(Constants.CombatUpdated, campaignID, combat);
         }
 
-        public static Task CombatantCreated(this IHubContext<CampaignHub> hub, string campaignID, IEnumerable<string> combatantIDs)
+        public static Task CombatantCreated(this IHubContext<CampaignHub> hub, string campaignID, string combatID, IEnumerable<string> combatantIDs)
         {
             if (hub == null)
                 throw new ArgumentNullException(nameof(hub));
 
-            return hub.Clients.All.SendAsync(Constants.CombatantCreated, campaignID, combatantIDs);
+            return hub.Clients.All.SendAsync(Constants.CombatantCreated, campaignID, combatID, combatantIDs);
         }
 
-        public static Task CombatantUpdated(this IHubContext<CampaignHub> hub, string campaignID, Combatant combatant)
+        public static Task CombatantUpdated(this IHubContext<CampaignHub> hub, string campaignID, string combatID, Combatant combatant)
         {
             if (hub == null)
                 throw new ArgumentNullException(nameof(hub));
 
-            return hub.Clients.All.SendAsync(Constants.CombatantUpdated, campaignID, combatant);
+            return hub.Clients.All.SendAsync(Constants.CombatantUpdated, campaignID, combatID, combatant);
+        }
+
+        public static Task CombatantsDeleted(this IHubContext<CampaignHub> hub, string campaignID, string combatID, IEnumerable<string> combatantIDs)
+        {
+            if (hub == null)
+                throw new ArgumentNullException(nameof(hub));
+
+            return hub.Clients.All.SendAsync(Constants.CombatantsDeleted, campaignID, combatID, combatantIDs);
         }
     }
 }

@@ -9,5 +9,6 @@
         public const string CombatUpdated = nameof(CombatUpdated);
         public const string CombatantCreated = nameof(CombatantCreated);
         public const string CombatantUpdated = nameof(CombatantUpdated);
+        public const string CombatantsDeleted = nameof(CombatantsDeleted);
     }
 }
