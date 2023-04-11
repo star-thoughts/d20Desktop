@@ -8,7 +8,7 @@ namespace d20Web.Pages.Combat
     /// <summary>
     /// Page for viewing combat
     /// </summary>
-    public partial class CombatPage
+    public partial class CombatPage : IDisposable
     {
         [Inject]
         ICombatServer CombatServer { get; set; } = null!;
@@ -113,6 +113,14 @@ namespace d20Web.Pages.Combat
             enumerable ??= Enumerable.Empty<Combatant>();
 
             return enumerable.OrderBy(p => p.InitiativeOrder).ToArray();
+        }
+
+        public void Dispose()
+        {
+            CombatClient.CombatDeleted -= CombatClient_CombatDeleted;
+            CombatClient.CombatantUpdated -= CombatClient_CombatantUpdated;
+            CombatClient.CombatantCreated -= CombatClient_CombatantCreated;
+            CombatClient.CombatantDeleted -= CombatClient_CombatantDeleted;
         }
     }
 }
