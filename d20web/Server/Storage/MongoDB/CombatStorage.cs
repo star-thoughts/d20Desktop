@@ -95,6 +95,32 @@ namespace d20Web.Storage.MongoDB
             }
         }
         /// <summary>
+        /// Gets a list of combats int he campaign
+        /// </summary>
+        /// <param name="campaignID">ID of the campaign</param>
+        /// <param name="cancellationToken">Token for cancelling the operation</param>
+        /// <returns>Collection of combats in the campaign</returns>
+        public async Task<IEnumerable<CombatListData>> GetCombats(string campaignID, CancellationToken cancellationToken = default)
+        {
+            if (string.IsNullOrWhiteSpace(campaignID))
+                throw new ArgumentNullException(nameof(campaignID));
+            if (!ObjectId.TryParse(campaignID, out ObjectId campaignObjectID))
+                throw new ItemNotFoundException(ItemType.Campaign, campaignID);
+
+            IMongoCollection<MongoCombat> combatsCollection = await GetCombatsCollection();
+
+            FilterDefinition<MongoCombat> filter = Builders<MongoCombat>.Filter
+                .Eq(p => p.CampaignID, campaignObjectID);
+
+            return await combatsCollection.Find(filter)
+                .Project(p => new CombatListData()
+                {
+                    ID = p.ID.ToString(),
+                    Name = p.Name,
+                })
+                .ToListAsync(cancellationToken);
+        }
+        /// <summary>
         /// Updates a given combat
         /// </summary>
         /// <param name="campaignID">ID of the campaign containing the combat</param>

@@ -45,6 +45,23 @@ namespace d20Web.Storage.MongoDB
             return campaign.ID.ToString();
         }
         /// <summary>
+        /// Gets a collection of campaigns in the system
+        /// </summary>
+        /// <param name="cancellationToken">Token for cancelling the operation</param>
+        /// <returns>Collection of campaign information</returns>
+        public async Task<IEnumerable<CampaignListData>> GetCampaigns(CancellationToken cancellationToken = default)
+        {
+            IMongoCollection<MongoCampaign> collection = await GetCampaignsCollection();
+
+            return await collection.Find(Builders<MongoCampaign>.Filter.Empty)
+                .Project(p => new CampaignListData()
+                {
+                    Name = p.Name,
+                    ID = p.ID.ToString(),
+                })
+                .ToListAsync(cancellationToken);
+        }
+        /// <summary>
         /// Gets the information for a campaign
         /// </summary>
         /// <param name="campaignID">ID of the campaign to get</param>

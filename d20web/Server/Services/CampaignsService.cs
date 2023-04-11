@@ -30,6 +30,11 @@ namespace d20Web.Services
             return id;
         }
 
+        public async Task<IEnumerable<CampaignListData>> GetCampaigns(CancellationToken cancellationToken = default)
+        {
+            return await _campaignStorage.GetCampaigns(cancellationToken);
+        }
+
         public Task<Campaign> GetCampaign(string campaignID, CancellationToken cancellationToken = default)
         {
             if (string.IsNullOrWhiteSpace(campaignID))

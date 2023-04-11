@@ -64,6 +64,20 @@ namespace d20Web.Services
         }
 
         /// <summary>
+        /// Gets a list of combats int he campaign
+        /// </summary>
+        /// <param name="campaignID">ID of the campaign</param>
+        /// <param name="cancellationToken">Token for cancelling the operation</param>
+        /// <returns>Collection of combats in the campaign</returns>
+        public async Task<IEnumerable<CombatListData>> GetCombats(string campaignID, CancellationToken cancellationToken = default)
+        {
+            if (string.IsNullOrWhiteSpace(campaignID))
+                throw new ArgumentNullException(nameof(campaignID));
+
+            return await _storage.GetCombats(campaignID, cancellationToken);
+        }
+
+        /// <summary>
         /// Updates the information for a combat
         /// </summary>
         /// <param name="campaignID">ID of the campaign containing the combat</param>

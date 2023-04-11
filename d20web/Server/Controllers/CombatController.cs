@@ -50,6 +50,12 @@ namespace d20Web.Controllers
             return NoContent();
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetCombats([Required] string campaignID)
+        {
+            return Ok(await _combatService.GetCombats(campaignID, HttpContext.RequestAborted));
+        }
+
         /// <summary>
         /// Updates a combat's information
         /// </summary>

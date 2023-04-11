@@ -15,6 +15,12 @@ namespace d20Web.Storage
         /// <returns>ID of the campaign that was created</returns>
         Task<string> CreateCampaign(string name, CancellationToken cancellationToken);
         /// <summary>
+        /// Gets a collection of campaigns in the system
+        /// </summary>
+        /// <param name="cancellationToken">Token for cancelling the operation</param>
+        /// <returns>Collection of campaign information</returns>
+        Task<IEnumerable<CampaignListData>> GetCampaigns(CancellationToken cancellationToken = default);
+        /// <summary>
         /// Gets the information for a campaign
         /// </summary>
         /// <param name="campaignId">ID of the campaign to get</param>

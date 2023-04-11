@@ -41,6 +41,16 @@ namespace d20Web.Controllers
         }
 
         /// <summary>
+        /// Gets a list of campaigns
+        /// </summary>
+        /// <returns>Collection of campaign information</returns>
+        [HttpGet]
+        public async Task<IActionResult> GetCampaigns()
+        {
+            return Ok(await _campaignsService.GetCampaigns(HttpContext.RequestAborted));
+        }
+
+        /// <summary>
         /// Gets the basic information for a campaign
         /// </summary>
         /// <param name="campaignID">ID of the campaign</param>
