@@ -99,7 +99,8 @@ namespace d20Web.Controllers
         [HttpGet("{combatID}/combatant")]
         public async Task<IActionResult> GetCombatants([Required] string campaignID, [Required] string combatID)
         {
-            return Ok(await _combatService.GetCombatants(combatID, HttpContext.RequestAborted));
+            IEnumerable<Combatant> result = await _combatService.GetCombatants(combatID, HttpContext.RequestAborted);
+            return Ok(result);
         }
 
         /// <summary>

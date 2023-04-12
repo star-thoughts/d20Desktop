@@ -1,6 +1,5 @@
 ﻿using d20Web.Models;
 using System.Text.Json;
-using System.Web;
 
 namespace d20Web.Clients
 {
@@ -29,12 +28,16 @@ namespace d20Web.Clients
         {
             string uri = $"api/campaign";
 
-            using (var result = await _client.GetAsync(uri, cancellationToken))
+            using (HttpResponseMessage result = await _client.GetAsync(uri, cancellationToken))
             {
                 result.EnsureSuccessStatusCode();
 
-                return JsonSerializer.Deserialize<IEnumerable<CampaignListData>>(await result.Content.ReadAsStringAsync(cancellationToken))
+                string content = await result.Content.ReadAsStringAsync(cancellationToken);
+
+                IEnumerable<CampaignListData> results = JsonSerializer.Deserialize<IEnumerable<CampaignListData>>(content, Helpers.JsonSerializerOptions)
                     ?? Enumerable.Empty<CampaignListData>();
+
+                return results;
             }
         }
     }

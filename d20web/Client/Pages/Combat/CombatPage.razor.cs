@@ -11,11 +11,11 @@ namespace d20Web.Pages.Combat
     public partial class CombatPage : IDisposable
     {
         [Inject]
-        ICombatServer CombatServer { get; set; } = null!;
+        public ICombatServer CombatServer { get; set; } = null!;
         [Inject]
-        CombatClient CombatClient { get; set; } = null!;
+        public CombatClient CombatClient { get; set; } = null!;
         [Inject]
-        NavigationManager NavigationManager { get; set; } = null!;
+        public NavigationManager NavigationManager { get; set; } = null!;
 
         [Parameter]
         public string? CampaignID { get; set; }
@@ -32,12 +32,13 @@ namespace d20Web.Pages.Combat
             {
                 Combat = await CombatServer.GetCombat(CampaignID, CombatID);
 
-                Combatants = OrderCombatants(await CombatServer.GetCombatants(CampaignID, CombatID));
-
+                await CombatClient.StartClient();
                 CombatClient.CombatDeleted += CombatClient_CombatDeleted;
                 CombatClient.CombatantUpdated += CombatClient_CombatantUpdated;
                 CombatClient.CombatantCreated += CombatClient_CombatantCreated;
                 CombatClient.CombatantDeleted += CombatClient_CombatantDeleted;
+
+                Combatants = OrderCombatants(await CombatServer.GetCombatants(CampaignID, CombatID));
             }
         }
 
@@ -51,17 +52,19 @@ namespace d20Web.Pages.Combat
                 if (Combatants != null)
                 {
                     List<Combatant> temp = Combatants.Where(p => !combatantIDs.Contains(p.ID)).ToList();
-                    foreach (Combatant combatant in combatants)
+                    foreach (Combatant combatant in combatants.Where(p => combatantIDs.Contains(p.ID)))
                         temp.Add(combatant);
 
                     Combatants = OrderCombatants(temp);
                 }
                 else
                     Combatants = OrderCombatants(combatants);
+
+                await InvokeAsync(StateHasChanged);
             }
         }
 
-        private void AddOrUpdateCombatant(Combatant combatant)
+        private async Task AddOrUpdateCombatant(Combatant combatant)
         {
             if (Combatants != null)
             {
@@ -71,19 +74,22 @@ namespace d20Web.Pages.Combat
             }
             else
                 Combatants = new Combatant[] { combatant };
+
+            await InvokeAsync(StateHasChanged);
         }
 
-        private void RemoveCombatant(IEnumerable<string> combatantIDs)
+        private async Task RemoveCombatant(IEnumerable<string> combatantIDs)
         {
             if (Combatants != null)
             {
                 Combatants = OrderCombatants(Combatants.Where(p => combatantIDs.Contains(p.ID)));
+                await InvokeAsync(StateHasChanged);
             }
         }
 
-        private void CombatClient_CombatantDeleted(object? sender, CombatantDeletedEventArgs e)
+        private async void CombatClient_CombatantDeleted(object? sender, CombatantDeletedEventArgs e)
         {
-            RemoveCombatant(e.CombatantIDs);
+            await RemoveCombatant(e.CombatantIDs);
         }
 
         private async void CombatClient_CombatantCreated(object? sender, CombatantCreatedEventArgs e)
@@ -94,11 +100,11 @@ namespace d20Web.Pages.Combat
             }
         }
 
-        private void CombatClient_CombatantUpdated(object? sender, CombatantUpdatedEventArgs e)
+        private async void CombatClient_CombatantUpdated(object? sender, CombatantUpdatedEventArgs e)
         {
             if (string.Equals(CombatID, e.CombatID, StringComparison.OrdinalIgnoreCase))
             {
-                AddOrUpdateCombatant(e.Combatant);
+                await AddOrUpdateCombatant(e.Combatant);
             }
         }
 
@@ -113,6 +119,11 @@ namespace d20Web.Pages.Combat
             enumerable ??= Enumerable.Empty<Combatant>();
 
             return enumerable.OrderBy(p => p.InitiativeOrder).ToArray();
+        }
+
+        private string CombatantClass(Combatant combatant)
+        {
+            return combatant.IsCurrent ? "current-combatant" : "";
         }
 
         public void Dispose()

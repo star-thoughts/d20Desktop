@@ -47,7 +47,8 @@ namespace d20Web.Controllers
         [HttpGet]
         public async Task<IActionResult> GetCampaigns()
         {
-            return Ok(await _campaignsService.GetCampaigns(HttpContext.RequestAborted));
+            IEnumerable<Models.CampaignListData> result = await _campaignsService.GetCampaigns(HttpContext.RequestAborted);
+            return Ok(result);
         }
 
         /// <summary>
@@ -58,7 +59,8 @@ namespace d20Web.Controllers
         [HttpGet("{campaignID}")]
         public async Task<IActionResult> GetCampaign([Required] string campaignID)
         {
-            return Ok(await _campaignsService.GetCampaign(campaignID, HttpContext.RequestAborted));
+            Models.Campaign results = await _campaignsService.GetCampaign(campaignID, HttpContext.RequestAborted);
+            return Ok(results);
         }
     }
 }

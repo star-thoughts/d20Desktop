@@ -80,7 +80,7 @@ namespace d20Web.Storage.MongoDB
             if (ObjectId.TryParse(combatID, out ObjectId combatObjectID))
             {
 
-                IMongoCollection<MongoCombat> combatCollection = (await GetCombatsCollection());
+                IMongoCollection<MongoCombat> combatCollection = await GetCombatsCollection();
                 IMongoCollection<MongoCombatant> combatantsCollection = await GetCombatantsCollection();
 
                 FilterDefinition<MongoCombat> filter = Builders<MongoCombat>.Filter
@@ -138,7 +138,7 @@ namespace d20Web.Storage.MongoDB
             if (!ObjectId.TryParse(combat.ID, out ObjectId combatObjectID))
                 throw new ItemNotFoundException(ItemType.Combat, combat.ID);
 
-            IMongoCollection<MongoCombat> combatCollection = (await GetCombatsCollection());
+            IMongoCollection<MongoCombat> combatCollection = await GetCombatsCollection();
 
             MongoCombat mongoCombat = MongoCombat.Create(campaignObjectID, combatObjectID, combat);
 
@@ -205,8 +205,8 @@ namespace d20Web.Storage.MongoDB
             if (combatants == null)
                 throw new ArgumentNullException(nameof(combatants));
 
-            IMongoCollection<MongoCombatant> combatantsCollection = (await GetCombatantsCollection());
-            IMongoCollection<MongoCombat> combatsCollection = (await GetCombatsCollection());
+            IMongoCollection<MongoCombatant> combatantsCollection = await GetCombatantsCollection();
+            IMongoCollection<MongoCombat> combatsCollection = await GetCombatsCollection();
 
             FilterDefinition<MongoCombat> combatFilter = Builders<MongoCombat>.Filter
                 .Eq(p => p.ID, combatObjectID);
@@ -281,20 +281,19 @@ namespace d20Web.Storage.MongoDB
             if (!ObjectId.TryParse(combatantID, out ObjectId combatantObjectID))
                 throw new ArgumentException("Invalid combat ID", nameof(combatantID));
 
-            IMongoCollection<MongoCombatant> combatantsCollection = (await GetCombatantsCollection());
+            IMongoCollection<MongoCombatant> combatantsCollection = await GetCombatantsCollection();
 
             FilterDefinition<MongoCombatant> filter = Builders<MongoCombatant>.Filter
                 .Eq(p => p.ID, combatantObjectID);
 
-            Combatant combatant = await combatantsCollection.Find(filter)
+            MongoCombatant combatant = await combatantsCollection.Find(filter)
                 .Limit(1)
-                .Project(p => p.ToCombatant())
                 .FirstOrDefaultAsync();
 
             if (combatant == null)
                 throw new ItemNotFoundException(ItemType.Combatant, combatantID);
 
-            return combatant;
+            return combatant.ToCombatant();
         }
 
         /// <summary>
@@ -317,11 +316,10 @@ namespace d20Web.Storage.MongoDB
             FilterDefinition<MongoCombatant> filter = Builders<MongoCombatant>.Filter
                 .Eq(p => p.CombatID, combatObjectID);
 
-            List<Combatant> combatants = await combatantsCollection.Find(filter)
-                .Project(p => p.ToCombatant())
+            List<MongoCombatant> combatants = await combatantsCollection.Find(filter)
                 .ToListAsync();
 
-            return combatants;
+            return combatants.Select(p => p.ToCombatant()).ToArray();
         }
 
         /// <summary>

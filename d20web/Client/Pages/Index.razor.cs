@@ -10,8 +10,9 @@ namespace d20Web.Pages
     public partial class Index
     {
         [Inject]
-        public ICampaignServer CampaignServer { get; } = null!;
-        public NavigationManager NavigationManager { get; } = null!;
+        public ICampaignServer CampaignServer { get; set; } = null!;
+        [Inject]
+        public NavigationManager NavigationManager { get; set; } = null!;
 
         CampaignListData[]? Campaigns { get; set; }
 
@@ -21,7 +22,7 @@ namespace d20Web.Pages
             //  For now, automatically enter a campaign
             if (Campaigns?.Any() == true)
             {
-                var campaign = Campaigns[0];
+                CampaignListData campaign = Campaigns[0];
                 if (!string.IsNullOrWhiteSpace(campaign.ID))
                     NavigationManager.NavigateToCampaign(campaign.ID);
             }

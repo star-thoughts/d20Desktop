@@ -53,7 +53,7 @@ namespace d20web
 
             app.MapRazorPages();
             app.MapControllers();
-            app.MapHub<CampaignHub>("/campaign");
+            app.MapHub<CampaignHub>("/hub/campaign");
             app.MapFallbackToFile("index.html");
 
             app.Run();

@@ -1,4 +1,5 @@
 using d20Web.Clients;
+using d20Web.SignalRClient;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
@@ -23,6 +24,11 @@ namespace d20Web
             });
 
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+
+            builder.Services.AddTransient(provider =>
+            {
+                return new CombatClient(builder.HostEnvironment.BaseAddress, provider.GetRequiredService<ILoggerProvider>());
+            });
 
             await builder.Build().RunAsync();
         }

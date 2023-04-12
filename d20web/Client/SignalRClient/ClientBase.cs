@@ -13,6 +13,7 @@ namespace d20Web.SignalRClient
                 throw new ArgumentNullException(nameof(uri));
 
             _connection = new HubConnectionBuilder()
+                .WithUrl(uri)
                 .WithAutomaticReconnect()
                 .ConfigureLogging(logging =>
                 {
@@ -35,9 +36,9 @@ namespace d20Web.SignalRClient
 
         protected void AddMessageHandler<TEventArgs, TArg1>(string messageName, Action<TEventArgs> action) where TEventArgs : EventArgs
         {
-            _connection.On<string, TArg1>(messageName, (user, p1) =>
+            _connection.On<TArg1>(messageName, p1 =>
             {
-                TEventArgs? args = (TEventArgs?)Activator.CreateInstance(typeof(TEventArgs), user, p1);
+                TEventArgs? args = (TEventArgs?)Activator.CreateInstance(typeof(TEventArgs), p1);
                 if (args != null)
                     action(args);
             });
@@ -45,9 +46,9 @@ namespace d20Web.SignalRClient
 
         protected void AddMessageHandler<TEventArgs, TArg1, TArg2>(string messageName, Action<TEventArgs> action) where TEventArgs : EventArgs
         {
-            _connection.On<string, TArg1, TArg2>(messageName, (user, p1, p2) =>
+            _connection.On<TArg1, TArg2>(messageName, (p1, p2) =>
             {
-                TEventArgs? args = (TEventArgs?)Activator.CreateInstance(typeof(TEventArgs), user, p1, p2);
+                TEventArgs? args = (TEventArgs?)Activator.CreateInstance(typeof(TEventArgs), p1, p2);
                 if (args != null)
                     action(args);
             });
@@ -55,9 +56,9 @@ namespace d20Web.SignalRClient
 
         protected void AddMessageHandler<TEventArgs, TArg1, TArg2, TArg3>(string messageName, Action<TEventArgs> action) where TEventArgs : EventArgs
         {
-            _connection.On<string, TArg1, TArg2, TArg3>(messageName, (user, p1, p2, p3) =>
+            _connection.On<TArg1, TArg2, TArg3>(messageName, (p1, p2, p3) =>
             {
-                TEventArgs? args = (TEventArgs?)Activator.CreateInstance(typeof(TEventArgs), user, p1, p2, p3);
+                TEventArgs? args = (TEventArgs?)Activator.CreateInstance(typeof(TEventArgs), p1, p2, p3);
                 if (args != null)
                     action(args);
             });

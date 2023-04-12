@@ -34,7 +34,7 @@ namespace d20Web.Clients
             {
                 result.EnsureSuccessStatusCode();
 
-                return JsonSerializer.Deserialize<IEnumerable<CombatListData>>(await result.Content.ReadAsStringAsync(cancellationToken))
+                return JsonSerializer.Deserialize<IEnumerable<CombatListData>>(await result.Content.ReadAsStringAsync(cancellationToken), Helpers.JsonSerializerOptions)
                     ?? Enumerable.Empty<CombatListData>();
             }
         }
@@ -54,7 +54,7 @@ namespace d20Web.Clients
             {
                 result.EnsureSuccessStatusCode();
 
-                return JsonSerializer.Deserialize<Combat>(await result.Content.ReadAsStringAsync(cancellationToken))
+                return JsonSerializer.Deserialize<Combat>(await result.Content.ReadAsStringAsync(cancellationToken), Helpers.JsonSerializerOptions)
                     ?? new Combat();
             }
         }
@@ -73,7 +73,7 @@ namespace d20Web.Clients
             {
                 result.EnsureSuccessStatusCode();
 
-                return JsonSerializer.Deserialize<IEnumerable<Combatant>>(await result.Content.ReadAsStringAsync(cancellationToken))
+                return JsonSerializer.Deserialize<IEnumerable<Combatant>>(await result.Content.ReadAsStringAsync(cancellationToken), Helpers.JsonSerializerOptions)
                     ?? Enumerable.Empty<Combatant>();
             }
         }

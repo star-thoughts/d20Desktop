@@ -10,13 +10,13 @@ namespace d20Web.Pages.Campaigns
     public partial class CampaignPage : IDisposable
     {
         [Inject]
-        ICampaignServer CampaignServer { get; set; } = null!;
+        public ICampaignServer CampaignServer { get; set; } = null!;
         [Inject]
-        ICombatServer CombatServer { get; set; } = null!;
+        public ICombatServer CombatServer { get; set; } = null!;
         [Inject]
-        CombatClient CombatClient { get; set; } = null!;
+        public CombatClient CombatClient { get; set; } = null!;
         [Inject]
-        NavigationManager NavigationManager { get; set; } = null!;
+        public NavigationManager NavigationManager { get; set; } = null!;
         
         [Parameter]
         public string? CampaignID { get; set; }
@@ -33,12 +33,13 @@ namespace d20Web.Pages.Campaigns
                     NavigationManager.NavigateToCombat(CampaignID, combat.ID);
                 }
                 else
-                    ConnectToSignalR();
+                    await ConnectToSignalR();
             }
         }
 
-        private void ConnectToSignalR()
+        private async Task ConnectToSignalR()
         {
+            await CombatClient.StartClient();
             CombatClient.CombatStarted += CombatClient_CombatStarted;
         }
 

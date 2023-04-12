@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace d20Web.Models
+﻿namespace d20Web.Models
 {
     /// <summary>
     /// Extension methods for dealing with combatants
@@ -19,19 +12,27 @@ namespace d20Web.Models
         /// <returns>Whether or not the given combatant can be displayed to players</returns>
         public static bool CanDisplayToPlayers(this Combatant combatant)
         {
-            return combatant.IncludeInCombat && combatant.DisplayToPlayers && (combatant.IsPlayer || combatant.HasGoneOnce);
+            if (combatant.IsPlayer)
+                return true;
+
+            return combatant.IncludeInCombat && combatant.DisplayToPlayers && combatant.HasGoneOnce;
         }
 
         public static Combatant ToPlayerView(this Combatant combatant)
         {
+            string? name = combatant.Name;
+            if (string.IsNullOrWhiteSpace(name))
+                name = combatant.DisplayName;
+
             return new Combatant()
             {
-                Name = combatant.DisplayName,
+                Name = name,
                 ID = combatant.ID,
-                DisplayName = combatant.DisplayName,
+                DisplayName = name,
                 IncludeInCombat = combatant.IncludeInCombat,
                 InitiativeOrder = combatant.InitiativeOrder,
-                IsCurrent   = combatant.IsCurrent,
+                IsCurrent = combatant.IsCurrent,
+                DisplayToPlayers = combatant.DisplayToPlayers,
                 IsPlayer = combatant.IsPlayer,
                 Ordinal = combatant.Ordinal,
             };

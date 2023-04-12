@@ -26,6 +26,9 @@
         /// Gets the ID of the combat
         /// </summary>
         public string CombatID { get; }
+        /// <summary>
+        /// Gets the combatant IDs of the combatants deleted
+        /// </summary>
         public IEnumerable<string> CombatantIDs { get; }
     }
 }

@@ -13,6 +13,16 @@ namespace d20Web.SignalRClient
         /// </summary>
         /// <param name="baseUri">Base URI for connecting to the hub</param>
         /// <param name="loggingProvider">Logging provider</param>
+        public CombatClient(string baseUri, ILoggerProvider loggingProvider)
+            : this(new Uri(baseUri), loggingProvider)
+        {
+        }
+
+        /// <summary>
+        /// Constructs a new <see cref="CombatClient"/>
+        /// </summary>
+        /// <param name="baseUri">Base URI for connecting to the hub</param>
+        /// <param name="loggingProvider">Logging provider</param>
         public CombatClient(Uri baseUri, ILoggerProvider loggingProvider)
             : base(new Uri($"{baseUri}hub/campaign"), loggingProvider)
         {
