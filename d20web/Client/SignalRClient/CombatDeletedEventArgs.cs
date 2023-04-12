@@ -9,11 +9,11 @@
         /// Constructs a new <see cref="CombatDeletedEventArgs"/>
         /// </summary>
         /// <param name="campaignID">ID of the campaign</param>
-        /// <param name="objectID">ID of the deleted object</param>
-        public CombatDeletedEventArgs(string campaignID, string objectID)
+        /// <param name="combatID">ID of the deleted object</param>
+        public CombatDeletedEventArgs(string campaignID, string combatID)
         {
             CampaignID = campaignID;
-            ObjectID = objectID;
+            CombatDeleted = combatID;
         }
 
         /// <summary>
@@ -23,6 +23,6 @@
         /// <summary>
         /// Gets the ID of the object that was deleted
         /// </summary>
-        public string ObjectID { get; }
+        public string CombatDeleted { get; }
     }
 }

@@ -27,7 +27,7 @@ namespace d20Web.SignalRClient
             : base(new Uri($"{baseUri}hub/campaign"), loggingProvider)
         {
             AddMessageHandler<CombatStartedEventArgs, string, string, string>(Constants.CombatCreated, p => CombatStarted?.Invoke(this, p));
-            AddMessageHandler<CombatDeletedEventArgs, string, string>(Constants.CombatCreated, p => CombatDeleted?.Invoke(this, p));
+            AddMessageHandler<CombatDeletedEventArgs, string, string>(Constants.CombatDeleted, p => CombatDeleted?.Invoke(this, p));
             AddMessageHandler<CombatUpdatedEventArgs, string, Combat>(Constants.CombatUpdated, p => CombatUpdated?.Invoke(this, p));
             AddMessageHandler<CombatantCreatedEventArgs, string, string, IEnumerable<string>>(Constants.CombatantCreated, p => CombatantCreated?.Invoke(this, p));
             AddMessageHandler<CombatantUpdatedEventArgs, string, string, Combatant>(Constants.CombatantUpdated, p => CombatantUpdated?.Invoke(this, p));
