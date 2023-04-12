@@ -2,7 +2,6 @@
 using d20Web.Models;
 using d20Web.Storage;
 using Microsoft.AspNetCore.SignalR;
-using MongoDB.Bson;
 
 namespace d20Web.Services
 {
@@ -36,6 +35,13 @@ namespace d20Web.Services
                 throw new ArgumentNullException(nameof(campaignID));
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentNullException(nameof(name));
+
+            //  For now, only supports one active combat at a time, delete any existing ones
+            foreach (CombatListData existing in await _storage.GetCombats(campaignID, cancellationToken))
+            {
+                if (!string.IsNullOrWhiteSpace(existing.ID))
+                    await EndCombat(campaignID, existing.ID, cancellationToken);
+            }
 
             string id = await _storage.BeginCombat(campaignID, name, cancellationToken);
 
