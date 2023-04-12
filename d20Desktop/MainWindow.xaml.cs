@@ -163,9 +163,9 @@ namespace Fiction.GameScreen
                 && (e.Parameter == null || (e.Parameter is PrepareCombatViewModel preparer && preparer.IsValid));
         }
 
-        private void BeginCombatCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        private async void BeginCombatCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            Exceptions.FailSafeMethodCall(() =>
+            await Exceptions.FailSafeMethodCall(async () =>
             {
                 if (Campaign != null)
                 {
@@ -181,7 +181,7 @@ namespace Fiction.GameScreen
                         e.Handled = true;
                         if (ResolveInitiatives(preparer))
                         {
-                            ActiveCombatViewModel combat = Campaign.CreateOrUpdateCombat(preparer);
+                            ActiveCombatViewModel combat = await Campaign.CreateOrUpdateCombat(preparer);
 
                             AddPageIfNotOpen(combat);
                             ViewModels.Remove(preparer);
@@ -577,6 +577,28 @@ namespace Fiction.GameScreen
                 if (Campaign != null)
                     AddPageIfNotOpen(Campaign.Conditions);
             });
+        }
+
+        private void ConnectToServerCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.Handled = true;
+            e.CanExecute = Campaign != null;
+        }
+
+        private async void ConnectToServerCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            e.Handled = true;
+            if (Campaign != null)
+            {
+                ServerConfigViewModel vm = new ServerConfigViewModel(Campaign, Path.GetFileNameWithoutExtension(FileName) ?? "Campaign");
+
+                EditWindow window = new EditWindow();
+                window.Owner = this;
+                window.DataContext = vm;
+
+                if (window.ShowDialog() == true)
+                    await vm.Save();
+            }
         }
         #endregion
     }

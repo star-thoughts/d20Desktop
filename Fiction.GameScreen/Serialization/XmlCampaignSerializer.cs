@@ -37,6 +37,7 @@ namespace Fiction.GameScreen.Serialization
             public const string Id = "id";
             public const string Reference = "ref";
             public const string Campaign = "campaign";
+            public const string ServerID = "serverid";
             public const string Scenario = "scenario";
             public const string Name = "name";
             public const string Group = "group";
@@ -189,6 +190,8 @@ namespace Fiction.GameScreen.Serialization
         {
             _campaignItems.Clear();
             await writer.WriteStartElementAsync(Keys.Campaign).ConfigureAwait(false);
+
+            await writer.WriteOptionalAttributeStringAsync(Keys.ServerID, campaign.CampaignID).ConfigureAwait(false);
 
             await writer.WriteAttributeStringAsync(Keys.DeadAtOption, campaign.Options.MonsterDeadAtOption.ToString()).ConfigureAwait(false);
             if (campaign.Options.MonsterDeadAtOption == MonsterDeadAtDefaultOption.SetValue)
@@ -543,6 +546,7 @@ namespace Fiction.GameScreen.Serialization
 
                 ReadCachedStrings(element);
 
+                campaign.CampaignID = element.ReadAttributeString(Keys.ServerID, string.Empty);
                 campaign.Options.MonsterDeadAtOption = element.ReadAttributeEnum(Keys.DeadAtOption, MonsterDeadAtDefaultOption.NegativeConstitution);
                 campaign.Options.MonsterDefaultDeadAt = element.ReadAttributeInt(Keys.DeadAt, 0);
 

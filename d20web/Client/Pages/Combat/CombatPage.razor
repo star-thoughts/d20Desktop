@@ -1,0 +1,30 @@
+﻿@page "/campaign/{CampaignID}/combat/{CombatID}"
+@using d20Web.Models
+
+@if (@Combat != null && Combatants != null)
+{
+    <div class="combat-page">
+        <div class="combatants-list">
+            <ul>
+                @foreach (Combatant combatant in Combatants.Where(p => CanViewCombatant(p)))
+                {
+                    if (combatant.DisplayToPlayers)
+                    {
+                        <li>
+                            <div class="combatant-item @CombatantClass(combatant)">
+                                @(combatant.DisplayName ?? combatant.Name)
+                            </div>
+                        </li>
+                    }
+                }
+            </ul>
+        </div>
+        <div class="combat-info">
+            <div class="round">Round:  @Combat.Round</div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="loading">Loading...</div>
+}

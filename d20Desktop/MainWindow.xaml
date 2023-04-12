@@ -62,6 +62,9 @@
         <CommandBinding Command="local:Commands.ManageConditions"
                         CanExecute="ManageConditionsCommand_CanExecute"
                         Executed="ManageConditionsCommand_Executed" />
+        <CommandBinding Command="local:Commands.ConnectToServer"
+                        CanExecute="ConnectToServerCommand_CanExecute"
+                        Executed="ConnectToServerCommand_Executed" />
     </Window.CommandBindings>
     <Border Background="Black"
             BorderBrush="White"
@@ -90,6 +93,9 @@
                               Command="local:Commands.ManagePlayers" />
                     <MenuItem Header="{Binding Source={x:Static resources:Resources.ManageSourcesMenuItem}}"
                               Command="local:Commands.ManageSources" />
+                    <Separator />
+                    <MenuItem Header="{Binding Source={x:Static resources:Resources.ConnectToServerMenuHeader}}"
+                              Command="local:Commands.ConnectToServer" />
                 </MenuItem>
                 <MenuItem Header="{Binding Source={x:Static resources:Resources.EquipmentMenuHeader}}">
                     <MenuItem Header="{Binding Source={x:Static resources:Resources.MagicItemsMenuHeader}}"

@@ -396,6 +396,23 @@
         </DataTemplate.Triggers>
     </DataTemplate>
 
+    <Style TargetType="{x:Type controls:ServerConfigView}">
+        <Setter Property="Focusable"
+                Value="False" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type controls:ServerConfigView}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <TextBox Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ViewModel.ServerUri, UpdateSourceTrigger=PropertyChanged}" />
+                    </Grid>    
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <Style TargetType="{x:Type controls:CombatantStatText}">
         <Setter Property="Focusable"
                 Value="False" />

@@ -1,7 +1,10 @@
 ﻿using Fiction.GameScreen.Combat;
 using Fiction.GameScreen.Serialization;
+using Fiction.GameScreen.Server;
 using System;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace Fiction.GameScreen.ViewModels
@@ -62,6 +65,7 @@ namespace Fiction.GameScreen.ViewModels
                 return _prepareCombat;
             }
         }
+        private CombatWatcher? _combatWatcher;
         private ActiveCombatViewModel? _activeCombat;
         /// <summary>
         /// Gets the active combat
@@ -72,7 +76,7 @@ namespace Fiction.GameScreen.ViewModels
         public ActiveCombatViewModel? ActiveCombat
         {
             get { return _activeCombat; }
-            set
+            private set
             {
                 if (!ReferenceEquals(_activeCombat, value))
                 {
@@ -114,15 +118,30 @@ namespace Fiction.GameScreen.ViewModels
         /// Gets the view model for managing conditions
         /// </summary>
         public ConditionsViewModel Conditions { get; }
+        /// <summary>
+        /// Gets the server connection for campaign and combat management
+        /// </summary>
+        public ICampaignManagement? Server { get; private set; }
         #endregion
         #region Methods
+        /// <summary>
+        /// Sets the server to use for campaign and combat management
+        /// </summary>
+        /// <param name="campaignServer"></param>
+        public void SetServer(ICampaignManagement campaignServer)
+        {
+            if (campaignServer == null)
+                throw new ArgumentNullException(nameof(campaignServer));
+
+            Server = campaignServer;
+        }
         /// <summary>
         /// Creates a new combat
         /// </summary>
         /// <param name="preparer">Preparer containing information about the combat</param>
         /// <returns>View model for the combat created</returns>
         /// <exception cref="InvalidOperationException">The preparer wasn't valid, or there is already a combat running.</exception>
-        public ActiveCombatViewModel CreateOrUpdateCombat(PrepareCombatViewModel preparer)
+        public async Task<ActiveCombatViewModel> CreateOrUpdateCombat(PrepareCombatViewModel preparer)
         {
             Exceptions.ThrowIfArgumentNull(preparer, nameof(preparer));
             if (!preparer.IsValid)
@@ -130,8 +149,7 @@ namespace Fiction.GameScreen.ViewModels
 
             if (ActiveCombat == null)
             {
-                ActiveCombat combat = new ActiveCombat("Active Combat", preparer.Preparer, new XmlActiveCombatSerializer(Campaign));
-                ActiveCombat = new ActiveCombatViewModel(this, combat);
+                await CreateCombat(preparer);
             }
             else
             {
@@ -142,6 +160,37 @@ namespace Fiction.GameScreen.ViewModels
             this.RaisePropertyChanged(nameof(ActiveCombat));
             return ActiveCombat;
         }
+
+        [MemberNotNull(nameof(ActiveCombat))]
+        private async Task CreateCombat(PrepareCombatViewModel preparer)
+        {
+            ActiveCombat combat = new ActiveCombat("Active Combat", preparer.Preparer, new XmlActiveCombatSerializer(Campaign));
+            ActiveCombat = new ActiveCombatViewModel(this, combat);
+
+            if (!string.IsNullOrWhiteSpace(Campaign.CampaignID))
+            {
+                ICombatManagement? combatManagement = null;
+                try
+                {
+                    if (!string.IsNullOrWhiteSpace(Campaign.ServerUri))
+                    {
+                        HttpClient client = new HttpClient();
+                        client.BaseAddress = new Uri(Campaign.ServerUri);
+
+                        combatManagement = new CombatManagement(client);
+                        CombatWatcher watcher = new CombatWatcher(Campaign.CampaignID, combat, combatManagement);
+
+                        if (await watcher.InitializeAsync())
+                            _combatWatcher = watcher;
+                    }
+                }
+                catch
+                {
+                    combatManagement?.Dispose();
+                }
+            }
+        }
+
         /// <summary>
         /// Terminates combat
         /// </summary>
@@ -151,6 +200,12 @@ namespace Fiction.GameScreen.ViewModels
             ActiveCombatViewModel? active = ActiveCombat;
             ActiveCombat = null;
             _prepareCombat = null;
+
+            if (_combatWatcher != null)
+            {
+                await _combatWatcher.EndCombat();
+                await _combatWatcher.DisposeAsync();
+            }
 
             await Task.Yield();
         }

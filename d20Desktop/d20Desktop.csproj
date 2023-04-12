@@ -10,6 +10,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\d20web\Shared\d20web.Shared.csproj" />
 		<ProjectReference Include="..\Fiction.GameScreen\Fiction.GameScreen.csproj" />
 		<ProjectReference Include="..\Fiction.Windows\Fiction.Windows.csproj" />
 		<ProjectReference Include="..\Fiction\Fiction.csproj" />

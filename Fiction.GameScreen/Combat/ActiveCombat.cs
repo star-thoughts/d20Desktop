@@ -1,4 +1,5 @@
 ﻿using Fiction.GameScreen.Serialization;
+using Fiction.GameScreen.Server;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
@@ -79,6 +80,10 @@ namespace Fiction.GameScreen.Combat
         private IXmlActiveCombatSerializer _serializer;
         #endregion
         #region Properties
+        /// <summary>
+        /// Gets or sets the ID of this combat
+        /// </summary>
+        public string? ID { get; set; }
         /// <summary>
         /// Gets the combat settings for this combat
         /// </summary>
