@@ -6,7 +6,7 @@
     <div class="combat-page">
         <div class="combatants-list">
             <ul>
-                @foreach (Combatant combatant in Combatants)
+                @foreach (Combatant combatant in Combatants.Where(p => CanViewCombatant(p)))
                 {
                     if (combatant.DisplayToPlayers)
                     {

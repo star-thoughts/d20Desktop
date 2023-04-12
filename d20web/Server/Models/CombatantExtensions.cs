@@ -20,9 +20,9 @@
 
         public static Combatant ToPlayerView(this Combatant combatant)
         {
-            string? name = combatant.Name;
+            string? name = combatant.DisplayName;
             if (string.IsNullOrWhiteSpace(name))
-                name = combatant.DisplayName;
+                name = combatant.Name;
 
             return new Combatant()
             {
@@ -35,6 +35,7 @@
                 DisplayToPlayers = combatant.DisplayToPlayers,
                 IsPlayer = combatant.IsPlayer,
                 Ordinal = combatant.Ordinal,
+                HasGoneOnce = combatant.HasGoneOnce,
             };
         }
     }

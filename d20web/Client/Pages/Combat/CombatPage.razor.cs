@@ -34,12 +34,22 @@ namespace d20Web.Pages.Combat
 
                 await CombatClient.StartClient();
                 CombatClient.CombatDeleted += CombatClient_CombatDeleted;
+                CombatClient.CombatUpdated += CombatClient_CombatUpdated;
                 CombatClient.CombatantUpdated += CombatClient_CombatantUpdated;
                 CombatClient.CombatantCreated += CombatClient_CombatantCreated;
                 CombatClient.CombatantDeleted += CombatClient_CombatantDeleted;
 
                 Combatants = OrderCombatants(await CombatServer.GetCombatants(CampaignID, CombatID));
             }
+        }
+
+        private async void CombatClient_CombatUpdated(object? sender, CombatUpdatedEventArgs e)
+        {
+            if (string.Equals(e.Combat?.ID, Combat?.ID, StringComparison.OrdinalIgnoreCase))
+            {
+                Combat = e.Combat;
+                await InvokeAsync(StateHasChanged);
+            }    
         }
 
         private async Task AddOrUpdateCombatants(IEnumerable<string> combatantIDs)
@@ -126,6 +136,14 @@ namespace d20Web.Pages.Combat
             return combatant.IsCurrent ? "current-combatant" : "";
         }
 
+
+        private bool CanViewCombatant(Combatant combatant)
+        {
+            if (combatant.IsPlayer)
+                return true;
+
+            return combatant.HasGoneOnce && combatant.IncludeInCombat && combatant.DisplayToPlayers;
+        }
         public void Dispose()
         {
             CombatClient.CombatDeleted -= CombatClient_CombatDeleted;
