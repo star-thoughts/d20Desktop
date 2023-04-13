@@ -1,3 +1,17 @@
 ﻿.current-combatant {
     font-weight: bold;
 }
+
+div.combat-page {
+    height: 100%;
+    display: grid;
+}
+
+div.combatants-list {
+    grid-column: 1;
+    overflow-y: auto;
+}
+
+div.combat-info {
+    grid-column: 2;
+}
