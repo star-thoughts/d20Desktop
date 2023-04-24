@@ -56,6 +56,10 @@ namespace Fiction.GameScreen.Combat
         #endregion
         #region Properties
         /// <summary>
+        /// Gets or sets the ID of the preparation on the combat server
+        /// </summary>
+        public string? ServerID { get; set; }
+        /// <summary>
         /// Gets or sets the combat that this preparation is for
         /// </summary>
         public ActiveCombat? SourceCombat { get; private set; }

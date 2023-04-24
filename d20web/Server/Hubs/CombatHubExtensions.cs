@@ -8,6 +8,46 @@ namespace d20Web.Hubs
     /// </summary>
     public static class CombatHubExtensions
     {
+        #region Combat Prep
+        public static Task CombatPrepCreated(this IHubContext<CampaignHub> hub, string campaignID, string combatID)
+        {
+            if (hub == null)
+                throw new ArgumentNullException(nameof(hub));
+
+            return hub.Clients.All.SendAsync(Constants.CombatPrepCreated, campaignID, combatID);
+        }
+        public static Task CombatPrepDeleted(this IHubContext<CampaignHub> hub, string campaignID, string combatID)
+        {
+            if (hub == null)
+                throw new ArgumentNullException(nameof(hub));
+
+            return hub.Clients.All.SendAsync(Constants.CombatPrepDeleted, campaignID, combatID);
+        }
+        public static Task CombatantPrepCreated(this IHubContext<CampaignHub> hub, string campaignID, string combatID, IEnumerable<string> combatantIDs)
+        {
+            if (hub == null)
+                throw new ArgumentNullException(nameof(hub));
+
+            return hub.Clients.All.SendAsync(Constants.CombatantPrepCreated, campaignID, combatID, combatantIDs);
+        }
+
+        public static Task CombatantPrepUpdated(this IHubContext<CampaignHub> hub, string campaignID, string combatID, CombatantPreparer combatant)
+        {
+            if (hub == null)
+                throw new ArgumentNullException(nameof(hub));
+
+            return hub.Clients.All.SendAsync(Constants.CombatantPrepUpdated, campaignID, combatID, combatant);
+        }
+
+        public static Task CombatantPrepsDeleted(this IHubContext<CampaignHub> hub, string campaignID, string combatID, IEnumerable<string> combatantIDs)
+        {
+            if (hub == null)
+                throw new ArgumentNullException(nameof(hub));
+
+            return hub.Clients.All.SendAsync(Constants.CombatantPrepsDeleted, campaignID, combatID, combatantIDs);
+        }
+        #endregion
+        #region Combat
         public static Task CombatCreated(this IHubContext<CampaignHub> hub, string campaignID, string combatID, string combatName)
         {
             if (hub == null)
@@ -53,5 +93,6 @@ namespace d20Web.Hubs
 
             return hub.Clients.All.SendAsync(Constants.CombatantsDeleted, campaignID, combatID, combatantIDs);
         }
+        #endregion
     }
 }
