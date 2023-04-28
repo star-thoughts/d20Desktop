@@ -36,9 +36,6 @@ namespace Fiction.GameScreen.ViewModels
                 ActiveCombat = new ActiveCombatViewModel(this, campaign.Combat.Active);
         }
         #endregion
-        #region Member Variables
-        private PrepareCombatViewModel? _prepareCombat;
-        #endregion
         #region Properties
         /// <summary>
         /// Gets the campaign this view model factory is for
@@ -48,6 +45,8 @@ namespace Fiction.GameScreen.ViewModels
         /// Gets the view model for combat scenarios
         /// </summary>
         public CombatScenariosViewModel CombatScenarios { get; }
+        private CombatPrepWatcher? _prepareCombatWatcher;
+        private PrepareCombatViewModel? _prepareCombat;
         /// <summary>
         /// Gets the view model used for preparing for combat
         /// </summary>
@@ -57,14 +56,12 @@ namespace Fiction.GameScreen.ViewModels
             {
                 if (_prepareCombat == null)
                 {
-                    if (ActiveCombat != null)
-                        _prepareCombat = new PrepareCombatViewModel(this, ActiveCombat);
-                    else
-                        _prepareCombat = new PrepareCombatViewModel(this);
+                    CreateCombatPrep();
                 }
                 return _prepareCombat;
             }
         }
+
         private CombatWatcher? _combatWatcher;
         private ActiveCombatViewModel? _activeCombat;
         /// <summary>
@@ -135,6 +132,40 @@ namespace Fiction.GameScreen.ViewModels
 
             Server = campaignServer;
         }
+
+        [MemberNotNull(nameof(_prepareCombat))]
+        private async void CreateCombatPrep()
+        {
+            if (ActiveCombat == null)
+            {
+                _prepareCombat = new PrepareCombatViewModel(this);
+                if (!string.IsNullOrWhiteSpace(Campaign.CampaignID))
+                {
+                    ICombatManagement? combatManagement = null;
+                    try
+                    {
+                        if (!string.IsNullOrWhiteSpace(Campaign.ServerUri))
+                        {
+                            HttpClient client = new HttpClient();
+                            client.BaseAddress = new Uri(Campaign.ServerUri);
+
+                            combatManagement = new CombatManagement(client);
+                            CombatPrepWatcher watcher = new CombatPrepWatcher(Campaign.CampaignID, _prepareCombat.Preparer, combatManagement);
+
+                            if (await watcher.InitializeAsync())
+                                _prepareCombatWatcher = watcher;
+                        }
+                    }
+                    catch
+                    {
+                        combatManagement?.Dispose();
+                    }
+                }
+            }
+            else
+                _prepareCombat = new PrepareCombatViewModel(this, ActiveCombat);
+        }
+
         /// <summary>
         /// Creates a new combat
         /// </summary>
@@ -146,6 +177,8 @@ namespace Fiction.GameScreen.ViewModels
             Exceptions.ThrowIfArgumentNull(preparer, nameof(preparer));
             if (!preparer.IsValid)
                 throw new InvalidOperationException("Combat wasn't ready.");
+
+            await EndCombatPrep();
 
             if (ActiveCombat == null)
             {
@@ -159,6 +192,12 @@ namespace Fiction.GameScreen.ViewModels
 
             this.RaisePropertyChanged(nameof(ActiveCombat));
             return ActiveCombat;
+        }
+
+        private async Task EndCombatPrep()
+        {
+            if (_prepareCombatWatcher != null)
+                await _prepareCombatWatcher.DisposeAsync();
         }
 
         [MemberNotNull(nameof(ActiveCombat))]

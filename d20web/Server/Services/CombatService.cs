@@ -34,6 +34,13 @@ namespace d20Web.Services
             if (string.IsNullOrWhiteSpace(campaignID))
                 throw new ArgumentNullException(nameof(campaignID));
 
+            //  For now, only supports one active combat at a time, delete any existing ones
+            foreach (CombatListData existing in await _storage.GetCombatPreparers(campaignID, cancellationToken))
+            {
+                if (!string.IsNullOrWhiteSpace(existing.ID))
+                    await EndCombatPrep(campaignID, existing.ID, cancellationToken);
+            }
+
             string id = await _storage.CreateCombatPrep(campaignID, cancellationToken);
 
             _ = _hub.CombatPrepCreated(campaignID, id);

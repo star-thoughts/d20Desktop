@@ -29,7 +29,7 @@ namespace d20Web.Controllers
         {
             string id = await _combatService.CreateCombatPrep(campaignID, HttpContext.RequestAborted);
 
-            return CreatedAtAction(nameof(GetCombatPrep), new { campaignID = campaignID, combatPrepID = id }, new { combatPrepID = id });
+            return CreatedAtAction(nameof(GetCombatPrep), new { campaignID = campaignID, combatPrepID = id }, new { combatID = id });
         }
 
         [HttpGet("prep/{combatPrepID}")]

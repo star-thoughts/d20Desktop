@@ -41,7 +41,7 @@ namespace d20Web.Storage.MongoDB
 
         private async Task<IMongoCollection<MongoCombatantPrep>> GetCombatantPrepCollection()
         {
-            return (await GetDatabase()).GetCollection<MongoCombatantPrep>(CombatPrepCollection);
+            return (await GetDatabase()).GetCollection<MongoCombatantPrep>(CombatantPrepCollection);
         }
         #region Combat Prep
         /// <summary>
@@ -84,11 +84,11 @@ namespace d20Web.Storage.MongoDB
                 throw new ArgumentException(nameof(campaignID));
             if (string.IsNullOrWhiteSpace(combatID))
                 throw new ArgumentNullException(nameof(combatID));
-            if (!ObjectId.TryParse(campaignID, out ObjectId combatObjectID))
+            if (!ObjectId.TryParse(combatID, out ObjectId combatObjectID))
                 throw new ArgumentException(nameof(combatID));
 
             IMongoCollection<MongoCombatPrep> collection = await GetCombatPrepCollection();
-            IMongoCollection<MongoCombatantPrep> combatantsCollectino = await GetCombatantPrepCollection();
+            IMongoCollection<MongoCombatantPrep> combatantsCollection = await GetCombatantPrepCollection();
 
             FilterDefinition<MongoCombatPrep> filter = Builders<MongoCombatPrep>.Filter
                 .Eq(p => p.ID, combatObjectID) & Builders<MongoCombatPrep>.Filter.Eq(p => p.CampaignID, campaignObjectID);
@@ -96,9 +96,9 @@ namespace d20Web.Storage.MongoDB
             await collection.DeleteOneAsync(filter, cancellationToken);
 
             FilterDefinition<MongoCombatantPrep> combatantFilter = Builders<MongoCombatantPrep>.Filter
-                .Eq(p => p.ID, combatObjectID) & Builders<MongoCombatantPrep>.Filter.Eq(p => p.CampaignID, campaignObjectID);
+                .Eq(p => p.CombatID, combatObjectID) & Builders<MongoCombatantPrep>.Filter.Eq(p => p.CampaignID, campaignObjectID);
 
-            await collection.DeleteManyAsync(filter, cancellationToken);
+            await combatantsCollection.DeleteManyAsync(combatantFilter, cancellationToken);
         }
         /// <summary>
         /// Gets a list of combat preps int he campaign
@@ -168,7 +168,7 @@ namespace d20Web.Storage.MongoDB
                 throw new ArgumentException(nameof(campaignID));
             if (string.IsNullOrWhiteSpace(combatID))
                 throw new ArgumentNullException(nameof(combatID));
-            if (!ObjectId.TryParse(campaignID, out ObjectId combatObjectID))
+            if (!ObjectId.TryParse(combatID, out ObjectId combatObjectID))
                 throw new ArgumentException(nameof(combatID));
 
             IMongoCollection<MongoCombatantPrep> collection = await GetCombatantPrepCollection();
