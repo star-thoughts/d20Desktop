@@ -1,0 +1,21 @@
+﻿div.combat-page {
+    height: 100%;
+    display: grid;
+}
+
+div.combatants-list {
+    grid-column: 1;
+    overflow-y: auto;
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    grid-auto-rows: max-content;
+}
+
+div.combatant-item-name {
+    grid-column: 1;
+}
+
+div.combatant-item-init {
+    grid-column: 2;
+    padding: 0px 4em;
+}

@@ -5,17 +5,11 @@
 {
     <div class="combat-page">
         <div class="combatants-list">
-            <ul>
-                @foreach (CombatantPreparer combatant in Combatants.Where(p => CanViewCombatant(p)))
-                {
-                    <li>
-                        <div class="combatant-item @CombatantClass(combatant)">
-                            <div class="combatant-item-name">@combatant.Name</div>
-                            <div class="combatant-item-init">@GetInitString(combatant)</div>
-                        </div>
-                    </li>
-                }
-            </ul>
+            @foreach (CombatantPreparer combatant in Combatants.Where(p => CanViewCombatant(p)))
+            {
+                <div class="combatant-item-name">@combatant.Name</div>
+                <div class="combatant-item-init">@GetInitString(combatant)</div>
+            }
         </div>
     </div>
 }
