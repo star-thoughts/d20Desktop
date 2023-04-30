@@ -1,3 +1,30 @@
-﻿.current-combatant {
+﻿div.combat-page {
+    height: 100%;
+    display: grid;
+    overflow-y: hidden;
+}
+
+div.combatants-list {
+    grid-column: 1;
+    overflow-y: auto;
+    display: grid;
+    grid-template-columns: 1em max-content;
+    grid-auto-rows: max-content;
+}
+
+div.combatant-item-current:not(.current-combatant) {
+    display: none;
+    grid-column: 1;
+}
+
+div.current-combatant {
     font-weight: bold;
+}
+
+div.combatant-item-name {
+    grid-column: 2;
+}
+
+div.combat-info {
+    grid-column: 2;
 }

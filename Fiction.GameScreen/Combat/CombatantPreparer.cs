@@ -48,6 +48,13 @@ namespace Fiction.GameScreen.Combat
         #region Member Variables
         #endregion
         #region Properties
+        /// <summary>
+        /// Gets or sets the ID of the combatant on the combat server
+        /// </summary>
+        public string? ServerID { get; set; }
+        /// <summary>
+        /// Gets the campaign this combatant is part of
+        /// </summary>
         CampaignSettings? ICampaignObject.Campaign { get; }
         /// <summary>
         /// Gets the id of this combatant

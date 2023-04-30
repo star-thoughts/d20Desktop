@@ -6,6 +6,12 @@ html, body {
     color: white;
 }
 
+html, body, div#app, div.page, article, main {
+    height: 100%;
+    overflow-y: hidden;
+    overflow-x: hidden;
+}
+
 h1:focus {
     outline: none;
 }

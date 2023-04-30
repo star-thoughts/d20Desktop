@@ -3,12 +3,9 @@ using d20Web.Models;
 using d20Web.SignalRClient;
 using Microsoft.AspNetCore.Components;
 
-namespace d20Web.Pages.Combat
+namespace d20Web.Pages.Combat.Prep
 {
-    /// <summary>
-    /// Page for viewing combat
-    /// </summary>
-    public partial class CombatPage : IDisposable
+    public partial class CombatPrepPage
     {
         [Inject]
         public ICombatServer CombatServer { get; set; } = null!;
@@ -22,34 +19,27 @@ namespace d20Web.Pages.Combat
         [Parameter]
         public string? CombatID { get; set; }
 
-        Models.Combat? Combat { get; set; }
-        Combatant[]? Combatants { get; set; }
+        Models.CombatPrep? Combat { get; set; }
+        CombatantPreparer[]? Combatants { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
             if (!string.IsNullOrWhiteSpace(CampaignID)
                 && !string.IsNullOrWhiteSpace(CombatID))
             {
-                Combat = await CombatServer.GetCombat(CampaignID, CombatID);
+                Combat = await CombatServer.GetCombatPrep(CampaignID, CombatID);
 
-                await CombatClient.StartClient();
-                CombatClient.CombatDeleted += CombatClient_CombatDeleted;
-                CombatClient.CombatUpdated += CombatClient_CombatUpdated;
-                CombatClient.CombatantUpdated += CombatClient_CombatantUpdated;
-                CombatClient.CombatantCreated += CombatClient_CombatantCreated;
-                CombatClient.CombatantDeleted += CombatClient_CombatantDeleted;
+                if (Combat != null)
+                {
+                    await CombatClient.StartClient();
+                    CombatClient.CombatPrepDeleted += CombatClient_CombatDeleted;
+                    CombatClient.CombatantPrepUpdated += CombatClient_CombatantUpdated;
+                    CombatClient.CombatantPrepCreated += CombatClient_CombatantCreated;
+                    CombatClient.CombatantPrepDeleted += CombatClient_CombatantDeleted;
 
-                Combatants = OrderCombatants(await CombatServer.GetCombatants(CampaignID, CombatID));
+                    Combatants = OrderCombatants(Combat.Combatants ?? await CombatServer.GetCombatantPreparers(CampaignID, CombatID));
+                }
             }
-        }
-
-        private async void CombatClient_CombatUpdated(object? sender, CombatUpdatedEventArgs e)
-        {
-            if (string.Equals(e.Combat?.ID, Combat?.ID, StringComparison.OrdinalIgnoreCase))
-            {
-                Combat = e.Combat;
-                await InvokeAsync(StateHasChanged);
-            }    
         }
 
         private async Task AddOrUpdateCombatants(IEnumerable<string> combatantIDs)
@@ -57,12 +47,12 @@ namespace d20Web.Pages.Combat
             if (!string.IsNullOrWhiteSpace(CampaignID)
                 && !string.IsNullOrWhiteSpace(CombatID))
             {
-                IEnumerable<Combatant> combatants = await CombatServer.GetCombatants(CampaignID, CombatID);
+                IEnumerable<CombatantPreparer> combatants = await CombatServer.GetCombatantPreparers(CampaignID, CombatID);
 
                 if (Combatants != null)
                 {
-                    List<Combatant> temp = Combatants.Where(p => !combatantIDs.Contains(p.ID)).ToList();
-                    foreach (Combatant combatant in combatants.Where(p => combatantIDs.Contains(p.ID)))
+                    List<CombatantPreparer> temp = Combatants.Where(p => !combatantIDs.Contains(p.ID)).ToList();
+                    foreach (CombatantPreparer combatant in combatants.Where(p => combatantIDs.Contains(p.ID)))
                         temp.Add(combatant);
 
                     Combatants = OrderCombatants(temp);
@@ -74,16 +64,16 @@ namespace d20Web.Pages.Combat
             }
         }
 
-        private async Task AddOrUpdateCombatant(Combatant combatant)
+        private async Task AddOrUpdateCombatant(CombatantPreparer combatant)
         {
             if (Combatants != null)
             {
-                List<Combatant> temp = Combatants.Where(p => !string.Equals(p.ID, combatant.ID, StringComparison.OrdinalIgnoreCase)).ToList();
+                List<CombatantPreparer> temp = Combatants.Where(p => !string.Equals(p.ID, combatant.ID, StringComparison.OrdinalIgnoreCase)).ToList();
                 temp.Add(combatant);
                 Combatants = OrderCombatants(temp);
             }
             else
-                Combatants = new Combatant[] { combatant };
+                Combatants = new CombatantPreparer[] { combatant };
 
             await InvokeAsync(StateHasChanged);
         }
@@ -110,7 +100,7 @@ namespace d20Web.Pages.Combat
             }
         }
 
-        private async void CombatClient_CombatantUpdated(object? sender, CombatantUpdatedEventArgs e)
+        private async void CombatClient_CombatantUpdated(object? sender, CombatantPrepUpdatedEventArgs e)
         {
             if (string.Equals(CombatID, e.CombatID, StringComparison.OrdinalIgnoreCase))
             {
@@ -124,33 +114,33 @@ namespace d20Web.Pages.Combat
                 NavigationManager.NavigateToCampaign(CampaignID);
         }
 
-        private Combatant[] OrderCombatants(IEnumerable<Combatant> enumerable)
+        private CombatantPreparer[] OrderCombatants(IEnumerable<CombatantPreparer> enumerable)
         {
-            enumerable ??= Enumerable.Empty<Combatant>();
+            enumerable ??= Enumerable.Empty<CombatantPreparer>();
 
-            return enumerable.OrderBy(p => p.InitiativeOrder).ToArray();
+            return enumerable.OrderBy(p => p.Name).ToArray();
         }
 
-        private string CombatantClass(Combatant combatant)
+        private string CombatantClass(CombatantPreparer combatant)
         {
-            return combatant.IsCurrent ? "current-combatant" : "";
+            return "";
         }
 
 
-        private bool CanViewCombatant(Combatant combatant)
+        private bool CanViewCombatant(CombatantPreparer combatant)
         {
-            if (combatant.IsPlayer)
-                return true;
-
-            return combatant.HasGoneOnce && combatant.IncludeInCombat && combatant.DisplayToPlayers;
+            return combatant.IsPlayer;
         }
         public void Dispose()
         {
-            CombatClient.CombatUpdated -= CombatClient_CombatUpdated;
-            CombatClient.CombatDeleted -= CombatClient_CombatDeleted;
-            CombatClient.CombatantUpdated -= CombatClient_CombatantUpdated;
-            CombatClient.CombatantCreated -= CombatClient_CombatantCreated;
-            CombatClient.CombatantDeleted -= CombatClient_CombatantDeleted;
+            CombatClient.CombatPrepDeleted -= CombatClient_CombatDeleted;
+            CombatClient.CombatantPrepUpdated -= CombatClient_CombatantUpdated;
+            CombatClient.CombatantPrepCreated -= CombatClient_CombatantCreated;
+            CombatClient.CombatantPrepDeleted -= CombatClient_CombatantDeleted;
+        }
+        string GetInitString(CombatantPreparer combatant)
+        {
+            return $"{combatant.InitiativeRoll + combatant.InitiativeModifier} = {combatant.InitiativeRoll} + {combatant.InitiativeModifier}";
         }
     }
 }

@@ -8,6 +8,75 @@ namespace d20Web.Storage
     /// </summary>
     public interface ICombatStorage
     {
+        #region Combat Prep
+        /// <summary>
+        /// Creates a new combat prep in a campaign
+        /// </summary>
+        /// <param name="campaignID">ID of the campaign to create the combat in</param>
+        /// <param name="cancellationToken">Token for cancelling the operation</param>
+        /// <returns>ID of the combat that was created</returns>
+        /// <exception cref="ArgumentNullException">One or more parameters was null or empty</exception>
+        Task<string> CreateCombatPrep(string campaignID, CancellationToken cancellationToken = default);
+        /// <summary>
+        /// Ends a combat prep
+        /// </summary>
+        /// <param name="campaignID">ID of the campaign containing the combat</param>
+        /// <param name="combatID">ID of the combat to end</param>
+        /// <param name="cancellationToken">Token for cancelling the operation</param>
+        /// <returns>Task for asynchronous completion</returns>
+        Task EndCombatPrep(string campaignID, string combatID, CancellationToken cancellationToken = default);
+        /// <summary>
+        /// Gets a list of combat preps int he campaign
+        /// </summary>
+        /// <param name="campaignID">ID of the campaign</param>
+        /// <param name="cancellationToken">Token for cancelling the operation</param>
+        /// <returns>Collection of combats in the campaign</returns>
+        Task<IEnumerable<CombatListData>> GetCombatPreparers(string campaignID, CancellationToken cancellationToken = default);
+        /// <summary>
+        /// Gets information for a combat prep
+        /// </summary>
+        /// <param name="campaignID">ID of the campaign to create combat in</param>
+        /// <param name="combatID">ID of the combat to get information for</param>
+        /// <param name="cancellationToken">Token for cancelling the operation</param>
+        /// <returns>Combat information</returns>
+        Task<CombatPrep> GetCombatPrep(string campaignID, string combatID, CancellationToken cancellationToken = default);
+        /// <summary>
+        /// Creates a combatant prep with the given statistics
+        /// </summary>
+        /// <param name="campaignID">ID of the campaign containing the combat</param>
+        /// <param name="combatID">ID of the combat to create the combatant in</param>
+        /// <param name="combatants">Combatant information to create</param>
+        /// <param name="cancellationToken">Token for cancelling the operation</param>
+        /// <returns>ID of the combatant</returns>
+        Task<IEnumerable<string>> CreateCombatantPreparers(string campaignID, string combatID, IEnumerable<CombatantPreparer> combatants, CancellationToken cancellationToken = default);
+        /// <summary>
+        /// Updates the stats for a combatant prep
+        /// </summary>
+        /// <param name="campaignID">Campaign the combat is in</param>
+        /// <param name="combatID">ID of the combat the combatant is in</param>
+        /// <param name="combatant">Combatant details to use for the update</param>
+        /// <param name="cancellationToken">Token for cancelling the operation</param>
+        /// <returns>Task for asynchronous completion</returns>
+        Task UpdateCombatantPreparer(string campaignID, string combatID, CombatantPreparer combatant, CancellationToken cancellationToken = default);
+        /// <summary>
+        /// Deletes the combatant from the combat prep
+        /// </summary>
+        /// <param name="campaignID">ID of the campaign the combat is in</param>
+        /// <param name="combatID">ID of the combat the combatant is in</param>
+        /// <param name="combatantIDs">ID of the combatant to remove</param>
+        /// <param name="cancellationToken">Token for cancelling the operation</param>
+        /// <returns>Task for asynchronous completion</returns>
+        Task DeleteCombatantPreparers(string campaignID, string combatID, IEnumerable<string> combatantIDs, CancellationToken cancellationToken = default);
+        /// <summary>
+        /// Gets the combatant preparers for a combat prep
+        /// </summary>
+        /// <param name="campaignID">ID of the campaign containing the combat</param>
+        /// <param name="combatID">ID of the combat</param>
+        /// <param name="cancellationToken">Token for cancelling the operation</param>
+        /// <returns>Collection of combatants requested</returns>
+        Task<IEnumerable<CombatantPreparer>> GetCombatantPreparers(string campaignID, string combatID, IEnumerable<string> combatantIDs, CancellationToken cancellationToken = default);
+        #endregion
+        #region Combat
         /// <summary>
         /// Begins combat in the given campaign
         /// </summary>
@@ -90,5 +159,6 @@ namespace d20Web.Storage
         /// <param name="cancellationToken">Token for cancelling the operation</param>
         /// <returns>Task for asynchronous completion</returns>
         Task DeleteCombatant(string campaignID, string combatID, IEnumerable<string> combatantIDs, CancellationToken cancellationToken = default);
+        #endregion
     }
 }

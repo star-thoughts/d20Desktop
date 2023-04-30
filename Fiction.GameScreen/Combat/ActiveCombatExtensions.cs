@@ -5,6 +5,18 @@
     /// </summary>
     public static class ActiveCombatExtensions
     {
+        public static d20Web.Models.CombatantPreparer ToServerCombatant(this CombatantPreparer preparer)
+        {
+            return new d20Web.Models.CombatantPreparer()
+            {
+                ID = preparer.ServerID,
+                InitiativeModifier = preparer.InitiativeModifier,
+                InitiativeRoll = preparer.InitiativeRoll,
+                IsPlayer = preparer.IsPlayer,
+                Name = preparer.Name,
+                Ordinal = preparer.Ordinal,
+            };
+        }
         /// <summary>
         /// Converts an <see cref="ActiveCombat"/> into a <see cref="d20Web.Models.Combat"/> for uploading to server
         /// </summary>

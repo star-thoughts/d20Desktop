@@ -17,5 +17,13 @@
         /// Combatant in a combat
         /// </summary>
         Combatant = 3,
+        /// <summary>
+        /// Combatant preparation
+        /// </summary>
+        CombatPrep = 4,
+        /// <summary>
+        /// Combatant in a combat prep
+        /// </summary>
+        CombatantPrep = 5,
     }
 }

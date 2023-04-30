@@ -5,19 +5,11 @@
 {
     <div class="combat-page">
         <div class="combatants-list">
-            <ul>
-                @foreach (Combatant combatant in Combatants.Where(p => CanViewCombatant(p)))
-                {
-                    if (combatant.DisplayToPlayers)
-                    {
-                        <li>
-                            <div class="combatant-item @CombatantClass(combatant)">
-                                @(combatant.DisplayName ?? combatant.Name)
-                            </div>
-                        </li>
-                    }
-                }
-            </ul>
+            @foreach (Combatant combatant in Combatants.Where(p => CanViewCombatant(p)))
+            {
+                <div class="combatant-item-current @CombatantClass(combatant)">&gt;</div>
+                <div class="combatant-item-name @CombatantClass(combatant)">@(combatant.DisplayName ?? combatant.Name)</div>
+            }
         </div>
         <div class="combat-info">
             <div class="round">Round:  @Combat.Round</div>

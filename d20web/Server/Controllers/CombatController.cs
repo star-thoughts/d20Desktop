@@ -23,6 +23,69 @@ namespace d20Web.Controllers
         private ICombatService _combatService;
         private ILogger _logger;
 
+        #region Combat Prep
+        [HttpPost("prep")]
+        public async Task<IActionResult> BeginPrep([Required] string campaignID)
+        {
+            string id = await _combatService.CreateCombatPrep(campaignID, HttpContext.RequestAborted);
+
+            return CreatedAtAction(nameof(GetCombatPrep), new { campaignID = campaignID, combatPrepID = id }, new { combatID = id });
+        }
+
+        [HttpGet("prep")]
+        public async Task<IActionResult> GetCombatPreps([Required] string campaignID)
+        {
+            return Ok(await _combatService.GetCombatPreps(campaignID, HttpContext.RequestAborted));
+        }
+
+        [HttpGet("prep/{combatPrepID}")]
+        public async Task<IActionResult> GetCombatPrep([Required] string campaignID, [Required] string combatPrepID)
+        {
+            return Ok(await _combatService.GetCombatPrep(campaignID, combatPrepID, HttpContext.RequestAborted));
+        }
+
+        [HttpDelete("prep/{combatPrepID}")]
+        public async Task<IActionResult> DeleteCombatPrep([Required] string campaignID, [Required] string combatPrepID)
+        {
+            await _combatService.EndCombatPrep(campaignID, combatPrepID, HttpContext.RequestAborted);
+
+            return NoContent();
+        }
+
+        [HttpPost("prep/{combatPrepID}/combatant")]
+        public async Task<IActionResult> AddCombatantPreparers([Required] string campaignID, [Required] string combatPrepID, [Required] IEnumerable<CombatantPreparer> preparers)
+        {
+            IEnumerable<string> ids = await _combatService.AddCombatantPreparers(campaignID, combatPrepID, preparers, HttpContext.RequestAborted);
+
+            return Ok(new { combatantIDs = ids.ToArray() });
+        }
+
+        [HttpDelete("prep/{combatPrepID}/combatant")]
+        public async Task<IActionResult> RemoveCombatantPreparer([Required] string campaignID, [Required] string combatPrepID, [Required] string[] ids)
+        {
+            await _combatService.DeleteCombatantPreparers(campaignID, combatPrepID, ids, HttpContext.RequestAborted);
+
+            return NoContent();
+        }
+
+
+        [HttpPut("prep/{combatID}/combatant/{combatantID}")]
+        public async Task<IActionResult> UpdateCombatantPreparer([Required] string campaignID, [Required] string combatID, [Required] CombatantPreparer combatant)
+        {
+            await _combatService.UpdateCombatantPreparer(campaignID, combatID, combatant, HttpContext.RequestAborted);
+
+            return NoContent();
+        }
+
+        [HttpGet("prep/{combatID}/combatant")]
+        public async Task<IActionResult> GetCombatantPreparers([Required] string campaignID, [Required] string combatID)
+        {
+            var result = await _combatService.GetCombatantPreparers(campaignID, combatID, Array.Empty<string>(), HttpContext.RequestAborted);
+
+            return Ok(result);
+        }
+        #endregion
+        #region Combat
         /// <summary>
         /// Creates a new combat
         /// </summary>
@@ -137,5 +200,6 @@ namespace d20Web.Controllers
 
             return NoContent();
         }
+        #endregion
     }
 }

@@ -13,13 +13,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fiction.GameScreen", "Ficti
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{5E9987D0-C00C-4A46-8759-915CBA5110B3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "d20Desktop.Tests", "d20Desktop.Tests\d20Desktop.Tests.csproj", "{085A745C-3A8D-429D-B739-05211A0C7EA0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "d20Desktop.Tests", "d20Desktop.Tests\d20Desktop.Tests.csproj", "{085A745C-3A8D-429D-B739-05211A0C7EA0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "d20web.Server", "d20web\Server\d20web.Server.csproj", "{97D90D6A-D732-46CE-98F8-0E647C5E5ED7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "d20web.Server", "d20web\Server\d20web.Server.csproj", "{97D90D6A-D732-46CE-98F8-0E647C5E5ED7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "d20web.Client", "d20web\Client\d20web.Client.csproj", "{2C061F6F-BD19-4CA9-A71B-5C77AFA22066}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "d20web.Client", "d20web\Client\d20web.Client.csproj", "{2C061F6F-BD19-4CA9-A71B-5C77AFA22066}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "d20web.Shared", "d20web\Shared\d20web.Shared.csproj", "{B430EC3C-B291-4B1C-B7C1-F2606B280787}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "d20web.Shared", "d20web\Shared\d20web.Shared.csproj", "{B430EC3C-B291-4B1C-B7C1-F2606B280787}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "d20Web", "d20Web", "{A9327A78-C090-4031-9620-A0310CA56489}"
 EndProject

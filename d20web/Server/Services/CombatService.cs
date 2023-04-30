@@ -21,6 +21,166 @@ namespace d20Web.Services
         private readonly ILogger<CombatService> _logger;
         private readonly ICombatStorage _storage;
 
+        #region Combat Prep
+        /// <summary>
+        /// Creates a new combat prep in a campaign
+        /// </summary>
+        /// <param name="campaignID">ID of the campaign to create the combat in</param>
+        /// <param name="cancellationToken">Token for cancelling the operation</param>
+        /// <returns>ID of the combat that was created</returns>
+        /// <exception cref="ArgumentNullException">One or more parameters was null or empty</exception>
+        public async Task<string> CreateCombatPrep(string campaignID, CancellationToken cancellationToken = default)
+        {
+            if (string.IsNullOrWhiteSpace(campaignID))
+                throw new ArgumentNullException(nameof(campaignID));
+
+            //  For now, only supports one active combat at a time, delete any existing ones
+            foreach (CombatListData existing in await _storage.GetCombatPreparers(campaignID, cancellationToken))
+            {
+                if (!string.IsNullOrWhiteSpace(existing.ID))
+                    await EndCombatPrep(campaignID, existing.ID, cancellationToken);
+            }
+
+            string id = await _storage.CreateCombatPrep(campaignID, cancellationToken);
+
+            _ = _hub.CombatPrepCreated(campaignID, id);
+
+            return id;
+        }
+        /// <summary>
+        /// Gets information for a combat prep
+        /// </summary>
+        /// <param name="campaignID">ID of the campaign the combat is to be created in</param>
+        /// <param name="combatID">ID of the combat to get information for</param>
+        /// <param name="cancellationToken">Token for cancelling the operation</param>
+        /// <returns>Combat information</returns>
+        public async Task<CombatPrep> GetCombatPrep(string campaignID, string combatID, CancellationToken cancellationToken = default)
+        {
+            if (string.IsNullOrWhiteSpace(combatID))
+                throw new ArgumentNullException(nameof(combatID));
+
+            return await _storage.GetCombatPrep(campaignID, combatID, cancellationToken);
+        }
+        /// <summary>
+        /// Gets a list of combat preps int he campaign
+        /// </summary>
+        /// <param name="campaignID">ID of the campaign</param>
+        /// <param name="cancellationToken">Token for cancelling the operation</param>
+        /// <returns>Collection of combats in the campaign</returns>
+        public async Task<IEnumerable<CombatListData>> GetCombatPreps(string campaignID, CancellationToken cancellationToken = default)
+        {
+            if (string.IsNullOrWhiteSpace(campaignID))
+                throw new ArgumentNullException(nameof(campaignID));
+
+            return await _storage.GetCombatPreparers(campaignID, cancellationToken);
+        }
+        /// <summary>
+        /// Ends a combat prep
+        /// </summary>
+        /// <param name="campaignID">ID of the campaign containing the combat</param>
+        /// <param name="combatID">ID of the combat to end</param>
+        /// <param name="cancellationToken">Token for cancelling the operation</param>
+        /// <returns>Task for asynchronous completion</returns>
+        public async Task EndCombatPrep(string campaignID, string combatID, CancellationToken cancellationToken = default)
+        {
+            if (string.IsNullOrWhiteSpace(combatID))
+                throw new ArgumentNullException(nameof(combatID));
+            if (string.IsNullOrWhiteSpace(campaignID))
+                throw new ArgumentNullException(nameof(campaignID));
+
+            await _storage.EndCombatPrep(campaignID, combatID, cancellationToken);
+
+            _ = _hub.CombatPrepDeleted(campaignID, combatID);
+
+        }
+        /// <summary>
+        /// Creates a combatant prep with the given statistics
+        /// </summary>
+        /// <param name="campaignID">ID of the campaign containing the combat</param>
+        /// <param name="combatID">ID of the combat to create the combatant in</param>
+        /// <param name="combatants">Combatant information to create</param>
+        /// <param name="cancellationToken">Token for cancelling the operation</param>
+        /// <returns>ID of the combatant</returns>
+        public async Task<IEnumerable<string>> AddCombatantPreparers(string campaignID, string combatID, IEnumerable<CombatantPreparer> combatants, CancellationToken cancellationToken = default)
+        {
+            if (string.IsNullOrWhiteSpace(combatID))
+                throw new ArgumentNullException(nameof(combatID));
+            if (combatants == null)
+                throw new ArgumentNullException(nameof(combatants));
+            if (!combatants.Any())
+                throw new ArgumentException(nameof(combatants));
+
+            foreach (CombatantPreparer combatant in combatants)
+            {
+                if (string.IsNullOrWhiteSpace(combatant.Name))
+                    throw new ArgumentNullException(nameof(combatant.Name));
+            }
+
+            IEnumerable<string> ids = await _storage.CreateCombatantPreparers(campaignID, combatID, combatants, cancellationToken);
+
+            _ = _hub.CombatantPrepCreated(campaignID, combatID, ids);
+
+            return ids;
+        }
+        /// <summary>
+        /// Updates the stats for a combatant prep
+        /// </summary>
+        /// <param name="campaignID">Campaign the combat is in</param>
+        /// <param name="combatID">ID of the combat the combatant is in</param>
+        /// <param name="combatant">Combatant details to use for the update</param>
+        /// <param name="cancellationToken">Token for cancelling the operation</param>
+        /// <returns>Task for asynchronous completion</returns>
+        public async Task UpdateCombatantPreparer(string campaignID, string combatID, CombatantPreparer combatant, CancellationToken cancellationToken = default)
+        {
+            if (string.IsNullOrWhiteSpace(combatID))
+                throw new ArgumentNullException(nameof(combatID));
+            if (combatant == null)
+                throw new ArgumentNullException(nameof(combatant));
+
+            await _storage.UpdateCombatantPreparer(campaignID, combatID, combatant, cancellationToken);
+
+            if (combatant.IsPlayer)
+                _ = _hub.CombatantPrepUpdated(campaignID, combatID, combatant);
+
+        }
+        /// <summary>
+        /// Deletes the combatant from the combat prep
+        /// </summary>
+        /// <param name="campaignID">ID of the campaign the combat is in</param>
+        /// <param name="combatID">ID of the combat the combatant is in</param>
+        /// <param name="combatantIDs">ID of the combatant to remove</param>
+        /// <param name="cancellationToken">Token for cancelling the operation</param>
+        /// <returns>Task for asynchronous completion</returns>
+        public async Task DeleteCombatantPreparers(string campaignID, string combatID, IEnumerable<string> combatantIDs, CancellationToken cancellationToken = default)
+        {
+            if (string.IsNullOrWhiteSpace(combatID))
+                throw new ArgumentNullException(nameof(combatID));
+            if (string.IsNullOrWhiteSpace(campaignID))
+                throw new ArgumentNullException(nameof(campaignID));
+
+            await _storage.DeleteCombatantPreparers(campaignID, combatID, combatantIDs, cancellationToken);
+
+            _ = _hub.CombatantPrepsDeleted(campaignID, combatID, combatantIDs);
+        }
+
+        /// <summary>
+        /// Gets the combatant preparers for a combat prep
+        /// </summary>
+        /// <param name="campaignID">ID of the campaign containing the combat</param>
+        /// <param name="combatID">ID of the combat</param>
+        /// <param name="cancellationToken">Token for cancelling the operation</param>
+        /// <returns>Collection of combatants requested</returns>
+        public async Task<IEnumerable<CombatantPreparer>> GetCombatantPreparers(string campaignID, string combatID, IEnumerable<string> combatantIDs, CancellationToken cancellationToken = default)
+        {
+            if (string.IsNullOrWhiteSpace(combatID))
+                throw new ArgumentNullException(nameof(combatID));
+            if (string.IsNullOrWhiteSpace(campaignID))
+                throw new ArgumentNullException(nameof(campaignID));
+
+            return await _storage.GetCombatantPreparers(campaignID, combatID, combatantIDs, cancellationToken);
+        }
+        #endregion
+        #region Combat
         /// <summary>
         /// Creates a new combat in a campaign
         /// </summary>
@@ -219,5 +379,6 @@ namespace d20Web.Services
 
             _ = _hub.CombatantsDeleted(campaignID, combatID, combatantIDs);
         }
+        #endregion
     }
 }

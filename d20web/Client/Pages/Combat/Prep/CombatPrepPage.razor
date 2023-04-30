@@ -1,0 +1,19 @@
+﻿@page "/campaign/{CampaignID}/combat/prep/{CombatID}"
+@using d20Web.Models
+
+@if (Combat != null && Combatants != null)
+{
+    <div class="combat-page">
+        <div class="combatants-list">
+            @foreach (CombatantPreparer combatant in Combatants.Where(p => CanViewCombatant(p)))
+            {
+                <div class="combatant-item-name">@combatant.Name</div>
+                <div class="combatant-item-init">@GetInitString(combatant)</div>
+            }
+        </div>
+    </div>
+}
+else
+{
+    <div class="loading">Loading...</div>
+}
