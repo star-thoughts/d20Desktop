@@ -67,6 +67,14 @@ namespace d20Web.Services
         /// <param name="cancellationToken">Token for cancelling the operation</param>
         /// <returns>Task for asynchronous completion</returns>
         Task DeleteCombatantPreparers(string campaignID, string combatID, IEnumerable<string> combatantIDs, CancellationToken cancellationToken = default);
+        /// <summary>
+        /// Gets the combatant preparers for a combat prep
+        /// </summary>
+        /// <param name="campaignID">ID of the campaign containing the combat</param>
+        /// <param name="combatID">ID of the combat</param>
+        /// <param name="cancellationToken">Token for cancelling the operation</param>
+        /// <returns>Collection of combatants requested</returns>
+        Task<IEnumerable<CombatantPreparer>> GetCombatantPreparers(string campaignID, string combatID, IEnumerable<string> combatantIDs, CancellationToken cancellationToken = default);
         #endregion
         #region Combat
         /// <summary>

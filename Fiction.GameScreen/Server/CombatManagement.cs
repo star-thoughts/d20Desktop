@@ -51,7 +51,7 @@ namespace Fiction.GameScreen.Server
         {
             string uri = $"/api/campaign/{HttpUtility.UrlEncode(campaignID)}/combat/prep/{HttpUtility.UrlEncode(combatID)}";
 
-            using (var result = await _client.DeleteAsync(uri, cancellationToken))
+            using (HttpResponseMessage result = await _client.DeleteAsync(uri, cancellationToken))
                 result.EnsureSuccessStatusCode();
 
         }
@@ -71,7 +71,9 @@ namespace Fiction.GameScreen.Server
             {
                 result.EnsureSuccessStatusCode();
 
-                return JsonSerializer.Deserialize<NewCombatants>(await result.Content.ReadAsStringAsync())?.combatantIDs ?? Enumerable.Empty<string>();
+                NewCombatants? combatantInfo = JsonSerializer.Deserialize<NewCombatants>(await result.Content.ReadAsStringAsync());
+
+                return combatantInfo?.combatantIDs ?? Enumerable.Empty<string>();
             }
         }
         /// <summary>
@@ -140,7 +142,7 @@ namespace Fiction.GameScreen.Server
         {
             string uri = $"/api/campaign/{HttpUtility.UrlEncode(campaignID)}/combat/{HttpUtility.UrlEncode(combatID)}";
 
-            using (var result = await _client.DeleteAsync(uri, cancellationToken))
+            using (HttpResponseMessage result = await _client.DeleteAsync(uri, cancellationToken))
                 result.EnsureSuccessStatusCode();
         }
 
@@ -178,7 +180,9 @@ namespace Fiction.GameScreen.Server
             {
                 result.EnsureSuccessStatusCode();
 
-                return JsonSerializer.Deserialize<NewCombatants>(await result.Content.ReadAsStringAsync())?.combatantIDs ?? Enumerable.Empty<string>();
+                NewCombatants? combatantInfo = JsonSerializer.Deserialize<NewCombatants>(await result.Content.ReadAsStringAsync());
+
+                return combatantInfo?.combatantIDs ?? Enumerable.Empty<string>();
             }
         }
 

@@ -10,7 +10,7 @@ namespace d20Web.Storage.MongoDB.Models
         public ObjectId ID { get; set; }
         public ObjectId CampaignID { get; set; }
 
-        public CombatPrep ToCombatPrep()
+        public virtual CombatPrep ToCombatPrep()
         {
             return new CombatPrep()
             {

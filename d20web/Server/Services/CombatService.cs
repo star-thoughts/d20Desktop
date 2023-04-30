@@ -162,6 +162,23 @@ namespace d20Web.Services
 
             _ = _hub.CombatantPrepsDeleted(campaignID, combatID, combatantIDs);
         }
+
+        /// <summary>
+        /// Gets the combatant preparers for a combat prep
+        /// </summary>
+        /// <param name="campaignID">ID of the campaign containing the combat</param>
+        /// <param name="combatID">ID of the combat</param>
+        /// <param name="cancellationToken">Token for cancelling the operation</param>
+        /// <returns>Collection of combatants requested</returns>
+        public async Task<IEnumerable<CombatantPreparer>> GetCombatantPreparers(string campaignID, string combatID, IEnumerable<string> combatantIDs, CancellationToken cancellationToken = default)
+        {
+            if (string.IsNullOrWhiteSpace(combatID))
+                throw new ArgumentNullException(nameof(combatID));
+            if (string.IsNullOrWhiteSpace(campaignID))
+                throw new ArgumentNullException(nameof(campaignID));
+
+            return await _storage.GetCombatantPreparers(campaignID, combatID, combatantIDs, cancellationToken);
+        }
         #endregion
         #region Combat
         /// <summary>

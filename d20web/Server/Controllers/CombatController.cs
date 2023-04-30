@@ -32,6 +32,12 @@ namespace d20Web.Controllers
             return CreatedAtAction(nameof(GetCombatPrep), new { campaignID = campaignID, combatPrepID = id }, new { combatID = id });
         }
 
+        [HttpGet("prep")]
+        public async Task<IActionResult> GetCombatPreps([Required] string campaignID)
+        {
+            return Ok(await _combatService.GetCombatPreps(campaignID, HttpContext.RequestAborted));
+        }
+
         [HttpGet("prep/{combatPrepID}")]
         public async Task<IActionResult> GetCombatPrep([Required] string campaignID, [Required] string combatPrepID)
         {
@@ -51,7 +57,7 @@ namespace d20Web.Controllers
         {
             IEnumerable<string> ids = await _combatService.AddCombatantPreparers(campaignID, combatPrepID, preparers, HttpContext.RequestAborted);
 
-            return Ok(new { ids = ids.ToArray() });
+            return Ok(new { combatantIDs = ids.ToArray() });
         }
 
         [HttpDelete("prep/{combatPrepID}/combatant")]
@@ -69,6 +75,14 @@ namespace d20Web.Controllers
             await _combatService.UpdateCombatantPreparer(campaignID, combatID, combatant, HttpContext.RequestAborted);
 
             return NoContent();
+        }
+
+        [HttpGet("prep/{combatID}/combatant")]
+        public async Task<IActionResult> GetCombatantPreparers([Required] string campaignID, [Required] string combatID)
+        {
+            var result = await _combatService.GetCombatantPreparers(campaignID, combatID, Array.Empty<string>(), HttpContext.RequestAborted);
+
+            return Ok(result);
         }
         #endregion
         #region Combat

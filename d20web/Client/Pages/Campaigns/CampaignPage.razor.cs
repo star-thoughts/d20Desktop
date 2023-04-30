@@ -1,6 +1,7 @@
 ﻿using d20Web.Clients;
 using d20Web.SignalRClient;
 using Microsoft.AspNetCore.Components;
+using System.Windows.Markup;
 
 namespace d20Web.Pages.Campaigns
 {
@@ -17,7 +18,7 @@ namespace d20Web.Pages.Campaigns
         public CombatClient CombatClient { get; set; } = null!;
         [Inject]
         public NavigationManager NavigationManager { get; set; } = null!;
-        
+
         [Parameter]
         public string? CampaignID { get; set; }
 
@@ -25,22 +26,57 @@ namespace d20Web.Pages.Campaigns
         {
             if (!string.IsNullOrWhiteSpace(CampaignID))
             {
-                var combats = await CombatServer.GetCombats(CampaignID);
-                var combat = combats?.FirstOrDefault();
+                if (!await CheckForExistingCombat() && !await CheckForExistingCombatPrep())
+                    await ConnectToSignalR();
+            }
+        }
+
+        private async Task<bool> CheckForExistingCombatPrep()
+        {
+            if (!string.IsNullOrWhiteSpace(CampaignID))
+            {
+                IEnumerable<Models.CombatListData> combats = await CombatServer.GetCombatPreps(CampaignID);
+                Models.CombatListData? combat = combats?.FirstOrDefault();
+
+                if (!string.IsNullOrWhiteSpace(combat?.ID))
+                {
+                    NavigationManager.NavigateToCombatPrep(CampaignID, combat.ID);
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private async Task<bool> CheckForExistingCombat()
+        {
+            if (!string.IsNullOrWhiteSpace(CampaignID))
+            {
+                IEnumerable<Models.CombatListData> combats = await CombatServer.GetCombats(CampaignID);
+                Models.CombatListData? combat = combats?.FirstOrDefault();
 
                 if (!string.IsNullOrWhiteSpace(combat?.ID))
                 {
                     NavigationManager.NavigateToCombat(CampaignID, combat.ID);
+                    return true;
                 }
-                else
-                    await ConnectToSignalR();
             }
+            return false;
         }
 
         private async Task ConnectToSignalR()
         {
             await CombatClient.StartClient();
             CombatClient.CombatStarted += CombatClient_CombatStarted;
+            CombatClient.CombatPrepStarted += CombatClient_CombatPrepStarted;
+        }
+
+        private void CombatClient_CombatPrepStarted(object? sender, CombatPrepStartedEventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(e.CombatID)
+                && string.Equals(CampaignID, e.CampaignID, StringComparison.OrdinalIgnoreCase))
+            {
+                NavigationManager.NavigateToCombatPrep(e.CampaignID, e.CombatID);
+            }
         }
 
         private void CombatClient_CombatStarted(object? sender, CombatStartedEventArgs e)
