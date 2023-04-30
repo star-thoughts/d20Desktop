@@ -19,6 +19,6 @@ jobs:
       - name:  Build and Push
         uses: docker/build-push-action@v3
         with:
-          context: ./SecondSons
+          context: ./d20web
           push: true
           tags: starthoughts/d20web:latest
