@@ -2239,6 +2239,15 @@ namespace Fiction.GameScreen.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Reset Campaign.
+        /// </summary>
+        public static string ReseetCampaignID {
+            get {
+                return ResourceManager.GetString("ReseetCampaignID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Clear.
         /// </summary>
         public static string ResetViewButton {
