@@ -1080,6 +1080,10 @@
     <value>Requires All Types</value>
     <comment>Checkbox for whether or not all types must be met to bypass damage reduction</comment>
   </data>
+  <data name="ReseetCampaignID" xml:space="preserve">
+    <value>Reset Campaign</value>
+    <comment>Label for reseting the campaign to create a new one on the server</comment>
+  </data>
   <data name="ResetViewButton" xml:space="preserve">
     <value>Clear</value>
     <comment>Button label for buttons that reset the current view back to default</comment>

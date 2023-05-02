@@ -405,9 +405,13 @@
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <TextBox Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ViewModel.ServerUri, UpdateSourceTrigger=PropertyChanged}" />
-                    </Grid>    
+                        <CheckBox Grid.Row="1"
+                                  IsChecked="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ViewModel.ResetCampaign}"
+                                  Content="{Binding Source={x:Static resources:Resources.ReseetCampaignID}}" />
+                    </Grid>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

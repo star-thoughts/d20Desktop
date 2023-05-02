@@ -1,6 +1,8 @@
-﻿using Fiction.GameScreen.Server;
+﻿using d20Web.Models;
+using Fiction.GameScreen.Server;
 using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -62,6 +64,23 @@ namespace Fiction.GameScreen.ViewModels
             }
         }
 
+        private bool _resetCampaign;
+        /// <summary>
+        /// Gets whether or not to reset the campaign ID to create a new campaign on the server
+        /// </summary>
+        public bool ResetCampaign
+        {
+            get { return _resetCampaign; }
+            set
+            {
+                if (_resetCampaign != value)
+                {
+                    _resetCampaign = value;
+                    this.RaisePropertyChanged(nameof(ResetCampaign));
+                }
+            }
+        }
+
         /// <summary>
         /// Gets whether or not the configuration is valid
         /// </summary>
@@ -70,6 +89,7 @@ namespace Fiction.GameScreen.ViewModels
         /// <summary>
         /// Saves the settings to the campaign and gets a campaign ID
         /// </summary>
+        /// <returns>Whether or not the campaign exists on the server.</returns>
         public async Task Save()
         {
             if (!string.IsNullOrWhiteSpace(_serverUri))
@@ -82,11 +102,12 @@ namespace Fiction.GameScreen.ViewModels
                     };
 
                     CampaignManagement server = new CampaignManagement(client);
-                    if (string.IsNullOrWhiteSpace(_campaign.CampaignID))
+                    if (string.IsNullOrWhiteSpace(_campaign.CampaignID) || _resetCampaign)
                     {
                         string id = await server.CreateCampaign(_campaignName);
                         _campaign.CampaignID = id;
                     }
+
                     _campaign.ServerUri = _serverUri;
                     _modelFactory.SetServer(server);
                 }

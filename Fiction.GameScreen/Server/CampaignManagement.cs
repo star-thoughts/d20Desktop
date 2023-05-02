@@ -1,4 +1,6 @@
-﻿using System.Text.Json;
+﻿using d20Web.Models;
+using System.Net.Http.Json;
+using System.Text.Json;
 
 namespace Fiction.GameScreen.Server
 {
@@ -31,11 +33,30 @@ namespace Fiction.GameScreen.Server
 
             using (StringContent content = new StringContent(string.Empty))
             {
-                HttpResponseMessage result = await _client.PostAsync(uri, content);
+                using (HttpResponseMessage result = await _client.PostAsync(uri, content))
+                {
+                    result.EnsureSuccessStatusCode();
+
+                    string json = await result.Content.ReadAsStringAsync();
+                    return JsonSerializer.Deserialize<NewCampaign>(json)?.campaignID ?? string.Empty;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets a list of campaigns from the server
+        /// </summary>
+        /// <returns>List of campaigns from the server</returns>
+        public async Task<IEnumerable<CampaignListData>> GetCampaigns()
+        {
+            string uri = "api/campaign";
+
+            using (HttpResponseMessage result = await _client.GetAsync(uri))
+            {
                 result.EnsureSuccessStatusCode();
 
                 string json = await result.Content.ReadAsStringAsync();
-                return JsonSerializer.Deserialize<NewCampaign>(json)?.campaignID ?? string.Empty;
+                return JsonSerializer.Deserialize<IEnumerable<CampaignListData>>(json) ?? Enumerable.Empty<CampaignListData>();
             }
         }
 
