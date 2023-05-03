@@ -26,8 +26,9 @@ namespace d20Web.Pages.Campaigns
         {
             if (!string.IsNullOrWhiteSpace(CampaignID))
             {
-                if (!await CheckForExistingCombat() && !await CheckForExistingCombatPrep())
-                    await ConnectToSignalR();
+                await ConnectToSignalR();
+                if (!await CheckForExistingCombat())
+                    await CheckForExistingCombatPrep();
             }
         }
 
