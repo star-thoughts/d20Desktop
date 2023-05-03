@@ -1,5 +1,6 @@
 ﻿using d20Web.Clients;
 using d20Web.Models;
+using d20Web.Services;
 using d20Web.SignalRClient;
 using Microsoft.AspNetCore.Components;
 
@@ -16,7 +17,8 @@ namespace d20Web.Pages.Combat
         public CombatClient CombatClient { get; set; } = null!;
         [Inject]
         public NavigationManager NavigationManager { get; set; } = null!;
-
+        [Inject]
+        public ViewService ViewService { get; set; } = null!;
         [Parameter]
         public string? CampaignID { get; set; }
         [Parameter]
@@ -43,13 +45,21 @@ namespace d20Web.Pages.Combat
             }
         }
 
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            string? id = Combatants?.FirstOrDefault(p => p.IsCurrent)?.ID;
+
+            if (!string.IsNullOrWhiteSpace(id))
+                await ViewService.ScrollIntoView(id);
+        }
+
         private async void CombatClient_CombatUpdated(object? sender, CombatUpdatedEventArgs e)
         {
             if (string.Equals(e.Combat?.ID, Combat?.ID, StringComparison.OrdinalIgnoreCase))
             {
                 Combat = e.Combat;
                 await InvokeAsync(StateHasChanged);
-            }    
+            }
         }
 
         private async Task AddOrUpdateCombatants(IEnumerable<string> combatantIDs)

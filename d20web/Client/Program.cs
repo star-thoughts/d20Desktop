@@ -1,4 +1,5 @@
 using d20Web.Clients;
+using d20Web.Services;
 using d20Web.SignalRClient;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -29,6 +30,8 @@ namespace d20Web
             {
                 return new CombatClient(builder.HostEnvironment.BaseAddress, provider.GetRequiredService<ILoggerProvider>());
             });
+
+            builder.Services.AddScoped<ViewService>();
 
             await builder.Build().RunAsync();
         }

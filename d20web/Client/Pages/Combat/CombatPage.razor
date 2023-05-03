@@ -7,7 +7,7 @@
         <div class="combatants-list">
             @foreach (Combatant combatant in Combatants.Where(p => CanViewCombatant(p)))
             {
-                <div class="combatant-item-current @CombatantClass(combatant)">&gt;</div>
+                <div id="@combatant.ID" class="combatant-item-current @CombatantClass(combatant)">&gt;</div>
                 <div class="combatant-item-name @CombatantClass(combatant)">@(combatant.DisplayName ?? combatant.Name)</div>
             }
         </div>
