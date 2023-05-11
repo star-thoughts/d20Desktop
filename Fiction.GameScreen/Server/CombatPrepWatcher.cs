@@ -1,4 +1,5 @@
-﻿using Fiction.GameScreen.Combat;
+﻿using d20Web.Models.Combat;
+using Fiction.GameScreen.Combat;
 using System.ComponentModel;
 
 namespace Fiction.GameScreen.Server
@@ -50,7 +51,7 @@ namespace Fiction.GameScreen.Server
                         string[] combatantIDs = (await _combatManagement.AddCombatantPreparers(_campaignID, id, _combat.Combatants.Select(p => p.ToServerCombatant()), cancellationToken)).ToArray();
                         for (int i = 0; i < combatantIDs.Length; i++)
                         {
-                            CombatantPreparer combatant = _combat.Combatants[i];
+                            Combat.CombatantPreparer combatant = _combat.Combatants[i];
                             combatant.ServerID = combatantIDs[i];
                         }
                     }
@@ -69,8 +70,8 @@ namespace Fiction.GameScreen.Server
             {
                 try
                 {
-                    d20Web.Models.CombatantPreparer[]? newCombatants = e.NewItems?.OfType<CombatantPreparer>().Select(p => p.ToServerCombatant()).ToArray();
-                    string[]? oldCombatants = e.OldItems?.OfType<CombatantPreparer>()
+                    d20Web.Models.Combat.CombatantPreparer[]? newCombatants = e.NewItems?.OfType<Combat.CombatantPreparer>().Select(p => p.ToServerCombatant()).ToArray();
+                    string[]? oldCombatants = e.OldItems?.OfType<Combat.CombatantPreparer>()
                         .Select(p => p.ServerID)
                         .Where(p => !string.IsNullOrWhiteSpace(p))
                         .OfType<string>()
@@ -94,7 +95,7 @@ namespace Fiction.GameScreen.Server
             {
                 try
                 {
-                    if (sender is CombatantPreparer combatant
+                    if (sender is Combat.CombatantPreparer combatant
                         && !string.IsNullOrWhiteSpace(combatant.ServerID))
                     {
                         await _combatManagement.UpdateCombatantPreparer(_campaignID, _combat.ServerID, combatant.ToServerCombatant());
@@ -118,7 +119,7 @@ namespace Fiction.GameScreen.Server
             }
         }
 
-        private async Task AddCombatants(d20Web.Models.CombatantPreparer[] newCombatants)
+        private async Task AddCombatants(d20Web.Models.Combat.CombatantPreparer[] newCombatants)
         {
             if (!string.IsNullOrEmpty(_combat.ServerID))
             {
@@ -128,8 +129,8 @@ namespace Fiction.GameScreen.Server
                 {
                     for (int i = 0; i < newCombatants.Length; i++)
                     {
-                        d20Web.Models.CombatantPreparer combatant = newCombatants[i];
-                        CombatantPreparer? oldCombatant = _combat.Combatants
+                        d20Web.Models.Combat.CombatantPreparer combatant = newCombatants[i];
+                        Combat.CombatantPreparer? oldCombatant = _combat.Combatants
                             .FirstOrDefault(p => string.Equals(p.Name, combatant.Name, StringComparison.Ordinal) && p.Ordinal == combatant.Ordinal);
 
                         if (oldCombatant != null)

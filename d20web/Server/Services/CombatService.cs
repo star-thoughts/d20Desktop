@@ -1,5 +1,6 @@
 ﻿using d20Web.Hubs;
 using d20Web.Models;
+using d20Web.Models.Combat;
 using d20Web.Storage;
 using Microsoft.AspNetCore.SignalR;
 

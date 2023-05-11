@@ -1,5 +1,5 @@
 ﻿using d20Web.Clients;
-using d20Web.Models;
+using d20Web.Models.Combat;
 using d20Web.SignalRClient;
 using Microsoft.AspNetCore.Components;
 
@@ -19,7 +19,7 @@ namespace d20Web.Pages.Combat.Prep
         [Parameter]
         public string? CombatID { get; set; }
 
-        Models.CombatPrep? Combat { get; set; }
+        CombatPrep? Combat { get; set; }
         CombatantPreparer[]? Combatants { get; set; }
 
         protected override async Task OnInitializedAsync()

@@ -1,7 +1,7 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson;
-using d20Web.Models;
 using MongoDB.Driver;
+using d20Web.Models.Combat;
 
 namespace d20Web.Storage.MongoDB.Models
 {

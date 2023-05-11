@@ -1,4 +1,4 @@
-﻿using d20Web.Models;
+﻿using d20Web.Models.Combat;
 using Microsoft.AspNetCore.SignalR;
 
 namespace d20Web.Hubs

@@ -1,6 +1,7 @@
 ﻿using System.Net.Http.Json;
 using System.Text.Json;
 using System.Web;
+using d20Web.Models.Combat;
 
 namespace Fiction.GameScreen.Server
 {
@@ -63,7 +64,7 @@ namespace Fiction.GameScreen.Server
         /// <param name="combatants">Information about the combatants to add</param>
         /// <param name="cancellationToken">Token for cancelling the operation</param>
         /// <returns>IDs of the combatants added, in order they were put in <paramref name="combatants"/></returns>
-        public async Task<IEnumerable<string>> AddCombatantPreparers(string campaignID, string combatID, IEnumerable<d20Web.Models.CombatantPreparer> combatants, CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<string>> AddCombatantPreparers(string campaignID, string combatID, IEnumerable<CombatantPreparer> combatants, CancellationToken cancellationToken = default)
         {
             string uri = $"/api/campaign/{HttpUtility.UrlEncode(campaignID)}/combat/prep/{HttpUtility.UrlEncode(combatID)}/combatant";
 
@@ -101,7 +102,7 @@ namespace Fiction.GameScreen.Server
         /// <param name="combatant">Combatant information to update</param>
         /// <param name="cancellationToken">Token for cancelling the operation</param>
         /// <returns>Task for asynchronous completion</returns>
-        public async Task UpdateCombatantPreparer(string campaignID, string combatID, d20Web.Models.CombatantPreparer combatant, CancellationToken cancellationToken = default)
+        public async Task UpdateCombatantPreparer(string campaignID, string combatID, CombatantPreparer combatant, CancellationToken cancellationToken = default)
         {
             string uri = $"/api/campaign/{HttpUtility.UrlEncode(campaignID)}/combat/prep/{HttpUtility.UrlEncode(combatID)}/combatant/{HttpUtility.UrlEncode(combatant.ID)}";
 
@@ -154,7 +155,7 @@ namespace Fiction.GameScreen.Server
         /// <param name="cancellationToken">Combat to update</param>
         /// <param name="combat">Token for cancelling the operation</param>
         /// <returns>Task for asynchronous completion</returns>
-        public async Task UpdateCombat(string campaignID, string combatID, d20Web.Models.Combat combat, CancellationToken cancellationToken = default)
+        public async Task UpdateCombat(string campaignID, string combatID, d20Web.Models.Combat.Combat combat, CancellationToken cancellationToken = default)
         {
             string uri = $"/api/campaign/{HttpUtility.UrlEncode(campaignID)}/combat/{HttpUtility.UrlEncode(combatID)}";
 
@@ -172,7 +173,7 @@ namespace Fiction.GameScreen.Server
         /// <param name="combatants">Information about the combatants to add</param>
         /// <param name="cancellationToken">Token for cancelling the operation</param>
         /// <returns>IDs of the combatants added, in order they were put in <paramref name="combatants"/></returns>
-        public async Task<IEnumerable<string>> AddCombatants(string campaignID, string combatID, IEnumerable<d20Web.Models.Combatant> combatants, CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<string>> AddCombatants(string campaignID, string combatID, IEnumerable<Combatant> combatants, CancellationToken cancellationToken = default)
         {
             string uri = $"/api/campaign/{HttpUtility.UrlEncode(campaignID)}/combat/{HttpUtility.UrlEncode(combatID)}/combatant";
 
@@ -210,7 +211,7 @@ namespace Fiction.GameScreen.Server
         /// <param name="combatant">Combatant information to update</param>
         /// <param name="cancellationToken">Token for cancelling the operation</param>
         /// <returns>Task for asynchronous completion</returns>
-        public async Task UpdateCombatant(string campaignID, string combatID, d20Web.Models.Combatant combatant, CancellationToken cancellationToken = default)
+        public async Task UpdateCombatant(string campaignID, string combatID, Combatant combatant, CancellationToken cancellationToken = default)
         {
             string uri = $"/api/campaign/{HttpUtility.UrlEncode(campaignID)}/combat/{HttpUtility.UrlEncode(combatID)}/combatant/{HttpUtility.UrlEncode(combatant.ID)}";
 

@@ -1,5 +1,6 @@
 ﻿using d20Web.Hubs;
 using d20Web.Models;
+using d20Web.Models.Bestiary;
 using d20Web.Storage;
 using Microsoft.AspNetCore.SignalR;
 
@@ -18,6 +19,7 @@ namespace d20Web.Services
         private ICampaignStorage _campaignStorage;
         private ILogger _logger;
 
+        #region Campaign
         public async Task<string> CreateCampaign(string campaignName, CancellationToken cancellationToken = default)
         {
             if (string.IsNullOrWhiteSpace(campaignName))
@@ -42,5 +44,41 @@ namespace d20Web.Services
 
             return _campaignStorage.GetCampaign(campaignID, cancellationToken);
         }
+        #endregion
+        #region Monsters
+        public async Task<string> CreateMonster(string campaignID, Monster monster, CancellationToken cancellationToken = default)
+        {
+            if (string.IsNullOrWhiteSpace(campaignID))
+                throw new ArgumentNullException(nameof(campaignID));
+
+            string id = await _campaignStorage.CreateMonster(campaignID, monster, cancellationToken);
+
+            _ = _campaignHub.MonsterCreated(campaignID, id);
+
+            return id;
+        }
+
+        public async Task UpdateMonster(string campaignID, Monster monster, CancellationToken cancellationToken = default)
+        {
+            if (string.IsNullOrWhiteSpace(campaignID))
+                throw new ArgumentNullException(nameof(campaignID));
+
+            await _campaignStorage.UpdateMonster(campaignID, monster, cancellationToken);
+
+            _ = _campaignHub.MonsterUpdated(campaignID, monster);
+        }
+
+        public async Task DeleteMonster(string campaignID, string id, CancellationToken cancellationToken = default)
+        {
+            await _campaignStorage.DeleteMonster(campaignID, id, cancellationToken);
+
+            _ = _campaignHub.MonsterDeleted(campaignID, id);
+        }
+
+        public async Task<Monster> GetMonster(string campaignID, string id, CancellationToken cancellationToken = default)
+        {
+            return await _campaignStorage.GetMonster(campaignID, id, cancellationToken);
+        }
+        #endregion
     }
 }

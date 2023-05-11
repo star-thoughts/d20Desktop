@@ -1,8 +1,6 @@
-﻿using d20Web.Models;
-using Fiction.GameScreen.Server;
+﻿using Fiction.GameScreen.Server;
 using System;
 using System.ComponentModel;
-using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 

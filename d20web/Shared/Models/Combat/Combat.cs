@@ -1,4 +1,4 @@
-﻿namespace d20Web.Models
+﻿namespace d20Web.Models.Combat
 {
     public class Combat
     {

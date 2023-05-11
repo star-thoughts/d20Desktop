@@ -1,4 +1,4 @@
-﻿using d20Web.Models;
+﻿using d20Web.Models.Combat;
 using System.ComponentModel.DataAnnotations;
 
 namespace d20Web.Storage

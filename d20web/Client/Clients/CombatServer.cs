@@ -1,4 +1,4 @@
-﻿using d20Web.Models;
+﻿using d20Web.Models.Combat;
 using System.Text.Json;
 using System.Web;
 

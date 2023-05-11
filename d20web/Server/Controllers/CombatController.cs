@@ -1,12 +1,14 @@
-﻿using d20Web.Models;
+﻿using d20Web.Models.Combat;
 using d20Web.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
+using System.Net.Mime;
 
 namespace d20Web.Controllers
 {
     [ApiController]
     [Route("api/Campaign/{campaignID}/[controller]")]
+    [Produces(MediaTypeNames.Application.Json)]
     public class CombatController : ControllerBase
     {
         /// <summary>

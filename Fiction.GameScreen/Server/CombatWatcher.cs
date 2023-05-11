@@ -84,7 +84,7 @@ namespace Fiction.GameScreen.Server
             {
                 try
                 {
-                    d20Web.Models.Combatant[]? newCombatants = e.NewItems?.OfType<ICombatant>().Select(p => p.ToServerCombatant()).ToArray();
+                    d20Web.Models.Combat.Combatant[]? newCombatants = e.NewItems?.OfType<ICombatant>().Select(p => p.ToServerCombatant()).ToArray();
                     string[]? oldCombatants = e.OldItems?.OfType<ICombatant>()
                         .Select(p => p.ServerID)
                         .Where(p => !string.IsNullOrWhiteSpace(p))
@@ -110,7 +110,7 @@ namespace Fiction.GameScreen.Server
             }
         }
 
-        private async Task AddCombatants(d20Web.Models.Combatant[] newCombatants)
+        private async Task AddCombatants(d20Web.Models.Combat.Combatant[] newCombatants)
         {
             if (!string.IsNullOrEmpty(_combat.ID))
             {
@@ -120,7 +120,7 @@ namespace Fiction.GameScreen.Server
                 {
                     for (int i = 0; i < newCombatants.Length; i++)
                     {
-                        d20Web.Models.Combatant combatant = newCombatants[i];
+                        d20Web.Models.Combat.Combatant combatant = newCombatants[i];
                         ICombatant? oldCombatant = _combat.Combatants
                             .FirstOrDefault(p => string.Equals(p.Name, combatant.Name, StringComparison.Ordinal) && p.Ordinal == combatant.Ordinal);
 
