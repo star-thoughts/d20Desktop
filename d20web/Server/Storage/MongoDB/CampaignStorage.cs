@@ -193,10 +193,10 @@ namespace d20Web.Storage.MongoDB
             if (!ObjectId.TryParse(objectID, out ObjectId namedObjectID))
                 throw new ArgumentException("Invalid object ID", nameof(objectID));
 
-
             IMongoCollection<T> collection = (await GetDatabase()).GetCollection<T>(collectionName);
 
             namedObject.CampaignID = campaignObjectID;
+            namedObject.ID = namedObjectID;
 
             FilterDefinition<T> filter = Builders<T>.Filter
                 .Eq(p => p.ID, namedObjectID);

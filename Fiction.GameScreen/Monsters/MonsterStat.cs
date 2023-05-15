@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text;
+﻿using System.ComponentModel;
+using System.Windows.Markup;
 
 namespace Fiction.GameScreen.Monsters
 {
@@ -20,6 +18,16 @@ namespace Fiction.GameScreen.Monsters
         {
             Name = name;
             Value = value;
+        }
+        /// <summary>
+        /// Constructs a new <see cref="MonsterStat"/> from server representation
+        /// </summary>
+        /// <param name="stat">Server representation of a monster's stat</param>
+        public MonsterStat(d20Web.Models.Bestiary.MonsterStat stat)
+        {
+            Name = stat.Name ?? string.Empty;
+            Value = stat.Value;
+            Value ??= stat.Values;
         }
         #endregion
         #region Properties
@@ -47,6 +55,24 @@ namespace Fiction.GameScreen.Monsters
                     this.RaisePropertyChanged();
                 }
             }
+        }
+        #endregion
+        #region Methods
+        /// <summary>
+        /// Copies these stats to a server representation of stats
+        /// </summary>
+        /// <returns>Server representation</returns>
+        public d20Web.Models.Bestiary.MonsterStat ToServerMonsterStat()
+        {
+            d20Web.Models.Bestiary.MonsterStat result = new d20Web.Models.Bestiary.MonsterStat()
+            {
+                Name = Name,
+                Values = Value as IEnumerable<string>
+            };
+            if (result.Values == null)
+                result.Value = Value?.ToString();
+
+            return result;
         }
         #endregion
         #region Events

@@ -211,11 +211,9 @@ namespace Fiction.GameScreen.ViewModels
                 ICombatManagement? combatManagement = null;
                 try
                 {
-                    if (!string.IsNullOrWhiteSpace(Campaign.ServerUri))
+                    HttpClient? client = GetServerClient();
+                    if (client != null)
                     {
-                        HttpClient client = new HttpClient();
-                        client.BaseAddress = new Uri(Campaign.ServerUri);
-
                         combatManagement = new CombatManagement(client);
                         CombatWatcher watcher = new CombatWatcher(Campaign.CampaignID, combat, combatManagement);
 
@@ -247,6 +245,37 @@ namespace Fiction.GameScreen.ViewModels
             }
 
             await Task.Yield();
+        }
+
+        /// <summary>
+        /// Gets the campaign manager for the configured server
+        /// </summary>
+        /// <returns>Interface for managing campaigns on the server</returns>
+        public ICampaignManagement? GetCampaignManager()
+        {
+            if (Server == null)
+            {
+                HttpClient? client = GetServerClient();
+                if (client != null)
+                    Server = new CampaignManagement(client, Campaign.CampaignID);
+            }
+            return Server;
+        }
+
+        /// <summary>
+        /// Creates an HTTP Client for communicating with the server
+        /// </summary>
+        /// <returns>Http client for communicating with the server</returns>
+        private HttpClient? GetServerClient()
+        {
+            if (!string.IsNullOrWhiteSpace(Campaign.ServerUri))
+            {
+                HttpClient client = new HttpClient();
+                client.BaseAddress = new Uri(Campaign.ServerUri);
+
+                return client;
+            }
+            return null;
         }
         #endregion
         #region Events

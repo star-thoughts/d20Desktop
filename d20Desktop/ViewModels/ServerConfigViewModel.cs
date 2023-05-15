@@ -99,7 +99,7 @@ namespace Fiction.GameScreen.ViewModels
                         BaseAddress = new Uri(_serverUri),
                     };
 
-                    CampaignManagement server = new CampaignManagement(client);
+                    CampaignManagement server = new CampaignManagement(client, _campaign.CampaignID);
                     if (string.IsNullOrWhiteSpace(_campaign.CampaignID) || _resetCampaign)
                     {
                         string id = await server.CreateCampaign(_campaignName);

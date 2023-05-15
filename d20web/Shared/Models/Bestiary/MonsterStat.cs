@@ -15,7 +15,10 @@ namespace d20Web.Models.Bestiary
         /// <summary>
         /// Gets or sets the value of the stat
         /// </summary>
-        [Required]
         public string? Value { get; set; }
+        /// <summary>
+        /// Gets or sets an array of values for this
+        /// </summary>
+        public IEnumerable<string>? Values { get; set; }
     }
 }

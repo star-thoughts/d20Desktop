@@ -15,7 +15,7 @@ namespace Fiction.GameScreen.Controls
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value is Monster monster)
-                return new EditMonsterViewModel(monster);
+                return new EditMonsterViewModel(monster, null);
             else if (value is EditMonsterViewModel vm)
                 return vm;
             return DependencyProperty.UnsetValue;

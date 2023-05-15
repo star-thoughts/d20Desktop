@@ -1,5 +1,6 @@
 ﻿using d20Web.Models.Bestiary;
 using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 using System.ComponentModel.DataAnnotations;
 
 namespace d20Web.Storage.MongoDB.Models
@@ -28,6 +29,7 @@ namespace d20Web.Storage.MongoDB.Models
         /// <summary>
         /// Gets or sets the ID of the monster in the campaign
         /// </summary>
+        [BsonId]
         public ObjectId ID { get; set; }
         /// <summary>
         /// Gets or sets the ID of the campaign this monster is in

@@ -49,7 +49,7 @@ namespace d20Web.Controllers
         /// <param name="id">ID of the monster to update</param>
         /// <param name="monster">Monster information for the update</param>
         /// <returns>Result of the operation</returns>
-        [HttpPost("{id}")]
+        [HttpPut("{id}")]
         public async Task<IActionResult> EditMonster([Required] string campaignID, [Required] string id, [Required] Monster monster)
         {
             if (!string.Equals(id, monster.ID, StringComparison.OrdinalIgnoreCase))
