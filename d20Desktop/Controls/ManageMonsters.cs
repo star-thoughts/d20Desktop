@@ -4,7 +4,6 @@ using Fiction.GameScreen.ViewModels;
 using Fiction.GameScreen.ViewModels.EditMonsterViewModels;
 using System;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -97,14 +96,14 @@ namespace Fiction.GameScreen.Controls
             e.CanExecute = e.Parameter is Monster;
         }
 
-        private void Remove_Executed(object sender, ExecutedRoutedEventArgs e)
+        private async void Remove_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            Exceptions.FailSafeMethodCall(() =>
+            await Exceptions.FailSafeMethodCall(async () =>
             {
                 e.Handled = true;
                 if (e.Parameter is Monster monster)
                 {
-                    ViewModel.Manager.Monsters.Remove(monster);
+                    await ViewModel.RemoveMonster(monster);
                 }
             });
         }

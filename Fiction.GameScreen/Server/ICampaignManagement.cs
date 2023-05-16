@@ -32,6 +32,12 @@ namespace Fiction.GameScreen.Server
         /// <param name="monster">Monster to udpated</param>
         /// <returns>Task for asynchronous completion</returns>
         Task UpdateMonster(Monster monster);
+        /// <summary>
+        /// Requests a monster to be deleted from the current campaign
+        /// </summary>
+        /// <param name="monsterId">ID of the monster</param>
+        /// <returns>Task for asynchronous completion</returns>
+        Task DeleteMonster(string  monsterId);
         #endregion
     }
 }

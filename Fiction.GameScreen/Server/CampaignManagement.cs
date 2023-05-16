@@ -1,4 +1,5 @@
 ﻿using d20Web.Models;
+using d20Web.Models.Bestiary;
 using Fiction.GameScreen.Monsters;
 using System.Net.Http.Json;
 using System.Text.Json;
@@ -69,7 +70,7 @@ namespace Fiction.GameScreen.Server
         /// </summary>
         /// <param name="monster">Monster information to create</param>
         /// <returns>Task for asyncrhonous completion</returns>
-        public async Task CreateMonster(Monster monster)
+        public async Task CreateMonster(Monsters.Monster monster)
         {
             string uri = $"api/campaign/{_campaignID}/bestiary";
 
@@ -85,13 +86,27 @@ namespace Fiction.GameScreen.Server
             }
         }
 
-        public async Task UpdateMonster(Monster monster)
+        public async Task UpdateMonster(Monsters.Monster monster)
         {
             string uri = $"api/campaign/{_campaignID}/bestiary/{monster.ServerID}";
 
             d20Web.Models.Bestiary.Monster serverMonster = monster.ToServerMonster();
 
             using (HttpResponseMessage result = await _client.PutAsJsonAsync(uri, serverMonster))
+            {
+                result.EnsureSuccessStatusCode();
+            }
+        }
+        /// <summary>
+        /// Requests a monster to be deleted from the current campaign
+        /// </summary>
+        /// <param name="monsterId">ID of the monster</param>
+        /// <returns>Task for asynchronous completion</returns>
+        public async Task DeleteMonster(string monsterId)
+        {
+            string uri = $"api/campaign/{_campaignID}/bestiary/{monsterId}";
+
+            using (HttpResponseMessage result = await _client.DeleteAsync(uri))
             {
                 result.EnsureSuccessStatusCode();
             }

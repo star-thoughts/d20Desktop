@@ -1,10 +1,5 @@
 ﻿using Fiction.GameScreen.Monsters;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Fiction.GameScreen.ViewModels
@@ -25,7 +20,11 @@ namespace Fiction.GameScreen.ViewModels
             Campaign = factory.Campaign;
             Manager = factory.Campaign.MonsterManager;
             Filter = new MonsterFilterViewModel(factory.Campaign);
+            _factory = factory;
         }
+        #endregion
+        #region Fields
+        private readonly IViewModelFactory _factory;
         #endregion
         #region Properties
         /// <summary>
@@ -58,7 +57,19 @@ namespace Fiction.GameScreen.ViewModels
         public override bool IsValid => true;
         #endregion
         #region Methods
+        public async Task RemoveMonster(Monster monster)
+        {
+            Monsters.Remove(monster);
 
+            if (!string.IsNullOrWhiteSpace(monster.ServerID))
+            {
+                Server.ICampaignManagement? server = _factory.Server;
+                if (server != null)
+                {
+                    await server.DeleteMonster(monster.ServerID);
+                }
+            }
+        }
         #endregion
     }
 }
