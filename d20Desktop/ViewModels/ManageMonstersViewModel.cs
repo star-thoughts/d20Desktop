@@ -57,6 +57,11 @@ namespace Fiction.GameScreen.ViewModels
         public override bool IsValid => true;
         #endregion
         #region Methods
+        /// <summary>
+        /// Removes the monster from the system
+        /// </summary>
+        /// <param name="monster">Monster to remove</param>
+        /// <returns>Task for asynchronous completion</returns>
         public async Task RemoveMonster(Monster monster)
         {
             Monsters.Remove(monster);
