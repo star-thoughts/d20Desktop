@@ -15,6 +15,7 @@
                 IsPlayer = preparer.IsPlayer,
                 Name = preparer.Name,
                 Ordinal = preparer.Ordinal,
+                BestiaryID = preparer.Source?.Source?.ServerID,
             };
         }
         /// <summary>
@@ -49,6 +50,7 @@
                 IsPlayer = combatant.IsPlayer,
                 Name = combatant.Name,
                 Ordinal = combatant.Ordinal,
+                BestiaryID = combatant.Source?.Source?.ServerID,
             };
         }
 

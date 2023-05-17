@@ -57,5 +57,9 @@
         /// Gets or sets conditions that have been applied to this combatant
         /// </summary>
         public IEnumerable<AppliedCondition>? AppliedConditions { get; set; }
+        /// <summary>
+        /// Gets or sets the ID of a monster in the bestiary this could be associated with
+        /// </summary>
+        public string? BestiaryID { get; set; }
     }
 }

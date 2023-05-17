@@ -7,6 +7,10 @@
     {
         #region Properties
         /// <summary>
+        /// Gets or sets the ID of this object on the server, if any
+        /// </summary>
+        string? ServerID { get; set; }
+        /// <summary>
         /// Gets or sets a string representation of the hit dice for this combatant template
         /// </summary>
         string HitDieString { get; set; }

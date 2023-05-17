@@ -17,6 +17,9 @@ namespace d20Web.Storage.MongoDB.Models
             InitiativeRoll = combatant.InitiativeRoll;
             InitiativeModifier = combatant.InitiativeModifier;
             IsPlayer = combatant.IsPlayer;
+
+            if (ObjectId.TryParse(combatant.BestiaryID, out ObjectId bestiaryID))
+                BestiaryID = bestiaryID;
         }
         /// <summary>
         /// Gets or sets the ID of this combatant
@@ -51,6 +54,11 @@ namespace d20Web.Storage.MongoDB.Models
         /// Gets whether or not this is a player character
         /// </summary>
         public bool IsPlayer { get; set; }
+        /// <summary>
+        /// Gets or sets the ID of a monster in the bestiary this could be associated with, if any
+        /// </summary>
+        public ObjectId BestiaryID { get; set; }
+
 
         public CombatantPreparer ToCombatantPreparer()
         {
@@ -62,6 +70,7 @@ namespace d20Web.Storage.MongoDB.Models
                 IsPlayer = IsPlayer,
                 Name = Name,
                 Ordinal = Ordinal,
+                BestiaryID = BestiaryID.ToString(),
             };
         }
     }
