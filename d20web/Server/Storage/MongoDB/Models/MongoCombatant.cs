@@ -1,4 +1,5 @@
 ﻿using d20Web.Models;
+using d20Web.Models.Combat;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
@@ -67,6 +68,10 @@ namespace d20Web.Storage.MongoDB.Models
         /// Gets or sets conditions that have been applied to this combatant
         /// </summary>
         public IEnumerable<AppliedCondition>? AppliedConditions { get; set; }
+        /// <summary>
+        /// Gets or sets the ID of this combatant in the Bestiary, if any
+        /// </summary>
+        public ObjectId BestiaryID { get; set; }
 
         /// <summary>
         /// Creates a MongoDB record from a combatant
@@ -78,7 +83,9 @@ namespace d20Web.Storage.MongoDB.Models
         public static MongoCombatant Create(ObjectId campaignID, ObjectId combatID, Combatant combatant)
         {
             ObjectId combatantID = ObjectId.Empty;
+            ObjectId bestiaryID = ObjectId.Empty;
             ObjectId.TryParse(combatant.ID, out combatantID);
+            ObjectId.TryParse(combatant.BestiaryID, out bestiaryID);
 
             MongoCombatant result = new MongoCombatant()
             {
@@ -97,6 +104,7 @@ namespace d20Web.Storage.MongoDB.Models
                 IsCurrent = combatant.IsCurrent,
                 IsPlayer = combatant.IsPlayer,
                 Ordinal = combatant.Ordinal,
+                BestiaryID = bestiaryID,
             };
 
             return result;
@@ -123,6 +131,7 @@ namespace d20Web.Storage.MongoDB.Models
                 IsCurrent = IsCurrent,
                 IsPlayer = IsPlayer,
                 Ordinal = Ordinal,
+                BestiaryID = BestiaryID.ToString(),
             };
         }
     }

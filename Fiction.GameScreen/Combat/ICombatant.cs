@@ -8,6 +8,9 @@ namespace Fiction.GameScreen.Combat
     public interface ICombatant : IActiveCombatant
     {
         #region Properties
+        /// <summary>
+        /// Gets or sets the ID of this combatant on the server
+        /// </summary>
         string? ServerID { get; set; }
         /// <summary>
         /// Gets the source information for this combatant

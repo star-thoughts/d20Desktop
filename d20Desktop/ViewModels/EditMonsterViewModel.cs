@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
+using Fiction.GameScreen.Server;
+using System.Threading.Tasks;
 
 namespace Fiction.GameScreen.ViewModels
 {
@@ -19,7 +21,8 @@ namespace Fiction.GameScreen.ViewModels
         /// </summary>
         /// <param name="campaign">Campaign settings</param>
         /// <param name="monster">Monster to edit</param>
-        public EditMonsterViewModel(CampaignSettings campaign, Monster monster)
+        /// <param name="campaignManagement">Interface for campaign management</param>
+        public EditMonsterViewModel(CampaignSettings campaign, Monster monster, ICampaignManagement? campaignManagement)
         {
             Exceptions.ThrowIfArgumentNull(campaign, nameof(campaign));
             Exceptions.ThrowIfArgumentNull(monster, nameof(monster));
@@ -35,13 +38,15 @@ namespace Fiction.GameScreen.ViewModels
             DeadAt = monster.DeadAt;
             UnconsciousAt = monster.UnconsciousAt;
 
+            _campaignManagement = campaignManagement;
+
             CreateStats(monster);
         }
         /// <summary>
         /// Constructs a new <see cref="EditMonsterViewModel"/> with a new monster
         /// </summary>
         /// <param name="campaign">Campaign settings</param>
-        public EditMonsterViewModel(CampaignSettings campaign)
+        public EditMonsterViewModel(CampaignSettings campaign, ICampaignManagement? campaignManagement)
         {
             Exceptions.ThrowIfArgumentNull(campaign, nameof(campaign));
             Campaign = campaign;
@@ -49,13 +54,15 @@ namespace Fiction.GameScreen.ViewModels
             Name = string.Empty;
             HitDice = string.Empty;
 
+            _campaignManagement = campaignManagement;
+
             CreateStats();
         }
         /// <summary>
         /// Constructs a readonly <see cref="EditMonsterViewModel"/>
         /// </summary>
         /// <param name="monster">Monster to view</param>
-        public EditMonsterViewModel(Monster monster)
+        public EditMonsterViewModel(Monster monster, ICampaignManagement? campaignManagement)
         {
             Monster = monster;
 
@@ -67,8 +74,13 @@ namespace Fiction.GameScreen.ViewModels
             DeadAt = monster.DeadAt;
             UnconsciousAt = monster.UnconsciousAt;
 
+            _campaignManagement = campaignManagement;
+
             CreateStats(monster);
         }
+        #endregion
+        #region Member Variables
+        private ICampaignManagement? _campaignManagement;
         #endregion
         #region Properties
         public CampaignSettings? Campaign { get; private set; }
@@ -312,7 +324,7 @@ namespace Fiction.GameScreen.ViewModels
         /// </summary>
         /// <exception cref="InvalidOperationException">Attempt to save a monster that was loaded as readonly</exception>
         [MemberNotNull(nameof(Monster))]
-        public void Save()
+        public async Task Save()
         {
             if (Campaign == null)
                 throw new InvalidOperationException("Cannot save a readonly monster.");
@@ -327,10 +339,12 @@ namespace Fiction.GameScreen.ViewModels
 
             MonsterStats stats = new MonsterStats(statList);
 
+            bool isNew = false;
             if (Monster == null)
             {
                 Monster = new Monster(Campaign, Name, stats);
                 Campaign.MonsterManager.Monsters.Add(Monster);
+                isNew = true;
             }
             else
                 Monster.Stats = stats;
@@ -362,6 +376,14 @@ namespace Fiction.GameScreen.ViewModels
                 .ToArray();
             foreach (string subType in subTypes)
                 Campaign.MonsterManager.SubTypes.Add(subType);
+
+            if (_campaignManagement != null)
+            {
+                if (isNew || string.IsNullOrWhiteSpace(Monster.ServerID))
+                    await _campaignManagement.CreateMonster(Monster);
+                else
+                    await _campaignManagement.UpdateMonster(Monster);
+            }
         }
         #endregion
     }

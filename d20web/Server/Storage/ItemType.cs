@@ -25,5 +25,9 @@
         /// Combatant in a combat prep
         /// </summary>
         CombatantPrep = 5,
+        /// <summary>
+        /// Monster in the bestiary
+        /// </summary>
+        Monster = 6,
     }
 }

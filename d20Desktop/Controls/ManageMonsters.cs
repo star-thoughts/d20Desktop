@@ -1,4 +1,5 @@
 ﻿using Fiction.GameScreen.Monsters;
+using Fiction.GameScreen.Server;
 using Fiction.GameScreen.ViewModels;
 using Fiction.GameScreen.ViewModels.EditMonsterViewModels;
 using System;
@@ -95,14 +96,14 @@ namespace Fiction.GameScreen.Controls
             e.CanExecute = e.Parameter is Monster;
         }
 
-        private void Remove_Executed(object sender, ExecutedRoutedEventArgs e)
+        private async void Remove_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            Exceptions.FailSafeMethodCall(() =>
+            await Exceptions.FailSafeMethodCall(async () =>
             {
                 e.Handled = true;
                 if (e.Parameter is Monster monster)
                 {
-                    ViewModel.Manager.Monsters.Remove(monster);
+                    await ViewModel.RemoveMonster(monster);
                 }
             });
         }
@@ -131,9 +132,11 @@ namespace Fiction.GameScreen.Controls
             });
         }
 
-        private void EditMonster(Monster monster, bool createCopy = false)
+        private async void EditMonster(Monster monster, bool createCopy = false)
         {
-            EditMonsterViewModel viewModel = new EditMonsterViewModel(ViewModel.Campaign, monster);
+            ICampaignManagement? campaignManagement = ViewModel.Factory.GetCampaignManager();
+
+            EditMonsterViewModel viewModel = new EditMonsterViewModel(ViewModel.Campaign, monster, campaignManagement);
             EditWindow window = new EditWindow();
             window.DataContext = viewModel;
             window.Owner = Window.GetWindow(this);
@@ -143,7 +146,7 @@ namespace Fiction.GameScreen.Controls
 
             if (window.ShowDialog() == true)
             {
-                viewModel.Save();
+                await viewModel.Save();
 
                 SelectedMonster = viewModel.Monster;
                 ViewModel?.Campaign?.MonsterManager?.Reconcile();
@@ -156,22 +159,21 @@ namespace Fiction.GameScreen.Controls
             e.CanExecute = e.Parameter is Monster;
         }
 
-        private void Add_Executed(object sender, ExecutedRoutedEventArgs e)
+        private async void Add_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            Exceptions.FailSafeMethodCall(() =>
+            await Exceptions.FailSafeMethodCall(async () =>
             {
                 e.Handled = true;
                 if (ViewModel?.Monsters != null)
                 {
-                    EditMonsterViewModel viewModel = new EditMonsterViewModel(ViewModel.Campaign);
+                    EditMonsterViewModel viewModel = new EditMonsterViewModel(ViewModel.Campaign, ViewModel.Factory.GetCampaignManager());
                     EditWindow window = new EditWindow();
                     window.DataContext = viewModel;
                     window.Owner = Window.GetWindow(this);
 
                     if (window.ShowDialog() == true)
                     {
-                        viewModel.Save();
-                        //await (_monsterList?.DispatchDisplayMonster(viewModel.Monster) ?? Task.CompletedTask);
+                        await viewModel.Save();
                     }
                 }
             });

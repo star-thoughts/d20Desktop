@@ -1,5 +1,5 @@
 ﻿using d20Web.Clients;
-using d20Web.Models;
+using d20Web.Models.Combat;
 using d20Web.Services;
 using d20Web.SignalRClient;
 using Microsoft.AspNetCore.Components;
@@ -24,7 +24,7 @@ namespace d20Web.Pages.Combat
         [Parameter]
         public string? CombatID { get; set; }
 
-        Models.Combat? Combat { get; set; }
+        Models.Combat.Combat? Combat { get; set; }
         Combatant[]? Combatants { get; set; }
 
         protected override async Task OnInitializedAsync()

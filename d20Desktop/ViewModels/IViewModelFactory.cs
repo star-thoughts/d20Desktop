@@ -1,4 +1,5 @@
 ﻿using Fiction.GameScreen.Server;
+using System.Net.Http;
 
 namespace Fiction.GameScreen.ViewModels
 {
@@ -58,6 +59,12 @@ namespace Fiction.GameScreen.ViewModels
         ICampaignManagement? Server { get; }
         #endregion
         #region Methods
+
+        /// <summary>
+        /// Gets the campaign manager for the configured server
+        /// </summary>
+        /// <returns>Interface for managing campaigns on the server</returns>
+        ICampaignManagement? GetCampaignManager();
         #endregion
     }
 }

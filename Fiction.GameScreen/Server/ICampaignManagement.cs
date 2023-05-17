@@ -1,4 +1,6 @@
-﻿namespace Fiction.GameScreen.Server
+﻿using Fiction.GameScreen.Monsters;
+
+namespace Fiction.GameScreen.Server
 {
     /// <summary>
     /// Interface for communicating with a campaign server
@@ -16,5 +18,26 @@
         /// <param name="name">Name of the campaign to create</param>
         /// <returns>ID of the campaign that was created</returns>
         Task<string> CreateCampaign(string name);
+
+        #region Bestiary
+        /// <summary>
+        /// Requests a monster be created in the current campaign
+        /// </summary>
+        /// <param name="monster">Monster to create</param>
+        /// <returns>Task for asynchronous completion</returns>
+        Task CreateMonster(Monster monster);
+        /// <summary>
+        /// Requests a monster be updated in the current campaign
+        /// </summary>
+        /// <param name="monster">Monster to udpated</param>
+        /// <returns>Task for asynchronous completion</returns>
+        Task UpdateMonster(Monster monster);
+        /// <summary>
+        /// Requests a monster to be deleted from the current campaign
+        /// </summary>
+        /// <param name="monsterId">ID of the monster</param>
+        /// <returns>Task for asynchronous completion</returns>
+        Task DeleteMonster(string  monsterId);
+        #endregion
     }
 }

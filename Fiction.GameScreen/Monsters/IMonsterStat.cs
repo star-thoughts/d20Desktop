@@ -13,5 +13,10 @@
         /// Gets the value of the stat
         /// </summary>
         object? Value { get; }
+        /// <summary>
+        /// Copies these stats to a server representation of stats
+        /// </summary>
+        /// <returns>Server representation</returns>
+        d20Web.Models.Bestiary.MonsterStat ToServerMonsterStat();
     }
 }

@@ -38,6 +38,11 @@ namespace Fiction.GameScreen.Players
             _hitDie = "1";
             _notes = Array.Empty<string>();
         }
+        /// <summary>
+        /// Gets or sets the ID of this character on the server
+        /// </summary>
+        public string? ServerID { get; set; }
+
         private string? _name;
         /// <summary>
         /// Gets or sets the name of the character

@@ -1,4 +1,4 @@
-﻿namespace d20Web.Models
+﻿namespace d20Web.Models.Combat
 {
     /// <summary>
     /// Contains health information for a combatant

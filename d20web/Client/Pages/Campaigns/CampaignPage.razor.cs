@@ -1,4 +1,5 @@
 ﻿using d20Web.Clients;
+using d20Web.Models.Combat;
 using d20Web.SignalRClient;
 using Microsoft.AspNetCore.Components;
 using System.Windows.Markup;
@@ -36,8 +37,8 @@ namespace d20Web.Pages.Campaigns
         {
             if (!string.IsNullOrWhiteSpace(CampaignID))
             {
-                IEnumerable<Models.CombatListData> combats = await CombatServer.GetCombatPreps(CampaignID);
-                Models.CombatListData? combat = combats?.FirstOrDefault();
+                IEnumerable<CombatListData> combats = await CombatServer.GetCombatPreps(CampaignID);
+                CombatListData? combat = combats?.FirstOrDefault();
 
                 if (!string.IsNullOrWhiteSpace(combat?.ID))
                 {
@@ -52,8 +53,8 @@ namespace d20Web.Pages.Campaigns
         {
             if (!string.IsNullOrWhiteSpace(CampaignID))
             {
-                IEnumerable<Models.CombatListData> combats = await CombatServer.GetCombats(CampaignID);
-                Models.CombatListData? combat = combats?.FirstOrDefault();
+                IEnumerable<CombatListData> combats = await CombatServer.GetCombats(CampaignID);
+                CombatListData? combat = combats?.FirstOrDefault();
 
                 if (!string.IsNullOrWhiteSpace(combat?.ID))
                 {

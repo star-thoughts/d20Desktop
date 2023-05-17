@@ -47,6 +47,10 @@ namespace Fiction.GameScreen.Monsters
         #endregion
         #region Properties
         /// <summary>
+        /// Gets or sets the ID of the Monster on the server
+        /// </summary>
+        public string? ServerID { get; set; }
+        /// <summary>
         /// Gets the campaign this monster is in
         /// </summary>
         public CampaignSettings Campaign { get; private set; }
@@ -220,6 +224,25 @@ namespace Fiction.GameScreen.Monsters
         }
         #endregion
         #region Methods
+        /// <summary>
+        /// Converts this monster to the server's representation of a monster
+        /// </summary>
+        /// <returns>Server representation</returns>
+        public d20Web.Models.Bestiary.Monster ToServerMonster()
+        {
+            return new d20Web.Models.Bestiary.Monster()
+            {
+                ID = ServerID,
+                DeadAt = DeadAt,
+                HitDieString = HitDieString,
+                FastHealing = FastHealing,
+                InitiativeModifier = InitiativeModifier,
+                Name = Name,
+                Source = Source,
+                Stats = Stats.Select(p => p.ToServerMonsterStat()).ToArray(),
+                UnconsciousAt = UnconsciousAt,
+            };
+        }
         #endregion
         #region Events
         /// <summary>

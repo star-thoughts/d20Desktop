@@ -431,6 +431,7 @@ namespace Fiction.GameScreen.Serialization
             {
                 await writer.WriteStartElementAsync(Keys.Monster).ConfigureAwait(false);
 
+                await writer.WriteOptionalAttributeStringAsync(Keys.ServerID, monster.ServerID).ConfigureAwait(false);
                 await writer.WriteAttributeStringAsync(Keys.Id, monster.Id.ToString()).ConfigureAwait(false);
                 await writer.WriteAttributeStringAsync(Keys.Name, monster.Name).ConfigureAwait(false);
                 await writer.WriteAttributeStringAsync(Keys.InitiativeModifier, monster.InitiativeModifier.ToString(CultureInfo.InvariantCulture)).ConfigureAwait(false);
@@ -761,6 +762,7 @@ namespace Fiction.GameScreen.Serialization
 
         private Monster ReadMonster(XElement element, CampaignSettings campaign)
         {
+            string serverID = element.ReadAttributeString(Keys.ServerID);
             int id = element.ReadAttributeInt(Keys.Id);
             string name = element.ReadAttributeString(Keys.Name);
             string hitDice = element.ReadAttributeString(Keys.HitDice);
@@ -776,6 +778,7 @@ namespace Fiction.GameScreen.Serialization
 
             Monster monster = new Monster(campaign, id, name, new MonsterStats(stats))
             {
+                ServerID = serverID,
                 HitDieString = hitDice,
                 InitiativeModifier = initMod,
                 FastHealing = fastHealing,

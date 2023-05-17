@@ -28,7 +28,7 @@ namespace Fiction.GameScreen.Server
         /// <param name="combatants">Information about the combatants to add</param>
         /// <param name="cancellationToken">Token for cancelling the operation</param>
         /// <returns>IDs of the combatants added, in order they were put in <paramref name="combatants"/></returns>
-        Task<IEnumerable<string>> AddCombatantPreparers(string campaignID, string combatID, IEnumerable<d20Web.Models.CombatantPreparer> combatants, CancellationToken cancellationToken = default);
+        Task<IEnumerable<string>> AddCombatantPreparers(string campaignID, string combatID, IEnumerable<d20Web.Models.Combat.CombatantPreparer> combatants, CancellationToken cancellationToken = default);
         /// <summary>
         /// Removes combatants from a combat
         /// </summary>
@@ -46,7 +46,7 @@ namespace Fiction.GameScreen.Server
         /// <param name="combatant">Combatant information to update</param>
         /// <param name="cancellationToken">Token for cancelling the operation</param>
         /// <returns>Task for asynchronous completion</returns>
-        Task UpdateCombatantPreparer(string campaignID, string combatID, d20Web.Models.CombatantPreparer combatant, CancellationToken cancellationToken = default);
+        Task UpdateCombatantPreparer(string campaignID, string combatID, d20Web.Models.Combat.CombatantPreparer combatant, CancellationToken cancellationToken = default);
         #endregion
         #region Combat
         /// <summary>
@@ -73,7 +73,7 @@ namespace Fiction.GameScreen.Server
         /// <param name="cancellationToken">Combat to update</param>
         /// <param name="combat">Token for cancelling the operation</param>
         /// <returns>Task for asynchronous completion</returns>
-        Task UpdateCombat(string campaignID, string combatID, d20Web.Models.Combat combat, CancellationToken cancellationToken = default);
+        Task UpdateCombat(string campaignID, string combatID, d20Web.Models.Combat.Combat combat, CancellationToken cancellationToken = default);
         /// <summary>
         /// Adds the given combatants to a combat
         /// </summary>
@@ -82,7 +82,7 @@ namespace Fiction.GameScreen.Server
         /// <param name="combatants">Information about the combatants to add</param>
         /// <param name="cancellationToken">Token for cancelling the operation</param>
         /// <returns>IDs of the combatants added, in order they were put in <paramref name="combatants"/></returns>
-        Task<IEnumerable<string>> AddCombatants(string campaignID, string combatID, IEnumerable<d20Web.Models.Combatant> combatants, CancellationToken cancellationToken = default);
+        Task<IEnumerable<string>> AddCombatants(string campaignID, string combatID, IEnumerable<d20Web.Models.Combat.Combatant> combatants, CancellationToken cancellationToken = default);
         /// <summary>
         /// Removes combatants from a combat
         /// </summary>
@@ -100,7 +100,7 @@ namespace Fiction.GameScreen.Server
         /// <param name="combatant">Combatant information to update</param>
         /// <param name="cancellationToken">Token for cancelling the operation</param>
         /// <returns>Task for asynchronous completion</returns>
-        Task UpdateCombatant(string campaignID, string combatID, d20Web.Models.Combatant combatant, CancellationToken cancellationToken = default);
+        Task UpdateCombatant(string campaignID, string combatID, d20Web.Models.Combat.Combatant combatant, CancellationToken cancellationToken = default);
         #endregion
     }
 }

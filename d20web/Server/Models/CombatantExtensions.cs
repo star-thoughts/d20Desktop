@@ -1,4 +1,6 @@
-﻿namespace d20Web.Models
+﻿using d20Web.Models.Combat;
+
+namespace d20Web.Models
 {
     /// <summary>
     /// Extension methods for dealing with combatants

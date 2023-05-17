@@ -4,6 +4,10 @@
     {
         public const string CampaignCreated = nameof(CampaignCreated);
 
+        public const string MonsterCreated = nameof(MonsterCreated);
+        public const string MonsterUpdated = nameof(MonsterUpdated);
+        public const string MonsterDeleted = nameof(MonsterDeleted);
+
         public const string CombatPrepCreated = nameof(CombatPrepCreated);
         public const string CombatPrepDeleted = nameof(CombatPrepDeleted);
         public const string CombatantPrepCreated = nameof(CombatantPrepCreated);

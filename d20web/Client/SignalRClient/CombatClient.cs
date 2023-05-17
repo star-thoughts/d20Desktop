@@ -1,5 +1,5 @@
 ﻿using d20Web.Hubs;
-using d20Web.Models;
+using d20Web.Models.Combat;
 
 namespace d20Web.SignalRClient
 {

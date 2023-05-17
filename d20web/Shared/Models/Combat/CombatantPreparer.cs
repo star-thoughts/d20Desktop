@@ -1,4 +1,4 @@
-﻿namespace d20Web.Models
+﻿namespace d20Web.Models.Combat
 {
     public sealed class CombatantPreparer
     {
@@ -23,8 +23,12 @@
         /// </summary>
         public int InitiativeModifier { get; set; }
         /// <summary>
-        /// Gets whether or not this is a player character
+        /// Gets or sets whether or not this is a player character
         /// </summary>
         public bool IsPlayer { get; set; }
+        /// <summary>
+        /// Gets or sets the ID of a monster in the bestiary this could be associated with
+        /// </summary>
+        public string? BestiaryID { get; set; }
     }
 }

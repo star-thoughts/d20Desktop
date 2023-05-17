@@ -21,6 +21,7 @@ namespace d20Web.Storage.MongoDB
         private IMongoDatabase? _database;
 
         protected static readonly InsertOneOptions InsertOneOptions = new InsertOneOptions();
+        protected static readonly ReplaceOptions ReplaceOptions = new ReplaceOptions();
         protected static readonly InsertManyOptions InsertManyOptions = new InsertManyOptions();
 
         [MemberNotNull(nameof(_client)), MemberNotNull(nameof(_database))]

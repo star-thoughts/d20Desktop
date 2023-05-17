@@ -5,7 +5,7 @@
 {
     <div class="combat-page">
         <div class="combatants-list">
-            @foreach (CombatantPreparer combatant in Combatants.Where(p => CanViewCombatant(p)))
+            @foreach (Models.Combat.CombatantPreparer combatant in Combatants.Where(p => CanViewCombatant(p)))
             {
                 <div class="combatant-item-name">@combatant.Name</div>
                 <div class="combatant-item-init">@GetInitString(combatant)</div>

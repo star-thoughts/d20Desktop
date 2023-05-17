@@ -1,8 +1,6 @@
-﻿using d20Web.Models;
-using Fiction.GameScreen.Server;
+﻿using Fiction.GameScreen.Server;
 using System;
 using System.ComponentModel;
-using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -101,7 +99,7 @@ namespace Fiction.GameScreen.ViewModels
                         BaseAddress = new Uri(_serverUri),
                     };
 
-                    CampaignManagement server = new CampaignManagement(client);
+                    CampaignManagement server = new CampaignManagement(client, _campaign.CampaignID);
                     if (string.IsNullOrWhiteSpace(_campaign.CampaignID) || _resetCampaign)
                     {
                         string id = await server.CreateCampaign(_campaignName);

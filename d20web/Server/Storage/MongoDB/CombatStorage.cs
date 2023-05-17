@@ -1,4 +1,4 @@
-﻿using d20Web.Models;
+﻿using d20Web.Models.Combat;
 using d20Web.Storage.MongoDB.Models;
 using MongoDB.Bson;
 using MongoDB.Driver;
