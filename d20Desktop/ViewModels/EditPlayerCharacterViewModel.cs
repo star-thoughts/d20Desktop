@@ -4,6 +4,8 @@ using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.ComponentModel;
+using System.Threading.Tasks;
+using Fiction.GameScreen.Server;
 
 namespace Fiction.GameScreen.ViewModels
 {
@@ -14,7 +16,7 @@ namespace Fiction.GameScreen.ViewModels
         /// Constructs a new <see cref="EditPlayerCharacterViewModel"/> for creating a character
         /// </summary>
         /// <param name="campaign">Campaign to make the character in</param>
-        public EditPlayerCharacterViewModel(CampaignSettings campaign)
+        public EditPlayerCharacterViewModel(CampaignSettings campaign, ICampaignManagement? campaignManagement)
         {
             Exceptions.ThrowIfArgumentNull(campaign, nameof(campaign));
 
@@ -22,13 +24,15 @@ namespace Fiction.GameScreen.ViewModels
             IncludeInCombat = true;
             _hitDice = "1";
             Notes = new ObservableCollection<string>();
+
+            _campaignManagement = campaignManagement;
         }
         /// <summary>
         /// Constructs a new <see cref="EditPlayerCharacterViewModel"/> for editing an existing character
         /// </summary>
         /// <param name="campaign">Campaign containing the character</param>
         /// <param name="character">Character to edit</param>
-        public EditPlayerCharacterViewModel(CampaignSettings campaign, PlayerCharacter character)
+        public EditPlayerCharacterViewModel(CampaignSettings campaign, PlayerCharacter character, ICampaignManagement? campaignManagement)
         {
             Character = character;
             Campaign = campaign;
@@ -43,7 +47,12 @@ namespace Fiction.GameScreen.ViewModels
             LightRadius = character.LightRadius;
             Alignment = character.Alignment;
             Notes = new ObservableCollection<string>(character.Notes ?? Array.Empty<string>());
+
+            _campaignManagement = campaignManagement;
         }
+        #endregion
+        #region Fields
+        private ICampaignManagement? _campaignManagement;
         #endregion
         #region Properties
         /// <summary>
@@ -218,8 +227,10 @@ namespace Fiction.GameScreen.ViewModels
         /// <summary>
         /// Saves or creates the player character
         /// </summary>
-        public void Save()
+        public async Task Save()
         {
+            bool newCharacter = string.IsNullOrEmpty(Character?.ServerID);
+
             if (Campaign == null)
                 throw new InvalidOperationException("Cannot save a PC without a campaign.");
 
@@ -227,6 +238,7 @@ namespace Fiction.GameScreen.ViewModels
             {
                 Character = new PlayerCharacter(Campaign);
                 Campaign.Players.PlayerCharacters.Add(Character);
+                newCharacter = true;
             }
 
             Character.Name = Name;
@@ -241,6 +253,15 @@ namespace Fiction.GameScreen.ViewModels
             Character.Notes = Notes.ToArray();
 
             Character.HitDieRollingStrategy = RollingStrategy.Standard;
+
+            if (_campaignManagement != null)
+            {
+                if (newCharacter)
+                    await _campaignManagement.CreatePlayerCharacter(Character);
+                else
+                    await _campaignManagement.UpdatePlayerCharacter(Character);
+            }
+
         }
         #endregion
     }

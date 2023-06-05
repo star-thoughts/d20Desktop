@@ -1,6 +1,5 @@
 ﻿using d20Web.Models;
-using d20Web.Models.Bestiary;
-using Fiction.GameScreen.Monsters;
+using Fiction.GameScreen.Players;
 using System.Net.Http.Json;
 using System.Text.Json;
 
@@ -25,7 +24,7 @@ namespace Fiction.GameScreen.Server
         /// Gets the interface to use for combat management
         /// </summary>
         public ICombatManagement Combat { get; }
-
+        #region Campaigns
         /// <summary>
         /// Requests a campaign be created on the server
         /// </summary>
@@ -64,7 +63,8 @@ namespace Fiction.GameScreen.Server
                 return JsonSerializer.Deserialize<IEnumerable<CampaignListData>>(json) ?? Enumerable.Empty<CampaignListData>();
             }
         }
-
+        #endregion
+        #region Monsters
         /// <summary>
         /// Creates a new monster
         /// </summary>
@@ -75,7 +75,7 @@ namespace Fiction.GameScreen.Server
             string uri = $"api/campaign/{_campaignID}/bestiary";
 
             d20Web.Models.Bestiary.Monster serverMonster = monster.ToServerMonster();
-            
+
             using (HttpResponseMessage result = await _client.PostAsJsonAsync(uri, serverMonster))
             {
                 result.EnsureSuccessStatusCode();
@@ -111,7 +111,88 @@ namespace Fiction.GameScreen.Server
                 result.EnsureSuccessStatusCode();
             }
         }
+        #endregion
+        #region Players
+        /// <summary>
+        /// Creates a new player character
+        /// </summary>
+        /// <param name="playerCharacter">Character data to add</param>
+        /// <param name="cancellationToken">Token for cancelling the operation</param>
+        /// <returns>ID of the player character created</returns>
+        public async Task CreatePlayerCharacter(PlayerCharacter playerCharacter, CancellationToken cancellationToken = default)
+        {
+            string uri = $"api/campaign/{_campaignID}/players/character";
 
+            using (HttpResponseMessage result = await _client.PostAsJsonAsync(uri, playerCharacter.ToServerCharacter(), cancellationToken))
+            {
+                result.EnsureSuccessStatusCode();
+
+                string json = await result.Content.ReadAsStringAsync();
+                string id = JsonSerializer.Deserialize<NewObject>(json)?.id ?? string.Empty;
+                playerCharacter.ServerID = id;
+            }
+        }
+        /// <summary>
+        /// Gets a collection of all player characters in the campaign
+        /// </summary>
+        /// <param name="cancellationToken">Token for cancelling the operation</param>
+        /// <returns>Collection of player characters</returns>
+        public async Task<PlayerCharacter[]> GetPlayerCharacters(CancellationToken cancellationToken = default)
+        {
+            string uri = $"api/campaign/{_campaignID}/players/character";
+
+            using (HttpResponseMessage result = await _client.GetAsync(uri, cancellationToken))
+            {
+                throw new NotImplementedException();
+            }
+        }
+        /// <summary>
+        /// Gets the data for a player character
+        /// </summary>
+        /// <param name="id">ID of the character to get</param>
+        /// <param name="cancellationToken">Token for cancelling the operation</param>
+        /// <returns>Player character data</returns>
+        public Task<PlayerCharacter> GetPlayerCharacter(string id, CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Deletes the given player character
+        /// </summary>
+        /// <param name="id">ID of the character to delete</param>
+        /// <param name="cancellationToken">Token for cancelling the operation</param>
+        /// <returns>Task for asynchonrous completion</returns>
+        public async Task DeletePlayerCharacter(string id, CancellationToken cancellationToken = default)
+        {
+            string uri = $"api/campaign/{_campaignID}/players/character/{id}";
+
+            using (HttpResponseMessage result = await _client.DeleteAsync(uri, cancellationToken))
+            {
+                result.EnsureSuccessStatusCode();
+            }
+        }
+
+        /// <summary>
+        /// Updates the data for a player character
+        /// </summary>
+        /// <param name="character">Character data to update</param>
+        /// <param name="cancellationToken">Token for cancelling the operation</param>
+        /// <returns>Task for asynchronous completion</returns>
+        public async Task UpdatePlayerCharacter(PlayerCharacter character, CancellationToken cancellationToken = default)
+        {
+            if (string.IsNullOrEmpty(character.ServerID))
+                throw new ArgumentNullException(nameof(character.ServerID));
+
+            string uri = $"api/campaign/{_campaignID}/players/character";
+
+            using (HttpResponseMessage result = await _client.PutAsJsonAsync(uri, character.ToServerCharacter(), cancellationToken))
+            {
+                result.EnsureSuccessStatusCode();
+            }
+        }
+
+        #endregion
         class NewCampaign
         {
             public string? campaignID { get; set; }

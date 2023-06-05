@@ -1,5 +1,6 @@
 ﻿using d20Web.Models;
 using d20Web.Models.Bestiary;
+using d20Web.Models.Players;
 
 namespace d20Web.Storage
 {
@@ -61,6 +62,47 @@ namespace d20Web.Storage
         /// <param name="cancellationToken">Token for cancelling the operation</param>
         /// <returns>Task for asynchronous completion</returns>
         Task DeleteMonster(string campaignID, string id, CancellationToken cancellationToken);
+        #endregion
+        #region Players
+        /// <summary>
+        /// Creates a new player character
+        /// </summary>
+        /// <param name="campaignID">ID of the campaign containing the character</param>
+        /// <param name="playerCharacter">Character data to add</param>
+        /// <param name="cancellationToken">Token for cancelling the operation</param>
+        /// <returns>ID of the player character created</returns>
+        Task<string> CreatePlayerCharacter(string campaignID, PlayerCharacter playerCharacter, CancellationToken cancellationToken = default);
+        /// <summary>
+        /// Gets a collection of all player characters in the campaign
+        /// </summary>
+        /// <param name="campaignID">ID of the campaign to get player characters for</param>
+        /// <param name="cancellationToken">Token for cancelling the operation</param>
+        /// <returns>Collection of player characters</returns>
+        Task<PlayerCharacter[]> GetPlayerCharacters(string campaignID, CancellationToken cancellationToken = default);
+        /// <summary>
+        /// Gets the data for a player character
+        /// </summary>
+        /// <param name="campaignID">ID of the campaign containing the player character</param>
+        /// <param name="id">ID of the character to get</param>
+        /// <param name="cancellationToken">Token for cancelling the operation</param>
+        /// <returns>Player character data</returns>
+        Task<PlayerCharacter> GetPlayerCharacter(string campaignID, string id, CancellationToken cancellationToken = default);
+        /// <summary>
+        /// Deletes the given player character
+        /// </summary>
+        /// <param name="campaignID">ID of the campaign containing the character</param>
+        /// <param name="id">ID of the character to delete</param>
+        /// <param name="cancellationToken">Token for cancelling the operation</param>
+        /// <returns>Task for asynchonrous completion</returns>
+        Task DeletePlayerCharacter(string campaignID, string id, CancellationToken cancellationToken = default);
+        /// <summary>
+        /// Updates the data for a player character
+        /// </summary>
+        /// <param name="campaignID">ID of the campaign containing the player character</param>
+        /// <param name="character">Character data to update</param>
+        /// <param name="cancellationToken">Token for cancelling the operation</param>
+        /// <returns>Task for asynchronous completion</returns>
+        Task UpdatePlayerCharacter(string campaignID, PlayerCharacter character, CancellationToken cancellationToken = default);
         #endregion
     }
 }

@@ -1,6 +1,7 @@
 ﻿using d20Web.Hubs;
 using d20Web.Models;
 using d20Web.Models.Bestiary;
+using d20Web.Models.Players;
 using d20Web.Storage;
 using Microsoft.AspNetCore.SignalR;
 
@@ -78,6 +79,41 @@ namespace d20Web.Services
         public async Task<Monster> GetMonster(string campaignID, string id, CancellationToken cancellationToken = default)
         {
             return await _campaignStorage.GetMonster(campaignID, id, cancellationToken);
+        }
+        #endregion
+        #region Players
+
+        public async Task<string> CreatePlayerCharacter(string campaignID, PlayerCharacter playerCharacter, CancellationToken cancellationToken = default)
+        {
+            string id = await _campaignStorage.CreatePlayerCharacter(campaignID, playerCharacter, cancellationToken);
+
+            _ = _campaignHub.PlayerCharacterCreated(campaignID, id);
+
+            return id;
+        }
+
+        public async Task<PlayerCharacter[]> GetPlayerCharacters(string campaignID, CancellationToken cancellationToken = default)
+        {
+            return await _campaignStorage.GetPlayerCharacters(campaignID, cancellationToken);
+        }
+
+        public async Task<PlayerCharacter> GetPlayerCharacter(string campaignID, string id, CancellationToken cancellationToken = default)
+        {
+            return await _campaignStorage.GetPlayerCharacter(campaignID, id, cancellationToken);
+        }
+
+        public async Task DeletePlayerCharacter(string campaignID, string id, CancellationToken cancellationToken = default)
+        {
+            await _campaignStorage.DeletePlayerCharacter(campaignID, id, cancellationToken);
+
+            _ = _campaignHub.PlayerCharacterDeleted(campaignID, id);
+        }
+
+        public async Task UpdatePlayerCharacter(string campaignID, PlayerCharacter character, CancellationToken cancellationToken = default)
+        {
+            await _campaignStorage.UpdatePlayerCharacter(campaignID, character, cancellationToken);
+
+            _ = _campaignHub.PlayerCharacterUpdated(campaignID, character);
         }
         #endregion
     }

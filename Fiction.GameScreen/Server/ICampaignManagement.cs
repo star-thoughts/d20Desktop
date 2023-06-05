@@ -1,4 +1,5 @@
 ﻿using Fiction.GameScreen.Monsters;
+using Fiction.GameScreen.Players;
 
 namespace Fiction.GameScreen.Server
 {
@@ -38,6 +39,42 @@ namespace Fiction.GameScreen.Server
         /// <param name="monsterId">ID of the monster</param>
         /// <returns>Task for asynchronous completion</returns>
         Task DeleteMonster(string  monsterId);
+        #endregion
+        #region Players
+        /// <summary>
+        /// Creates a new player character
+        /// </summary>
+        /// <param name="playerCharacter">Character data to add</param>
+        /// <param name="cancellationToken">Token for cancelling the operation</param>
+        /// <returns>ID of the player character created</returns>
+        Task CreatePlayerCharacter(PlayerCharacter playerCharacter, CancellationToken cancellationToken = default);
+        /// <summary>
+        /// Gets a collection of all player characters in the campaign
+        /// </summary>
+        /// <param name="cancellationToken">Token for cancelling the operation</param>
+        /// <returns>Collection of player characters</returns>
+        Task<PlayerCharacter[]> GetPlayerCharacters(CancellationToken cancellationToken = default);
+        /// <summary>
+        /// Gets the data for a player character
+        /// </summary>
+        /// <param name="id">ID of the character to get</param>
+        /// <param name="cancellationToken">Token for cancelling the operation</param>
+        /// <returns>Player character data</returns>
+        Task<PlayerCharacter> GetPlayerCharacter(string id, CancellationToken cancellationToken = default);
+        /// <summary>
+        /// Deletes the given player character
+        /// </summary>
+        /// <param name="id">ID of the character to delete</param>
+        /// <param name="cancellationToken">Token for cancelling the operation</param>
+        /// <returns>Task for asynchonrous completion</returns>
+        Task DeletePlayerCharacter(string id, CancellationToken cancellationToken = default);
+        /// <summary>
+        /// Updates the data for a player character
+        /// </summary>
+        /// <param name="character">Character data to update</param>
+        /// <param name="cancellationToken">Token for cancelling the operation</param>
+        /// <returns>Task for asynchronous completion</returns>
+        Task UpdatePlayerCharacter(PlayerCharacter character, CancellationToken cancellationToken = default);
         #endregion
     }
 }
