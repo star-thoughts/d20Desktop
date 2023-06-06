@@ -8,6 +8,10 @@
         public const string MonsterUpdated = nameof(MonsterUpdated);
         public const string MonsterDeleted = nameof(MonsterDeleted);
 
+        public const string PlayerCharacterCreated = nameof(PlayerCharacterCreated);
+        public const string PlayerCharacterUpdated = nameof(PlayerCharacterUpdated);
+        public const string PlayerCharacterDeleted = nameof(PlayerCharacterDeleted);
+
         public const string CombatPrepCreated = nameof(CombatPrepCreated);
         public const string CombatPrepDeleted = nameof(CombatPrepDeleted);
         public const string CombatantPrepCreated = nameof(CombatantPrepCreated);

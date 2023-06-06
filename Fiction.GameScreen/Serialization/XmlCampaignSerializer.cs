@@ -408,6 +408,7 @@ namespace Fiction.GameScreen.Serialization
             {
                 await writer.WriteStartElementAsync(Keys.Player).ConfigureAwait(false);
 
+                await writer.WriteOptionalAttributeStringAsync(Keys.ServerID, character.ServerID?.ToString());
                 await writer.WriteAttributeStringAsync(Keys.Id, character.Id.ToString()).ConfigureAwait(false);
                 await writer.WriteAttributeStringAsync(Keys.Name, character.Name ?? string.Empty).ConfigureAwait(false);
                 await writer.WriteAttributeStringAsync(Keys.InitiativeModifier, character.InitiativeModifier.ToString()).ConfigureAwait(false);
@@ -739,6 +740,7 @@ namespace Fiction.GameScreen.Serialization
         {
             return new PlayerCharacter(campaign, character.ReadAttributeInt(Keys.Id))
             {
+                ServerID = character.ReadAttributeString(Keys.ServerID),
                 Name = character.ReadAttributeString(Keys.Name),
                 InitiativeModifier = character.ReadAttributeInt(Keys.InitiativeModifier),
                 IncludeInCombat = character.ReadAttributeBool(Keys.IncludeInCombat),

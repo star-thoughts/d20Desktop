@@ -1,5 +1,6 @@
 ﻿using d20Web.Models;
 using d20Web.Models.Bestiary;
+using d20Web.Models.Players;
 using d20Web.Storage.MongoDB.Models;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -18,6 +19,7 @@ namespace d20Web.Storage.MongoDB
 
         private const string CampaignsCollection = "campaigns";
         private const string BestiaryCollection = "bestiary";
+        private const string PlayerCharacterCollection = "playercharacters";
 
         private async Task<IMongoCollection<MongoCampaign>> GetCampaignsCollection()
         {
@@ -100,10 +102,6 @@ namespace d20Web.Storage.MongoDB
         }
         #endregion
         #region Monsters
-        private async Task<IMongoCollection<MongoMonster>> GetBestiaryCollection()
-        {
-            return (await GetDatabase()).GetCollection<MongoMonster>(BestiaryCollection);
-        }
         /// <summary>
         /// Creates a monster in the bestiary
         /// </summary>
@@ -157,6 +155,71 @@ namespace d20Web.Storage.MongoDB
             await DeleteNamedObject<MongoMonster>(BestiaryCollection, campaignID, monsterID, cancellationToken);
         }
         #endregion
+        #region Players
+        /// <summary>
+        /// Creates a new player character
+        /// </summary>
+        /// <param name="campaignID">ID of the campaign containing the character</param>
+        /// <param name="playerCharacter">Character data to add</param>
+        /// <param name="cancellationToken">Token for cancelling the operation</param>
+        /// <returns>ID of the player character created</returns>
+        public async Task<string> CreatePlayerCharacter(string campaignID, PlayerCharacter playerCharacter, CancellationToken cancellationToken = default)
+        {
+            MongoPlayerCharacter dbPlayerCharacter = new MongoPlayerCharacter(playerCharacter);
+
+            return await CreateNamedObject(PlayerCharacterCollection, ItemType.PlayerCharacter, campaignID, dbPlayerCharacter, cancellationToken);
+        }
+        /// <summary>
+        /// Gets a collection of all player characters in the campaign
+        /// </summary>
+        /// <param name="campaignID">ID of the campaign to get player characters for</param>
+        /// <param name="cancellationToken">Token for cancelling the operation</param>
+        /// <returns>Collection of player characters</returns>
+        public async Task<PlayerCharacter[]> GetPlayerCharacters(string campaignID, CancellationToken cancellationToken = default)
+        {
+            return (await GetNamedObjectList<MongoPlayerCharacter>(PlayerCharacterCollection, campaignID, cancellationToken))
+                .Select(p => p.ToCharacter())
+                .ToArray();
+        }
+        /// <summary>
+        /// Gets the data for a player character
+        /// </summary>
+        /// <param name="campaignID">ID of the campaign containing the player character</param>
+        /// <param name="id">ID of the character to get</param>
+        /// <param name="cancellationToken">Token for cancelling the operation</param>
+        /// <returns>Player character data</returns>
+        public async Task<PlayerCharacter> GetPlayerCharacter(string campaignID, string id, CancellationToken cancellationToken = default)
+        {
+            return (await GetNamedObject<MongoPlayerCharacter>(PlayerCharacterCollection, ItemType.PlayerCharacter, campaignID, id, cancellationToken)).ToCharacter();
+        }
+        /// <summary>
+        /// Deletes the given player character
+        /// </summary>
+        /// <param name="campaignID">ID of the campaign containing the character</param>
+        /// <param name="id">ID of the character to delete</param>
+        /// <param name="cancellationToken">Token for cancelling the operation</param>
+        /// <returns>Task for asynchonrous completion</returns>
+        public async Task DeletePlayerCharacter(string campaignID, string id, CancellationToken cancellationToken = default)
+        {
+            await DeleteNamedObject<MongoPlayerCharacter>(PlayerCharacterCollection, campaignID, id, cancellationToken);
+        }
+        /// <summary>
+        /// Updates the data for a player character
+        /// </summary>
+        /// <param name="campaignID">ID of the campaign containing the player character</param>
+        /// <param name="character">Character data to update</param>
+        /// <param name="cancellationToken">Token for cancelling the operation</param>
+        /// <returns>Task for asynchronous completion</returns>
+        public async Task UpdatePlayerCharacter(string campaignID, PlayerCharacter character, CancellationToken cancellationToken = default)
+        {
+            if (string.IsNullOrWhiteSpace(character.ID))
+                throw new ItemNotFoundException(ItemType.PlayerCharacter, string.Empty);
+
+            MongoPlayerCharacter dbCharacter = new MongoPlayerCharacter(character);
+
+            await ReplaceNamedObject(PlayerCharacterCollection, ItemType.PlayerCharacter, campaignID, character.ID, dbCharacter, cancellationToken);
+        }
+        #endregion
         #region Helpers
         private async Task<string> CreateNamedObject<T>(string collectionName, ItemType itemType, string campaignID, T namedObject, CancellationToken cancellationToken) where T : INamedObject
         {
@@ -203,7 +266,7 @@ namespace d20Web.Storage.MongoDB
 
             try
             {
-                var result = await collection.ReplaceOneAsync(filter, namedObject, ReplaceOptions, cancellationToken);
+                var result = await collection.ReplaceOneAsync(filter, namedObject, UpsertOptions, cancellationToken);
                 if (result.MatchedCount == 0)
                     throw new ItemNotFoundException(itemType, objectID);
             }
@@ -258,6 +321,22 @@ namespace d20Web.Storage.MongoDB
                 .Eq(p => p.ID, namedObjectID) & Builders<T>.Filter.Eq(p => p.CampaignID, campaignObjectID);
 
             await collection.DeleteOneAsync(filter);
+        }
+
+        private async Task<IEnumerable<T>> GetNamedObjectList<T>(string collectioName, string campaignID, CancellationToken cancellationToken) where T : INamedObject
+        {
+            if (string.IsNullOrWhiteSpace(campaignID))
+                throw new ArgumentNullException(nameof(campaignID));
+            if (!ObjectId.TryParse(campaignID, out ObjectId campaignObjectID))
+                throw new ArgumentException("Invalid campaign ID", nameof(campaignID));
+
+            IMongoCollection<T> collection = (await GetDatabase()).GetCollection<T>(collectioName);
+
+            FilterDefinition<T> filter = Builders<T>.Filter
+                .Eq(p => p.CampaignID, campaignObjectID);
+
+            return await collection.Find(filter)
+                .ToListAsync(cancellationToken);
         }
         #endregion
     }

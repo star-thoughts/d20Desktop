@@ -1,6 +1,7 @@
 ﻿using Fiction.GameScreen.Players;
 using Fiction.GameScreen.ViewModels;
 using Fiction.Windows;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -52,12 +53,12 @@ namespace Fiction.GameScreen.Controls
             }
         }
 
-        private void CharacterList_DoubleClick(object sender, MouseButtonEventArgs e)
+        private async void CharacterList_DoubleClick(object sender, MouseButtonEventArgs e)
         {
-            Exceptions.FailSafeMethodCall(() =>
+            await Exceptions.FailSafeMethodCall(async () =>
             {
                 if (sender is ListBoxItem item && item.DataContext is PlayerCharacter pc)
-                    EditCharacter(new EditPlayerCharacterViewModel(ViewModel.Campaign, pc));
+                    await EditCharacter(new EditPlayerCharacterViewModel(ViewModel.Campaign, pc, ViewModel.Factory.Server));
             });
         }
 
@@ -67,13 +68,13 @@ namespace Fiction.GameScreen.Controls
             e.CanExecute = e.Parameter is PlayerCharacter;
         }
 
-        private void Edit_Executed(object sender, ExecutedRoutedEventArgs e)
+        private async void Edit_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            Exceptions.FailSafeMethodCall(() =>
+            await Exceptions.FailSafeMethodCall(async () =>
             {
                 e.Handled = true;
                 if (e.Parameter is PlayerCharacter pc)
-                    EditCharacter(new EditPlayerCharacterViewModel(ViewModel.Campaign, pc));
+                    await EditCharacter(new EditPlayerCharacterViewModel(ViewModel.Campaign, pc, ViewModel.Factory.Server));
             });
         }
 
@@ -83,14 +84,14 @@ namespace Fiction.GameScreen.Controls
             e.CanExecute = e.Parameter is PlayerCharacter;
         }
 
-        private void Remove_Executed(object sender, ExecutedRoutedEventArgs e)
+        private async void Remove_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            Exceptions.FailSafeMethodCall(() =>
-            {
-                e.Handled = true;
-                if (e.Parameter is PlayerCharacter pc)
-                    ViewModel.Characters.Remove(pc);
-            });
+            await Exceptions.FailSafeMethodCall(async () =>
+             {
+                 e.Handled = true;
+                 if (e.Parameter is PlayerCharacter pc)
+                     await ViewModel.Remove(pc);
+             });
         }
 
         private void Add_CanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -99,27 +100,27 @@ namespace Fiction.GameScreen.Controls
             e.CanExecute = ViewModel?.Campaign != null;
         }
 
-        private void Add_Executed(object sender, ExecutedRoutedEventArgs e)
+        private async void Add_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            Exceptions.FailSafeMethodCall(() =>
+            await Exceptions.FailSafeMethodCall(async () =>
             {
                 e.Handled = true;
                 if (ViewModel?.Campaign != null)
                 {
-                    EditPlayerCharacterViewModel vm = new EditPlayerCharacterViewModel(ViewModel.Campaign);
-                    EditCharacter(vm);
+                    EditPlayerCharacterViewModel vm = new EditPlayerCharacterViewModel(ViewModel.Campaign, ViewModel.Factory.Server);
+                    await EditCharacter(vm);
                 }
             });
         }
 
-        private void EditCharacter(EditPlayerCharacterViewModel vm)
+        private async Task EditCharacter(EditPlayerCharacterViewModel vm)
         {
             EditWindow window = new EditWindow();
             window.Owner = Window.GetWindow(this);
             window.DataContext = vm;
 
             if (window.ShowDialog() == true)
-                vm.Save();
+                await vm.Save();
         }
         #endregion
     }

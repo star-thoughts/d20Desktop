@@ -1,9 +1,6 @@
 ﻿using Fiction.GameScreen.Combat;
 using Fiction.GameScreen.Monsters;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Text;
 
 namespace Fiction.GameScreen.Players
 {
@@ -38,6 +35,9 @@ namespace Fiction.GameScreen.Players
             _hitDie = "1";
             _notes = Array.Empty<string>();
         }
+        #endregion
+        #region Properties
+
         /// <summary>
         /// Gets or sets the ID of this character on the server
         /// </summary>
@@ -256,8 +256,6 @@ namespace Fiction.GameScreen.Players
             }
         }
         #endregion
-        #region Properties
-        #endregion
         #region Methods
         /// <summary>
         /// Creates a combatant from this player
@@ -282,6 +280,29 @@ namespace Fiction.GameScreen.Players
 
                 return template;
             }
+        }
+
+        /// <summary>
+        /// Creates a server representation of this character
+        /// </summary>
+        /// <returns></returns>
+        public d20Web.Models.Players.PlayerCharacter ToServerCharacter()
+        {
+            return new d20Web.Models.Players.PlayerCharacter()
+            {
+                HitDie = HitDieString,
+                ID = ServerID,
+                Alignment = (d20Web.Models.Alignment)Alignment,
+                IncludeInCombat = IncludeInCombat,
+                InitiativeModifier = InitiativeModifier,
+                Languages = Languages,
+                LightRadius = LightRadius,
+                Name = Name,
+                Notes = Notes,
+                Player = Player,
+                RollingStrategy = (d20Web.Models.RollingStrategy)HitDieRollingStrategy,
+                Senses = Senses,
+            };
         }
         #endregion
         #region Events

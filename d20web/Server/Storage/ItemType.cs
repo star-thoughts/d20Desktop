@@ -29,5 +29,9 @@
         /// Monster in the bestiary
         /// </summary>
         Monster = 6,
+        /// <summary>
+        /// Player character
+        /// </summary>
+        PlayerCharacter = 7,
     }
 }
