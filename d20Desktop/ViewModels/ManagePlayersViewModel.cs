@@ -1,4 +1,5 @@
 ﻿using Fiction.GameScreen.Players;
+using Fiction.GameScreen.Server;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -44,6 +45,16 @@ namespace Fiction.GameScreen.ViewModels
         /// Gets the display name for this view model
         /// </summary>
         public override string ViewModelDisplayName { get { return Resources.Resources.PlayersDisplayName; } }
+        #endregion
+        #region Methods
+        public async Task Remove(PlayerCharacter character)
+        {
+            Characters.Remove(character);
+
+            ICampaignManagement? campaignManagement = Factory.GetCampaignManager();
+            if (campaignManagement != null && !string.IsNullOrEmpty(character.ServerID))
+                await campaignManagement.DeletePlayerCharacter(character.ServerID);
+        }
         #endregion
     }
 }

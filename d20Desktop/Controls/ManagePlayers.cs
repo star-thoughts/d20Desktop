@@ -84,14 +84,14 @@ namespace Fiction.GameScreen.Controls
             e.CanExecute = e.Parameter is PlayerCharacter;
         }
 
-        private void Remove_Executed(object sender, ExecutedRoutedEventArgs e)
+        private async void Remove_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            Exceptions.FailSafeMethodCall(() =>
-            {
-                e.Handled = true;
-                if (e.Parameter is PlayerCharacter pc)
-                    ViewModel.Characters.Remove(pc);
-            });
+            await Exceptions.FailSafeMethodCall(async () =>
+             {
+                 e.Handled = true;
+                 if (e.Parameter is PlayerCharacter pc)
+                     await ViewModel.Remove(pc);
+             });
         }
 
         private void Add_CanExecute(object sender, CanExecuteRoutedEventArgs e)
