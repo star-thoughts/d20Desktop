@@ -94,5 +94,50 @@ namespace d20Web.Hubs
             return hub.Clients.All.SendAsync(Constants.CombatantsDeleted, campaignID, combatID, combatantIDs);
         }
         #endregion
+        #region Scenarios
+        public static Task CombatScenarioCreated(this IHubContext<CampaignHub> hub, string campaignID, string CombatScenarioID, string CombatScenarioName)
+        {
+            if (hub == null)
+                throw new ArgumentNullException(nameof(hub));
+
+            return hub.Clients.All.SendAsync(Constants.CombatScenarioCreated, campaignID, CombatScenarioID, CombatScenarioName);
+        }
+        public static Task CombatScenarioDeleted(this IHubContext<CampaignHub> hub, string campaignID, string CombatScenarioID)
+        {
+            if (hub == null)
+                throw new ArgumentNullException(nameof(hub));
+
+            return hub.Clients.All.SendAsync(Constants.CombatScenarioDeleted, campaignID, CombatScenarioID);
+        }
+        public static Task CombatScenarioUpdated(this IHubContext<CampaignHub> hub, string campaignID, CombatScenario CombatScenario)
+        {
+            if (hub == null)
+                throw new ArgumentNullException(nameof(hub));
+
+            return hub.Clients.All.SendAsync(Constants.CombatScenarioUpdated, campaignID, CombatScenario);
+        }
+        public static Task ScenarioCombatantCreated(this IHubContext<CampaignHub> hub, string campaignID, string ScenarioCombatantID, string ScenarioCombatantName)
+        {
+            if (hub == null)
+                throw new ArgumentNullException(nameof(hub));
+
+            return hub.Clients.All.SendAsync(Constants.ScenarioCombatantCreated, campaignID, ScenarioCombatantID, ScenarioCombatantName);
+        }
+        public static Task ScenarioCombatantDeleted(this IHubContext<CampaignHub> hub, string campaignID, string ScenarioCombatantID)
+        {
+            if (hub == null)
+                throw new ArgumentNullException(nameof(hub));
+
+            return hub.Clients.All.SendAsync(Constants.ScenarioCombatantDeleted, campaignID, ScenarioCombatantID);
+        }
+        public static Task ScenarioCombatantUpdated(this IHubContext<CampaignHub> hub, string campaignID, CombatantTemplate ScenarioCombatant)
+        {
+            if (hub == null)
+                throw new ArgumentNullException(nameof(hub));
+
+            return hub.Clients.All.SendAsync(Constants.ScenarioCombatantUpdated, campaignID, ScenarioCombatant);
+        }
+
+        #endregion
     }
 }

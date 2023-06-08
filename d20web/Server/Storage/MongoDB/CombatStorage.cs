@@ -23,6 +23,8 @@ namespace d20Web.Storage.MongoDB
         private const string CombatantsCollection = "combatants";
         private const string CombatPrepCollection = "combatprep";
         private const string CombatantPrepCollection = "combatantprep";
+        private const string CombatScenarioCollection = "scenarios";
+        private const string ScenarioCombatantsCollection = "scenariocombatants";
 
         private async Task<IMongoCollection<MongoCombat>> GetCombatsCollection()
         {
@@ -617,6 +619,122 @@ namespace d20Web.Storage.MongoDB
                 & Builders<MongoCombatant>.Filter.Eq(p => p.CombatID, combatObjectID);
 
             await combatantsCollection.DeleteManyAsync(filter, cancellationToken);
+        }
+        #endregion
+        #region Scenarios
+        /// <summary>
+        /// Creates a combat scenario to allow for creating combats
+        /// </summary>
+        /// <param name="campaignID">ID of the campaign containing the scenario</param>
+        /// <param name="scenario">Scenario to create</param>
+        /// <param name="cancellationToken">Token for cancelling the operation</param>
+        /// <returns>ID of the created scenario</returns>
+        public async Task<string> CreateCombatScenario(string campaignID, CombatScenario scenario, CancellationToken cancellationToken = default)
+        {
+            MongoCombatScenario dbScenario = new MongoCombatScenario(scenario);
+
+            return await CreateNamedObject(CombatScenarioCollection, ItemType.Scenario, campaignID, dbScenario, cancellationToken);
+        }
+        /// <summary>
+        /// Update an existing scenario
+        /// </summary>
+        /// <param name="campaignID">ID of the campaign containing the scenario</param>
+        /// <param name="scenario">Scenario information to update</param>
+        /// <param name="cancellationToken">Token for cancelling the operation</param>
+        /// <returns>Task for asynchronous completion</returns>
+        public async Task UpdateCombatScenario(string campaignID, CombatScenario scenario, CancellationToken cancellationToken = default)
+        {
+            if (string.IsNullOrWhiteSpace(scenario.ID))
+                throw new ArgumentNullException(nameof(scenario.ID));
+
+            MongoCombatScenario dbScenario = new MongoCombatScenario(scenario);
+
+            await ReplaceNamedObject(CombatScenarioCollection, ItemType.Scenario, campaignID, scenario.ID, dbScenario, cancellationToken);
+        }
+        /// <summary>
+        /// Gets a scenario for creating a combat
+        /// </summary>
+        /// <param name="campaignID">ID of the campaign containing the scenario</param>
+        /// <param name="scenarioID">ID of the scenario to get</param>
+        /// <param name="cancellationToken">Token for cancelling the operation</param>
+        /// <returns>Combat scenario information</returns>
+        public async Task<CombatScenario> GetCombatScenario(string campaignID, string scenarioID, CancellationToken cancellationToken = default)
+        {
+            MongoCombatScenario result = await GetNamedObject<MongoCombatScenario>(CombatScenarioCollection, ItemType.Scenario, campaignID, scenarioID, cancellationToken);
+
+            return result.ToScenario();
+        }
+        /// <summary>
+        /// Deletes the given combat scenario
+        /// </summary>
+        /// <param name="campaignID">ID of the campaign containing the scenario</param>
+        /// <param name="scenarioID">ID of the scenario to delete</param>
+        /// <param name="cancellationToken">Token for cancelling the operation</param>
+        /// <returns>Task for asynchronous completion</returns>
+        public async Task DeleteCombatScenario(string campaignID, string scenarioID, CancellationToken cancellationToken = default)
+        {
+            await DeleteNamedObject<MongoCombatScenario>(CombatScenarioCollection, campaignID, scenarioID, cancellationToken);
+        }
+        /// <summary>
+        /// Adds a combatant to a scenario
+        /// </summary>
+        /// <param name="campaignID">ID of the campaign containing the scenario</param>
+        /// <param name="scenarioID">ID of the scenario to add to</param>
+        /// <param name="template">Combatant information to add</param>
+        /// <param name="cancellationToken">Token for cancelling the operation</param>
+        /// <returns>ID of the combatant added</returns>
+        public Task<string> AddScenarioCombatant(string campaignID, string scenarioID, CombatantTemplate template, CancellationToken cancellationToken = default)
+        {
+            if (scenarioID == null || !ObjectId.TryParse(scenarioID, out ObjectId scenarioObjectID))
+                throw new ArgumentException(nameof(scenarioID));
+
+            MongoScenarioCombatant dbTemplate = new MongoScenarioCombatant(template);
+            dbTemplate.ScenarioID = scenarioObjectID;
+
+            return CreateNamedObject(ScenarioCombatantsCollection, ItemType.ScenarioCombatant, campaignID, dbTemplate, cancellationToken);
+        }
+        /// <summary>
+        /// Updates a combatant in a scenario
+        /// </summary>
+        /// <param name="campaignID">ID of the campaign containing the scenario</param>
+        /// <param name="scenarioID">ID of the scenario to update a combatant in</param>
+        /// <param name="template">Combatant information to update</param>
+        /// <param name="cancellationToken">Token for cancelling the operation</param>
+        /// <returns>Task for asynchronous completion</returns>
+        public async Task UpdateScenarioCombatant(string campaignID, string scenarioID, CombatantTemplate template, CancellationToken cancellationToken = default)
+        {
+            if (scenarioID == null || !ObjectId.TryParse(scenarioID, out ObjectId scenarioObjectID))
+                throw new ArgumentException(nameof(scenarioID));
+
+            MongoScenarioCombatant dbTemplate = new MongoScenarioCombatant(template);
+            dbTemplate.ScenarioID = scenarioObjectID;
+
+            await ReplaceNamedObject(ScenarioCombatantsCollection, ItemType.ScenarioCombatant, campaignID, scenarioID, dbTemplate, cancellationToken);
+        }
+        /// <summary>
+        /// Gets information for a combatant in a scenario
+        /// </summary>
+        /// <param name="campaignID">ID of the campaign containing the scenario</param>
+        /// <param name="scenarioID">ID of the scenario containing the combatant</param>
+        /// <param name="templateID">ID of the combatant to get</param>
+        /// <param name="cancellationToken">Token for cancelling the operation</param>
+        /// <returns>Combatant information</returns>
+        public async Task<CombatantTemplate> GetScenarioCombatant(string campaignID, string scenarioID, string templateID, CancellationToken cancellationToken = default)
+        {
+            MongoScenarioCombatant result = await GetNamedObject<MongoScenarioCombatant>(ScenarioCombatantsCollection, ItemType.ScenarioCombatant, campaignID, templateID, cancellationToken);
+            return result.ToTemplate();
+        }
+        /// <summary>
+        /// Deletes a combatant from a scenario
+        /// </summary>
+        /// <param name="campaignID">ID of the campaign containing the scenario</param>
+        /// <param name="scenarioID">ID of the scenario containing the combatant</param>
+        /// <param name="templateID">ID of the combatant to remove</param>
+        /// <param name="cancellationToken">Token for cancelling the operation</param>
+        /// <returns>Task for asynchronous completion</returns>
+        public async Task DeleteScenarioCombatant(string campaignID, string scenarioID, string templateID, CancellationToken cancellationToken = default)
+        {
+            await DeleteNamedObject<MongoScenarioCombatant>(ScenarioCombatantsCollection, campaignID, templateID, cancellationToken);
         }
         #endregion
     }

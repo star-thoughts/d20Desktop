@@ -23,5 +23,11 @@
         public const string CombatantCreated = nameof(CombatantCreated);
         public const string CombatantUpdated = nameof(CombatantUpdated);
         public const string CombatantsDeleted = nameof(CombatantsDeleted);
+        public const string CombatScenarioCreated = nameof(CombatScenarioCreated);
+        public const string CombatScenarioDeleted = nameof(CombatScenarioDeleted);
+        public const string CombatScenarioUpdated = nameof(CombatScenarioUpdated);
+        public const string ScenarioCombatantCreated = nameof(ScenarioCombatantCreated);
+        public const string ScenarioCombatantDeleted = nameof(ScenarioCombatantDeleted);
+        public const string ScenarioCombatantUpdated = nameof(ScenarioCombatantUpdated);
     }
 }
