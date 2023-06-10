@@ -1,11 +1,7 @@
 ﻿using Fiction.GameScreen.Combat;
 using Fiction.GameScreen.ViewModels;
 using Fiction.Windows;
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -80,22 +76,22 @@ namespace Fiction.GameScreen.Controls
                 containerStyle.Setters.Add(new EventSetter(Control.MouseDoubleClickEvent, new MouseButtonEventHandler(Scenario_DoubleClick)));
         }
 
-        private void Scenario_DoubleClick(object sender, MouseButtonEventArgs e)
+        private async void Scenario_DoubleClick(object sender, MouseButtonEventArgs e)
         {
             if (sender is ListBoxItem item)
             {
                 if (item.DataContext is CombatScenario scenario)
-                    EditScenario(scenario);
+                    await EditScenario(scenario);
             }
         }
 
-        private void EditCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        private async void EditCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            Exceptions.FailSafeMethodCall(() =>
+            await Exceptions.FailSafeMethodCall(async () =>
             {
                 CombatScenarioEditViewModel viewModel = new CombatScenarioEditViewModel(Factory, SelectedScenario);
                 if (EditScenario(viewModel))
-                    viewModel.Save();
+                    await viewModel.Save();
             });
         }
 
@@ -145,12 +141,12 @@ namespace Fiction.GameScreen.Controls
             });
         }
 
-        private bool EditScenario(CombatScenario scenario)
+        private async Task<bool> EditScenario(CombatScenario scenario)
         {
             CombatScenarioEditViewModel viewModel = new CombatScenarioEditViewModel(Factory, scenario);
             if (EditScenario(viewModel))
             {
-                viewModel.Save();
+                await viewModel.Save();
                 return true;
             }
             return false;

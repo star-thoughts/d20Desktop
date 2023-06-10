@@ -1,7 +1,7 @@
-﻿using System.Net.Http.Json;
+﻿using Fiction.GameScreen.Combat;
+using System.Net.Http.Json;
 using System.Text.Json;
 using System.Web;
-using d20Web.Models.Combat;
 
 namespace Fiction.GameScreen.Server
 {
@@ -64,7 +64,7 @@ namespace Fiction.GameScreen.Server
         /// <param name="combatants">Information about the combatants to add</param>
         /// <param name="cancellationToken">Token for cancelling the operation</param>
         /// <returns>IDs of the combatants added, in order they were put in <paramref name="combatants"/></returns>
-        public async Task<IEnumerable<string>> AddCombatantPreparers(string campaignID, string combatID, IEnumerable<CombatantPreparer> combatants, CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<string>> AddCombatantPreparers(string campaignID, string combatID, IEnumerable<d20Web.Models.Combat.CombatantPreparer> combatants, CancellationToken cancellationToken = default)
         {
             string uri = $"/api/campaign/{HttpUtility.UrlEncode(campaignID)}/combat/prep/{HttpUtility.UrlEncode(combatID)}/combatant";
 
@@ -102,7 +102,7 @@ namespace Fiction.GameScreen.Server
         /// <param name="combatant">Combatant information to update</param>
         /// <param name="cancellationToken">Token for cancelling the operation</param>
         /// <returns>Task for asynchronous completion</returns>
-        public async Task UpdateCombatantPreparer(string campaignID, string combatID, CombatantPreparer combatant, CancellationToken cancellationToken = default)
+        public async Task UpdateCombatantPreparer(string campaignID, string combatID, d20Web.Models.Combat.CombatantPreparer combatant, CancellationToken cancellationToken = default)
         {
             string uri = $"/api/campaign/{HttpUtility.UrlEncode(campaignID)}/combat/prep/{HttpUtility.UrlEncode(combatID)}/combatant/{HttpUtility.UrlEncode(combatant.ID)}";
 
@@ -173,7 +173,7 @@ namespace Fiction.GameScreen.Server
         /// <param name="combatants">Information about the combatants to add</param>
         /// <param name="cancellationToken">Token for cancelling the operation</param>
         /// <returns>IDs of the combatants added, in order they were put in <paramref name="combatants"/></returns>
-        public async Task<IEnumerable<string>> AddCombatants(string campaignID, string combatID, IEnumerable<Combatant> combatants, CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<string>> AddCombatants(string campaignID, string combatID, IEnumerable<d20Web.Models.Combat.Combatant> combatants, CancellationToken cancellationToken = default)
         {
             string uri = $"/api/campaign/{HttpUtility.UrlEncode(campaignID)}/combat/{HttpUtility.UrlEncode(combatID)}/combatant";
 
@@ -211,17 +211,134 @@ namespace Fiction.GameScreen.Server
         /// <param name="combatant">Combatant information to update</param>
         /// <param name="cancellationToken">Token for cancelling the operation</param>
         /// <returns>Task for asynchronous completion</returns>
-        public async Task UpdateCombatant(string campaignID, string combatID, Combatant combatant, CancellationToken cancellationToken = default)
+        public async Task UpdateCombatant(string campaignID, string combatID, d20Web.Models.Combat.Combatant combatant, CancellationToken cancellationToken = default)
         {
             string uri = $"/api/campaign/{HttpUtility.UrlEncode(campaignID)}/combat/{HttpUtility.UrlEncode(combatID)}/combatant/{HttpUtility.UrlEncode(combatant.ID)}";
 
             using (HttpResponseMessage result = await _client.PutAsJsonAsync(uri, combatant, cancellationToken))
                 result.EnsureSuccessStatusCode();
         }
+        #endregion
+        #region Scenarios
+        /// <summary>
+        /// Creates a combat scenario to allow for creating combats
+        /// </summary>
+        /// <param name="campaignID">ID of the campaign containing the scenario</param>
+        /// <param name="scenario">Scenario to create</param>
+        /// <param name="cancellationToken">Token for cancelling the operation</param>
+        /// <returns>ID of the created scenario</returns>
+        public async Task CreateCombatScenario(string campaignID, Combat.CombatScenario scenario, CancellationToken cancellationToken = default)
+        {
+            string uri = $"/api/campaign/{HttpUtility.UrlEncode(campaignID)}/combat/scenario";
+
+            using (HttpResponseMessage result = await _client.PostAsJsonAsync(uri, scenario.ToServerScenario(), cancellationToken))
+            {
+                result.EnsureSuccessStatusCode();
+
+                string id = await GetNewObjectID(result);
+                scenario.ServerID = id;
+            }
+        }
+        /// <summary>
+        /// Update an existing scenario
+        /// </summary>
+        /// <param name="campaignID">ID of the campaign containing the scenario</param>
+        /// <param name="scenario">Scenario information to update</param>
+        /// <param name="cancellationToken">Token for cancelling the operation</param>
+        /// <returns>Task for asynchronous completion</returns>
+        public async Task UpdateCombatScenario(string campaignID, CombatScenario scenario, CancellationToken cancellationToken = default)
+        {
+            string uri = $"/api/campaign/{HttpUtility.UrlEncode(campaignID)}/combat/scenario";
+
+            using (HttpResponseMessage result = await _client.PutAsJsonAsync(uri, scenario.ToServerScenario(), cancellationToken))
+                result.EnsureSuccessStatusCode();
+        }
+
+        /// <summary>
+        /// Deletes the given combat scenario
+        /// </summary>
+        /// <param name="campaignID">ID of the campaign containing the scenario</param>
+        /// <param name="scenarioID">ID of the scenario to delete</param>
+        /// <param name="cancellationToken">Token for cancelling the operation</param>
+        /// <returns>Task for asynchronous completion</returns>
+        public async Task DeleteCombatScenario(string campaignID, string scenarioID, CancellationToken cancellationToken = default)
+        {
+            string uri = $"/api/campaign/{HttpUtility.UrlEncode(campaignID)}/combat/scenario/{HttpUtility.UrlEncode(scenarioID)}";
+
+            using (HttpResponseMessage result = await _client.DeleteAsync(uri, cancellationToken))
+                result.EnsureSuccessStatusCode();
+        }
+        /// <summary>
+        /// Adds a combatant to a scenario
+        /// </summary>
+        /// <param name="campaignID">ID of the campaign containing the scenario</param>
+        /// <param name="scenarioID">ID of the scenario to add to</param>
+        /// <param name="template">Combatant information to add</param>
+        /// <param name="cancellationToken">Token for cancelling the operation</param>
+        /// <returns>ID of the combatant added</returns>
+        public async Task AddScenarioCombatant(string campaignID, string scenarioID, CombatantTemplate template, CancellationToken cancellationToken = default)
+        {
+            string uri = $"/api/campaign/{HttpUtility.UrlEncode(campaignID)}/combat/scenario/{HttpUtility.UrlEncode(scenarioID)}/combatant";
+
+            using (HttpResponseMessage response = await _client.PostAsJsonAsync(uri, template.ToServerTemplate(), cancellationToken))
+            {
+                response.EnsureSuccessStatusCode();
+
+                string id = await GetNewObjectID(response);
+                template.ServerID = id;
+            }
+        }
+        /// <summary>
+        /// Updates a combatant in a scenario
+        /// </summary>
+        /// <param name="campaignID">ID of the campaign containing the scenario</param>
+        /// <param name="scenarioID">ID of the scenario to update a combatant in</param>
+        /// <param name="template">Combatant information to update</param>
+        /// <param name="cancellationToken">Token for cancelling the operation</param>
+        /// <returns>Task for asynchronous completion</returns>
+        public async Task UpdateScenarioCombatant(string campaignID, string scenarioID, CombatantTemplate template, CancellationToken cancellationToken = default)
+        {
+            string uri = $"/api/campaign/{HttpUtility.UrlEncode(campaignID)}/combat/scenario/{HttpUtility.UrlEncode(scenarioID)}/combatant";
+
+            using (HttpResponseMessage response = await _client.PutAsJsonAsync(uri, template.ToServerTemplate(), cancellationToken))
+            {
+                response.EnsureSuccessStatusCode();
+
+                string id = await GetNewObjectID(response);
+                template.ServerID = id;
+            }
+        }
+
+        /// <summary>
+        /// Deletes a combatant from a scenario
+        /// </summary>
+        /// <param name="campaignID">ID of the campaign containing the scenario</param>
+        /// <param name="scenarioID">ID of the scenario containing the combatant</param>
+        /// <param name="templateID">ID of the combatant to remove</param>
+        /// <param name="cancellationToken">Token for cancelling the operation</param>
+        /// <returns>Task for asynchronous completion</returns>
+        public async Task DeleteScenarioCombatant(string campaignID, string scenarioID, string templateID, CancellationToken cancellationToken = default)
+        {
+            string uri = $"/api/campaign/{HttpUtility.UrlEncode(campaignID)}/combat/scenario/{HttpUtility.UrlEncode(scenarioID)}/combatant/{HttpUtility.UrlEncode(templateID)}";
+
+            using (HttpResponseMessage response = await _client.DeleteAsync(uri, cancellationToken))
+            {
+                response.EnsureSuccessStatusCode();
+            }
+        }
+        #endregion
+        #region Helpers
 
         public void Dispose()
         {
             _client?.Dispose();
+        }
+
+        private async Task<string> GetNewObjectID(HttpResponseMessage result)
+        {
+            string json = await result.Content.ReadAsStringAsync();
+            string id = JsonSerializer.Deserialize<NewObject>(json)?.id ?? string.Empty;
+            return id;
         }
 
         class NewCombat
@@ -232,6 +349,10 @@ namespace Fiction.GameScreen.Server
         class NewCombatants
         {
             public IEnumerable<string>? combatantIDs { get; set; }
+        }
+        class NewObject
+        {
+            public string? id { get; set; }
         }
         #endregion
     }

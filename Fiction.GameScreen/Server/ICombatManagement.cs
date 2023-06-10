@@ -102,5 +102,58 @@ namespace Fiction.GameScreen.Server
         /// <returns>Task for asynchronous completion</returns>
         Task UpdateCombatant(string campaignID, string combatID, d20Web.Models.Combat.Combatant combatant, CancellationToken cancellationToken = default);
         #endregion
+        #region Scenarios
+        /// <summary>
+        /// Creates a combat scenario to allow for creating combats
+        /// </summary>
+        /// <param name="campaignID">ID of the campaign containing the scenario</param>
+        /// <param name="scenario">Scenario to create</param>
+        /// <param name="cancellationToken">Token for cancelling the operation</param>
+        /// <returns>ID of the created scenario</returns>
+        Task CreateCombatScenario(string campaignID, CombatScenario scenario, CancellationToken cancellationToken = default);
+        /// <summary>
+        /// Update an existing scenario
+        /// </summary>
+        /// <param name="campaignID">ID of the campaign containing the scenario</param>
+        /// <param name="scenario">Scenario information to update</param>
+        /// <param name="cancellationToken">Token for cancelling the operation</param>
+        /// <returns>Task for asynchronous completion</returns>
+        Task UpdateCombatScenario(string campaignID, CombatScenario scenario, CancellationToken cancellationToken = default);
+        /// <summary>
+        /// Deletes the given combat scenario
+        /// </summary>
+        /// <param name="campaignID">ID of the campaign containing the scenario</param>
+        /// <param name="scenarioID">ID of the scenario to delete</param>
+        /// <param name="cancellationToken">Token for cancelling the operation</param>
+        /// <returns>Task for asynchronous completion</returns>
+        Task DeleteCombatScenario(string campaignID, string scenarioID, CancellationToken cancellationToken = default);
+        /// <summary>
+        /// Adds a combatant to a scenario
+        /// </summary>
+        /// <param name="campaignID">ID of the campaign containing the scenario</param>
+        /// <param name="scenarioID">ID of the scenario to add to</param>
+        /// <param name="template">Combatant information to add</param>
+        /// <param name="cancellationToken">Token for cancelling the operation</param>
+        /// <returns>ID of the combatant added</returns>
+        Task AddScenarioCombatant(string campaignID, string scenarioID, CombatantTemplate template, CancellationToken cancellationToken = default);
+        /// <summary>
+        /// Updates a combatant in a scenario
+        /// </summary>
+        /// <param name="campaignID">ID of the campaign containing the scenario</param>
+        /// <param name="scenarioID">ID of the scenario to update a combatant in</param>
+        /// <param name="template">Combatant information to update</param>
+        /// <param name="cancellationToken">Token for cancelling the operation</param>
+        /// <returns>Task for asynchronous completion</returns>
+        Task UpdateScenarioCombatant(string campaignID, string scenarioID, CombatantTemplate template, CancellationToken cancellationToken = default);
+        /// <summary>
+        /// Deletes a combatant from a scenario
+        /// </summary>
+        /// <param name="campaignID">ID of the campaign containing the scenario</param>
+        /// <param name="scenarioID">ID of the scenario containing the combatant</param>
+        /// <param name="templateID">ID of the combatant to remove</param>
+        /// <param name="cancellationToken">Token for cancelling the operation</param>
+        /// <returns>Task for asynchronous completion</returns>
+        Task DeleteScenarioCombatant(string campaignID, string scenarioID, string templateID, CancellationToken cancellationToken = default);
+        #endregion
     }
 }

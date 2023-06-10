@@ -45,6 +45,10 @@ namespace d20Web.Storage.MongoDB
         {
             return (await GetDatabase()).GetCollection<MongoCombatantPrep>(CombatantPrepCollection);
         }
+        private async Task<IMongoCollection<MongoScenarioCombatant>> GetScenarioCombatantsCollection()
+        {
+            return (await GetDatabase()).GetCollection<MongoScenarioCombatant>(ScenarioCombatantsCollection);
+        }
         #region Combat Prep
         /// <summary>
         /// Creates a new combat prep in a campaign
@@ -674,6 +678,15 @@ namespace d20Web.Storage.MongoDB
         public async Task DeleteCombatScenario(string campaignID, string scenarioID, CancellationToken cancellationToken = default)
         {
             await DeleteNamedObject<MongoCombatScenario>(CombatScenarioCollection, campaignID, scenarioID, cancellationToken);
+
+            if (ObjectId.TryParse(scenarioID, out ObjectId scenarioObjectID)) {
+                IMongoCollection<MongoScenarioCombatant> combatantsCollection = await GetScenarioCombatantsCollection();
+
+                FilterDefinition<MongoScenarioCombatant> filter = Builders<MongoScenarioCombatant>.Filter
+                    .Eq(p => p.ScenarioID, scenarioObjectID);
+
+                await combatantsCollection.DeleteManyAsync(filter, cancellationToken);
+            }
         }
         /// <summary>
         /// Adds a combatant to a scenario

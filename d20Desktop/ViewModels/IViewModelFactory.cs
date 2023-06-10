@@ -65,6 +65,7 @@ namespace Fiction.GameScreen.ViewModels
         /// </summary>
         /// <returns>Interface for managing campaigns on the server</returns>
         ICampaignManagement? GetCampaignManager();
+        ICombatManagement? GetCombatManagement();
         #endregion
     }
 }

@@ -1,7 +1,8 @@
 ﻿using Fiction.GameScreen.Combat;
-using System.ComponentModel;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Fiction.GameScreen.ViewModels
 {
@@ -120,12 +121,28 @@ namespace Fiction.GameScreen.ViewModels
         /// Updates the combat scenario with this data
         /// </summary>
         /// <returns>Combat scenario saved</returns>
-        public CombatScenario Save()
+        public async Task<CombatScenario> Save()
         {
             _scenario.Name = Name;
             _scenario.Group = Group;
             _scenario.Details = Details;
             _scenario.SetCombatants(Combatants.Select(p => p.Save()));
+
+            if (!string.IsNullOrWhiteSpace(Campaign.CampaignID))
+            {
+                await Exceptions.FailSafeMethodCall(async () =>
+                {
+                    Server.ICombatManagement? server = Factory.GetCombatManagement();
+
+                    if (server != null)
+                    {
+                        if (string.IsNullOrWhiteSpace(_scenario.ServerID))
+                            await server.CreateCombatScenario(Campaign.CampaignID, _scenario);
+                        else
+                            await server.UpdateCombatScenario(Campaign.CampaignID, _scenario);
+                    }
+                });
+            }
 
             return _scenario;
         }

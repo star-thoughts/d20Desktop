@@ -505,6 +505,7 @@ namespace Fiction.GameScreen.Serialization
         {
             await writer.WriteStartElementAsync(Keys.CombatantTemplate).ConfigureAwait(false);
 
+            await writer.WriteOptionalAttributeStringAsync(Keys.ServerID, template.ServerID);
             await writer.WriteAttributeStringAsync(Keys.Id, template.Id.ToString(CultureInfo.InvariantCulture)).ConfigureAwait(false);
             await writer.WriteAttributeStringAsync(Keys.Scenario, scenarioId.ToString(CultureInfo.InvariantCulture)).ConfigureAwait(false);
             await writer.WriteAttributeStringAsync(Keys.Kind, Keys.CombatantTemplateKind).ConfigureAwait(false);
@@ -863,6 +864,7 @@ namespace Fiction.GameScreen.Serialization
         {
             CombatantTemplate template = new CombatantTemplate(campaign);
 
+            template.ServerID = element.ReadAttributeString(Keys.ServerID);
             template.Count = element.ReadAttributeString(Keys.Count);
             template.DisplayName = element.ReadAttributeString(Keys.DisplayName);
             template.DisplayToPlayers = element.ReadAttributeBool(Keys.DisplayToPlayers);

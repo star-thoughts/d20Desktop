@@ -1,10 +1,6 @@
 ﻿using Fiction.GameScreen.Combat;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Collections.Specialized;
 
 namespace Fiction.GameScreen.ViewModels
 {
@@ -23,9 +19,12 @@ namespace Fiction.GameScreen.ViewModels
             : base(factory)
         {
             Campaign = campaign;
+            _scenarios = new ReadOnlyObservableCollection<CombatScenario>(Campaign.Combat.Scenarios);
+            ((INotifyCollectionChanged)_scenarios).CollectionChanged += CombatScenariosViewModel_CollectionChanged;
         }
         #endregion
         #region Member Variables
+        private ReadOnlyObservableCollection<CombatScenario> _scenarios;
         #endregion
         #region Properties
         /// <summary>
@@ -35,7 +34,7 @@ namespace Fiction.GameScreen.ViewModels
         /// <summary>
         /// Gets a collectio of combat scenarios
         /// </summary>
-        public ObservableCollection<CombatScenario> Scenarios { get { return Campaign.Combat.Scenarios; } }
+        public ReadOnlyObservableCollection<CombatScenario> Scenarios { get { return _scenarios; } }
         /// <summary>
         /// Gets the category for this view model
         /// </summary>
@@ -50,6 +49,23 @@ namespace Fiction.GameScreen.ViewModels
         public override bool IsValid { get { return true; } }
         #endregion
         #region Methods
+        private async void CombatScenariosViewModel_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        {
+            await Exceptions.FailSafeMethodCall(async () =>
+            {
+                Server.ICombatManagement? server = Factory.GetCombatManagement();
+                if (e.OldItems != null
+                    && server != null
+                    && !string.IsNullOrEmpty(Campaign.CampaignID))
+                {
+                    foreach (CombatScenario scenario in e.OldItems)
+                    {
+                        if (!string.IsNullOrEmpty(scenario.ServerID))
+                            await server.DeleteCombatScenario(Campaign.CampaignID, scenario.ServerID);
+                    }
+                }
+            });
+        }
         #endregion
     }
 }
