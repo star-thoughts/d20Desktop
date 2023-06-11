@@ -242,7 +242,9 @@ namespace d20Web.Controllers
         [HttpPut("scenario/{scenarioID}/combatant")]
         public async Task<IActionResult> UpdateScenarioCombatant([Required] string campaignID, [Required] string scenarioID, [Required] CombatantTemplate template)
         {
-            await _combatService.UpdateScenarioCombatant(campaignID, scenarioID, template, HttpContext.RequestAborted);
+            string? id = await _combatService.UpdateScenarioCombatant(campaignID, scenarioID, template, HttpContext.RequestAborted);
+            if (!string.IsNullOrWhiteSpace(id))
+                return Ok(new { id });
             return NoContent();
         }
 

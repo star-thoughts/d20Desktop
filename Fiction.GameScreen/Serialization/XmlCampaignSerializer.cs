@@ -480,6 +480,7 @@ namespace Fiction.GameScreen.Serialization
         {
             await writer.WriteStartElementAsync(Keys.Scenario).ConfigureAwait(false);
 
+            await writer.WriteOptionalAttributeStringAsync(Keys.ServerID, scenario.ServerID).ConfigureAwait(false);
             await writer.WriteAttributeStringAsync(Keys.Id, scenario.Id.ToString(CultureInfo.InvariantCulture)).ConfigureAwait(false);
             await writer.WriteAttributeStringAsync(Keys.Name, scenario.Name).ConfigureAwait(false);
             await writer.WriteAttributeStringAsync(Keys.Group, scenario.Group ?? string.Empty).ConfigureAwait(false);
@@ -898,6 +899,7 @@ namespace Fiction.GameScreen.Serialization
         private CombatScenario ReadCombatantScenario(XElement scenarioElement, CampaignSettings campaign)
         {
             CombatScenario scenario = new CombatScenario(campaign);
+            scenario.ServerID = scenarioElement.ReadAttributeString(Keys.ServerID);
             scenario.Id = scenarioElement.ReadAttributeInt(Keys.Id);
             scenario.Name = scenarioElement.ReadAttributeString(Keys.Name);
             scenario.Group = scenarioElement.ReadAttributeString(Keys.Group);

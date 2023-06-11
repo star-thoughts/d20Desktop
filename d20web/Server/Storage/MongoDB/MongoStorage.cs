@@ -69,7 +69,7 @@ namespace d20Web.Storage.MongoDB
             return namedObject.ID.ToString();
         }
 
-        protected async Task ReplaceNamedObject<T>(string collectionName, ItemType itemType, string campaignID, string objectID, T namedObject, CancellationToken cancellationToken) where T : INamedObject
+        protected async Task<string?> ReplaceNamedObject<T>(string collectionName, ItemType itemType, string campaignID, string objectID, T namedObject, CancellationToken cancellationToken) where T : INamedObject
         {
             if (string.IsNullOrWhiteSpace(campaignID))
                 throw new ArgumentNullException(nameof(campaignID));
@@ -92,8 +92,13 @@ namespace d20Web.Storage.MongoDB
             try
             {
                 var result = await collection.ReplaceOneAsync(filter, namedObject, UpsertOptions, cancellationToken);
+                if (result.UpsertedId?.Equals(ObjectId.Empty) == false)
+                    return result.UpsertedId.ToString();
+
                 if (result.MatchedCount == 0)
                     throw new ItemNotFoundException(itemType, objectID);
+
+                return string.Empty;
             }
             catch (MongoDuplicateKeyException)
             {

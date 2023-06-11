@@ -210,7 +210,7 @@ namespace d20Web.Storage
         /// <param name="template">Combatant information to update</param>
         /// <param name="cancellationToken">Token for cancelling the operation</param>
         /// <returns>Task for asynchronous completion</returns>
-        Task UpdateScenarioCombatant(string campaignID, string scenarioID, CombatantTemplate template, CancellationToken cancellationToken = default);
+        Task<string?> UpdateScenarioCombatant(string campaignID, string scenarioID, CombatantTemplate template, CancellationToken cancellationToken = default);
         /// <summary>
         /// Gets information for a combatant in a scenario
         /// </summary>

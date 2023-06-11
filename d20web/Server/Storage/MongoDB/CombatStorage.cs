@@ -714,7 +714,7 @@ namespace d20Web.Storage.MongoDB
         /// <param name="template">Combatant information to update</param>
         /// <param name="cancellationToken">Token for cancelling the operation</param>
         /// <returns>Task for asynchronous completion</returns>
-        public async Task UpdateScenarioCombatant(string campaignID, string scenarioID, CombatantTemplate template, CancellationToken cancellationToken = default)
+        public async Task<string?> UpdateScenarioCombatant(string campaignID, string scenarioID, CombatantTemplate template, CancellationToken cancellationToken = default)
         {
             if (scenarioID == null || !ObjectId.TryParse(scenarioID, out ObjectId scenarioObjectID))
                 throw new ArgumentException(nameof(scenarioID));
@@ -722,7 +722,8 @@ namespace d20Web.Storage.MongoDB
             MongoScenarioCombatant dbTemplate = new MongoScenarioCombatant(template);
             dbTemplate.ScenarioID = scenarioObjectID;
 
-            await ReplaceNamedObject(ScenarioCombatantsCollection, ItemType.ScenarioCombatant, campaignID, scenarioID, dbTemplate, cancellationToken);
+            string? id = await ReplaceNamedObject(ScenarioCombatantsCollection, ItemType.ScenarioCombatant, campaignID, scenarioID, dbTemplate, cancellationToken);
+            return id;
         }
         /// <summary>
         /// Gets information for a combatant in a scenario

@@ -305,7 +305,8 @@ namespace Fiction.GameScreen.Server
                 response.EnsureSuccessStatusCode();
 
                 string id = await GetNewObjectID(response);
-                template.ServerID = id;
+                if (!string.IsNullOrWhiteSpace(id))
+                    template.ServerID = id;
             }
         }
 
@@ -337,8 +338,12 @@ namespace Fiction.GameScreen.Server
         private async Task<string> GetNewObjectID(HttpResponseMessage result)
         {
             string json = await result.Content.ReadAsStringAsync();
-            string id = JsonSerializer.Deserialize<NewObject>(json)?.id ?? string.Empty;
-            return id;
+            if (!string.IsNullOrEmpty(json))
+            {
+                string id = JsonSerializer.Deserialize<NewObject>(json)?.id ?? string.Empty;
+                return id;
+            }
+            return string.Empty;
         }
 
         class NewCombat

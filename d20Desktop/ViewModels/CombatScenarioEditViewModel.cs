@@ -123,10 +123,14 @@ namespace Fiction.GameScreen.ViewModels
         /// <returns>Combat scenario saved</returns>
         public async Task<CombatScenario> Save()
         {
+            ICombatantTemplate[] combatants = Combatants.Select(p => p.Save()).ToArray();
             _scenario.Name = Name;
             _scenario.Group = Group;
             _scenario.Details = Details;
-            _scenario.SetCombatants(Combatants.Select(p => p.Save()));
+
+            GetCombatantChanges(_scenario.Combatants.ToArray(), combatants, out ICombatantTemplate[] toAdd, out ICombatantTemplate[] updates, out string[] toRemove);
+
+            _scenario.SetCombatants(combatants);
 
             if (!string.IsNullOrWhiteSpace(Campaign.CampaignID))
             {
@@ -140,11 +144,35 @@ namespace Fiction.GameScreen.ViewModels
                             await server.CreateCombatScenario(Campaign.CampaignID, _scenario);
                         else
                             await server.UpdateCombatScenario(Campaign.CampaignID, _scenario);
+
+                        if (!string.IsNullOrEmpty(_scenario.ServerID))
+                        {
+                            foreach (CombatantTemplate template in toAdd)
+                                await server.AddScenarioCombatant(Campaign.CampaignID, _scenario.ServerID, template);
+                            foreach (CombatantTemplate template in updates)
+                                await server.UpdateScenarioCombatant(Campaign.CampaignID, _scenario.ServerID, template);
+                            foreach (string id in toRemove)
+                                await server.DeleteScenarioCombatant(Campaign.CampaignID, _scenario.ServerID, id);
+                        }
                     }
                 });
             }
 
             return _scenario;
+        }
+
+        private void GetCombatantChanges(ICombatantTemplate[] before, ICombatantTemplate[] after, out ICombatantTemplate[] add, out ICombatantTemplate[] updates, out string[] remove)
+        {
+            string[] beforeIDs = before.Select(p => p?.ServerID).Where(p => !string.IsNullOrEmpty(p)).OfType<string>().ToArray();
+            string[] afterIDs = after.Select(p => p?.ServerID).Where(p => !string.IsNullOrEmpty(p)).OfType<string>().ToArray();
+
+            ICombatantTemplate[] toAdd = after.Where(p => !beforeIDs.Contains(p.ServerID)).ToArray();
+            string[] toRemoveIDs = beforeIDs.Except(afterIDs).ToArray();
+            string[] toUpdateIDs = beforeIDs.Intersect(afterIDs).ToArray();
+
+            add = toAdd.ToArray();
+            updates = after.Where(p => toUpdateIDs.Contains(p.ServerID)).ToArray();
+            remove = toRemoveIDs;
         }
 
         private void _combatantsMonitor_PropertyChanged(object? sender, PropertyChangedEventArgs e)

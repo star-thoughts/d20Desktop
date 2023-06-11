@@ -6,6 +6,7 @@
     public interface ICombatantTemplate : ICombatantBase, ICombatantSource
     {
         #region Properties
+        public string? ServerID { get; set; }
         /// <summary>
         /// Gets or sets a string representation of the hit dice for this combatant template
         /// </summary>

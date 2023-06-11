@@ -495,16 +495,18 @@ namespace d20Web.Services
         /// <param name="template">Combatant information to update</param>
         /// <param name="cancellationToken">Token for cancelling the operation</param>
         /// <returns>Task for asynchronous completion</returns>
-        public async Task UpdateScenarioCombatant(string campaignID, string scenarioID, CombatantTemplate template, CancellationToken cancellationToken = default)
+        public async Task<string?> UpdateScenarioCombatant(string campaignID, string scenarioID, CombatantTemplate template, CancellationToken cancellationToken = default)
         {
             ThrowIfInvalidScenarioParameters(campaignID, scenarioID);
 
             if (template == null)
                 throw new ArgumentNullException(nameof(template));
 
-            await _storage.UpdateScenarioCombatant(campaignID, scenarioID, template, cancellationToken);
+            string? id = await _storage.UpdateScenarioCombatant(campaignID, scenarioID, template, cancellationToken);
 
             _ = _hub.ScenarioCombatantUpdated(campaignID, template);
+
+            return id;
         }
         /// <summary>
         /// Gets information for a combatant in a scenario
