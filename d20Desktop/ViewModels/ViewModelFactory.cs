@@ -200,6 +200,25 @@ namespace Fiction.GameScreen.ViewModels
                 await _prepareCombatWatcher.DisposeAsync();
         }
 
+        public ICombatManagement? GetCombatManagement()
+        {
+            ICombatManagement? combatManagement = null;
+            try
+            {
+                HttpClient? client = GetServerClient();
+                if (client != null)
+                {
+                    combatManagement = new CombatManagement(client);
+                }
+            }
+            catch
+            {
+                combatManagement?.Dispose();
+                combatManagement = null;
+            }
+            return combatManagement;
+        }
+
         [MemberNotNull(nameof(ActiveCombat))]
         private async Task CreateCombat(PrepareCombatViewModel preparer)
         {
@@ -208,22 +227,14 @@ namespace Fiction.GameScreen.ViewModels
 
             if (!string.IsNullOrWhiteSpace(Campaign.CampaignID))
             {
-                ICombatManagement? combatManagement = null;
-                try
-                {
-                    HttpClient? client = GetServerClient();
-                    if (client != null)
-                    {
-                        combatManagement = new CombatManagement(client);
-                        CombatWatcher watcher = new CombatWatcher(Campaign.CampaignID, combat, combatManagement);
+                ICombatManagement? combatManagement = GetCombatManagement();
 
-                        if (await watcher.InitializeAsync())
-                            _combatWatcher = watcher;
-                    }
-                }
-                catch
+                if (combatManagement != null)
                 {
-                    combatManagement?.Dispose();
+                    CombatWatcher watcher = new CombatWatcher(Campaign.CampaignID, combat, combatManagement);
+
+                    if (await watcher.InitializeAsync())
+                        _combatWatcher = watcher;
                 }
             }
         }

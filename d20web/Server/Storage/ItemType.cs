@@ -33,5 +33,13 @@
         /// Player character
         /// </summary>
         PlayerCharacter = 7,
+        /// <summary>
+        /// Combat scenario
+        /// </summary>
+        Scenario = 8,
+        /// <summary>
+        /// Combat scenario combatant
+        /// </summary>
+        ScenarioCombatant = 9,
     }
 }

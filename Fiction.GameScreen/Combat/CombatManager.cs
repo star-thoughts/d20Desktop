@@ -49,7 +49,7 @@ namespace Fiction.GameScreen.Combat
         /// <returns>Whether or not the combat scenario can be deleted</returns>
         public bool CanDeleteScenario(CombatScenario scenario)
         {
-            return scenario.Combatants.All(p => CanDeleteCombatantTemplate(p));
+            return scenario.Combatants.All(CanDeleteCombatantTemplate);
         }
         /// <summary>
         /// Determines whether or not the given combatant template can be deleted

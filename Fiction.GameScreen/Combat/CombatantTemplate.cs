@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 
 namespace Fiction.GameScreen.Combat
 {
@@ -46,6 +44,10 @@ namespace Fiction.GameScreen.Combat
         /// Gets the ID of this combatant
         /// </summary>
         public int Id { get; internal set; }
+        /// <summary>
+        /// Gets or sets the ID of this combatant template on the server
+        /// </summary>
+        public string? ServerID { get; set; }
         private string _name;
         /// <summary>
         /// Gets or sets the name of the combatant
@@ -266,6 +268,26 @@ namespace Fiction.GameScreen.Combat
             return Enumerable.Range(0, count)
                 .Select(p => new CombatantPreparer(this))
                 .ToArray();
+        }
+
+        public d20Web.Models.Combat.CombatantTemplate ToServerTemplate()
+        {
+            return new d20Web.Models.Combat.CombatantTemplate()
+            {
+                Count = Count,
+                DamageReduction = DamageReduction.ToServerDamageReduction().ToArray(),
+                DeadAt = DeadAt,
+                DisplayName = DisplayName,
+                DisplayToPlayers = DisplayToPlayers,
+                HitDieRollingStrategy = (d20Web.Models.RollingStrategy)HitDieRollingStrategy,
+                HitDieString = HitDieString,
+                ID = ServerID,
+                SourceID = Source?.ServerID,
+                FastHealing = FastHealing,
+                InitiativeModifier = InitiativeModifier,
+                Name = Name,
+                UnconsciousAt = UnconsciousAt,
+            };
         }
         #endregion
         #region Events

@@ -38,6 +38,10 @@ namespace Fiction.GameScreen.Combat
         /// Gets the ID of this scenario
         /// </summary>
         public int Id { get; internal set; }
+        /// <summary>
+        /// Gets or sets the ID of this scenario on the server
+        /// </summary>
+        public string? ServerID { get; set; }
         private string _name;
         /// <summary>
         /// Gets or sets the name of this combat scenario
@@ -134,6 +138,17 @@ namespace Fiction.GameScreen.Combat
         {
             return Combatants.SelectMany(p => p.Prepare(preparer))
                 .ToArray();
+        }
+
+        public d20Web.Models.Combat.CombatScenario ToServerScenario()
+        {
+            return new d20Web.Models.Combat.CombatScenario()
+            {
+                ID = ServerID,
+                Details = Details,
+                Group = Group,
+                Name = Name,
+            };
         }
         #endregion
         #region Events

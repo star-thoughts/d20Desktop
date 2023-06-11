@@ -82,7 +82,7 @@ namespace d20Web.Controllers
         [HttpGet("prep/{combatID}/combatant")]
         public async Task<IActionResult> GetCombatantPreparers([Required] string campaignID, [Required] string combatID)
         {
-            var result = await _combatService.GetCombatantPreparers(campaignID, combatID, Array.Empty<string>(), HttpContext.RequestAborted);
+            IEnumerable<CombatantPreparer> result = await _combatService.GetCombatantPreparers(campaignID, combatID, Array.Empty<string>(), HttpContext.RequestAborted);
 
             return Ok(result);
         }
@@ -200,6 +200,64 @@ namespace d20Web.Controllers
         {
             await _combatService.DeleteCombatant(campaignID, combatID, combatantIDs, HttpContext.RequestAborted);
 
+            return NoContent();
+        }
+        #endregion
+        #region Scenarios
+        [HttpPost("scenario")]
+        public async Task<IActionResult> CreateCombatScenario([Required] string campaignID, [Required] CombatScenario scenario)
+        {
+            string id = await _combatService.CreateCombatScenario(campaignID, scenario, HttpContext.RequestAborted);
+
+            return CreatedAtAction(nameof(GetCombatScenario), new { campaignID, scenarioID = id }, new { id });
+        }
+
+        [HttpPut("scenario")]
+        public async Task<IActionResult> UpdateCombatScenario([Required] string campaignID, [Required] CombatScenario scenario)
+        {
+            await _combatService.UpdateCombatScenario(campaignID, scenario, HttpContext.RequestAborted);
+            return NoContent();
+        }
+
+        [HttpGet("scenario/{scenarioID}")]
+        public async Task<IActionResult> GetCombatScenario([Required] string campaignID, [Required] string scenarioID)
+        {
+            return Ok(await _combatService.GetCombatScenario(campaignID, scenarioID, HttpContext.RequestAborted));
+        }
+
+        [HttpDelete("scenario/{scenarioID}")]
+        public async Task<IActionResult> DeleteCombatScenario([Required] string campaignID, [Required] string scenarioID)
+        {
+            await _combatService.DeleteCombatScenario(campaignID, scenarioID, HttpContext.RequestAborted);
+            return NoContent();
+        }
+
+        [HttpPost("scenario/{scenarioID}/combatant")]
+        public async Task<IActionResult> AddScenarioCombatant([Required] string campaignID, [Required] string scenarioID, [Required] CombatantTemplate template)
+        {
+            string id = await _combatService.AddScenarioCombatant(campaignID, scenarioID, template, HttpContext.RequestAborted);
+            return CreatedAtAction(nameof(GetScenarioCombatant), new { campaignID, scenarioID, templateID = id }, new { id });
+        }
+
+        [HttpPut("scenario/{scenarioID}/combatant")]
+        public async Task<IActionResult> UpdateScenarioCombatant([Required] string campaignID, [Required] string scenarioID, [Required] CombatantTemplate template)
+        {
+            string? id = await _combatService.UpdateScenarioCombatant(campaignID, scenarioID, template, HttpContext.RequestAborted);
+            if (!string.IsNullOrWhiteSpace(id))
+                return Ok(new { id });
+            return NoContent();
+        }
+
+        [HttpGet("scenario/{scenarioID}/combatant/{templateID}")]
+        public async Task<IActionResult> GetScenarioCombatant([Required] string campaignID, [Required] string scenarioID, [Required] string templateID)
+        {
+            return Ok(await _combatService.GetScenarioCombatant(campaignID, scenarioID, templateID, HttpContext.RequestAborted));
+        }
+
+        [HttpDelete("scenario/{scenarioID}/combatant/{templateID}")]
+        public async Task<IActionResult> DeleteScenarioCombatant([Required] string campaignID, [Required] string scenarioID, [Required] string templateID)
+        {
+            await _combatService.DeleteScenarioCombatant(campaignID, scenarioID, templateID, HttpContext.RequestAborted);
             return NoContent();
         }
         #endregion

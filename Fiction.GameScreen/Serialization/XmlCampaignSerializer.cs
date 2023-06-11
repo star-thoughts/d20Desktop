@@ -480,6 +480,7 @@ namespace Fiction.GameScreen.Serialization
         {
             await writer.WriteStartElementAsync(Keys.Scenario).ConfigureAwait(false);
 
+            await writer.WriteOptionalAttributeStringAsync(Keys.ServerID, scenario.ServerID).ConfigureAwait(false);
             await writer.WriteAttributeStringAsync(Keys.Id, scenario.Id.ToString(CultureInfo.InvariantCulture)).ConfigureAwait(false);
             await writer.WriteAttributeStringAsync(Keys.Name, scenario.Name).ConfigureAwait(false);
             await writer.WriteAttributeStringAsync(Keys.Group, scenario.Group ?? string.Empty).ConfigureAwait(false);
@@ -505,6 +506,7 @@ namespace Fiction.GameScreen.Serialization
         {
             await writer.WriteStartElementAsync(Keys.CombatantTemplate).ConfigureAwait(false);
 
+            await writer.WriteOptionalAttributeStringAsync(Keys.ServerID, template.ServerID);
             await writer.WriteAttributeStringAsync(Keys.Id, template.Id.ToString(CultureInfo.InvariantCulture)).ConfigureAwait(false);
             await writer.WriteAttributeStringAsync(Keys.Scenario, scenarioId.ToString(CultureInfo.InvariantCulture)).ConfigureAwait(false);
             await writer.WriteAttributeStringAsync(Keys.Kind, Keys.CombatantTemplateKind).ConfigureAwait(false);
@@ -863,6 +865,7 @@ namespace Fiction.GameScreen.Serialization
         {
             CombatantTemplate template = new CombatantTemplate(campaign);
 
+            template.ServerID = element.ReadAttributeString(Keys.ServerID);
             template.Count = element.ReadAttributeString(Keys.Count);
             template.DisplayName = element.ReadAttributeString(Keys.DisplayName);
             template.DisplayToPlayers = element.ReadAttributeBool(Keys.DisplayToPlayers);
@@ -896,6 +899,7 @@ namespace Fiction.GameScreen.Serialization
         private CombatScenario ReadCombatantScenario(XElement scenarioElement, CampaignSettings campaign)
         {
             CombatScenario scenario = new CombatScenario(campaign);
+            scenario.ServerID = scenarioElement.ReadAttributeString(Keys.ServerID);
             scenario.Id = scenarioElement.ReadAttributeInt(Keys.Id);
             scenario.Name = scenarioElement.ReadAttributeString(Keys.Name);
             scenario.Group = scenarioElement.ReadAttributeString(Keys.Group);
