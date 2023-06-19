@@ -61,6 +61,19 @@ namespace d20Web.Storage.MongoDB.Models
                 Notes = Notes,
             };
         }
+
+        internal MongoCombatantPrep ToCombatantPrep()
+        {
+            return new MongoCombatantPrep()
+            {
+                PlayerID = ID,
+                InitiativeModifier = InitiativeModifier,
+                InitiativeRoll = 0,
+                IsPlayer = true,
+                Name = Name,
+                Ordinal = 1,
+            };
+        }
         #endregion
     }
 }

@@ -27,9 +27,9 @@ namespace d20Web.Controllers
 
         #region Combat Prep
         [HttpPost("prep")]
-        public async Task<IActionResult> BeginPrep([Required] string campaignID)
+        public async Task<IActionResult> BeginPrep([Required] string campaignID, bool addPlayers = false)
         {
-            string id = await _combatService.CreateCombatPrep(campaignID, HttpContext.RequestAborted);
+            string id = await _combatService.CreateCombatPrep(campaignID, addPlayers, HttpContext.RequestAborted);
 
             return CreatedAtAction(nameof(GetCombatPrep), new { campaignID = campaignID, combatPrepID = id }, new { combatID = id });
         }
@@ -50,6 +50,14 @@ namespace d20Web.Controllers
         public async Task<IActionResult> DeleteCombatPrep([Required] string campaignID, [Required] string combatPrepID)
         {
             await _combatService.EndCombatPrep(campaignID, combatPrepID, HttpContext.RequestAborted);
+
+            return NoContent();
+        }
+
+        [HttpPost("prep/{combatPrepID}/scenario/{scenarioID}")]
+        public async Task<IActionResult> AddCombatScenarioToPrep([Required] string campaignID, [Required] string combatPrepID, [Required] string scenarioID)
+        {
+            await _combatService.AddScenarioToPrep(campaignID, combatPrepID, scenarioID, HttpContext.RequestAborted);
 
             return NoContent();
         }

@@ -13,9 +13,10 @@ namespace d20Web.Services
         /// </summary>
         /// <param name="campaignID">ID of the campaign to create the combat in</param>
         /// <param name="cancellationToken">Token for cancelling the operation</param>
+        /// <param name="addPlayers">Whether or not to automatically add players to the scenario</param>
         /// <returns>ID of the combat that was created</returns>
         /// <exception cref="ArgumentNullException">One or more parameters was null or empty</exception>
-        Task<string> CreateCombatPrep(string campaignID, CancellationToken cancellationToken = default);
+        Task<string> CreateCombatPrep(string campaignID, bool addPlayers, CancellationToken cancellationToken = default);
         /// <summary>
         /// Ends a combat prep
         /// </summary>
@@ -39,6 +40,15 @@ namespace d20Web.Services
         /// <param name="cancellationToken">Token for cancelling the operation</param>
         /// <returns>Combat information</returns>
         Task<CombatPrep> GetCombatPrep(string campaignID, string combatID, CancellationToken cancellationToken = default);
+        /// <summary>
+        /// Gets information for a combat prep
+        /// </summary>
+        /// <param name="campaignID">ID of the campaign to create combat in</param>
+        /// <param name="combatPrepID">ID of the combat to add combatants to</param>
+        /// <param name="scenarioID">ID of the scenario to add combatants from</param>
+        /// <param name="cancellationToken">Token for cancelling the operation</param>
+        /// <returns>Task for asynchronous completion</returns>
+        Task AddScenarioToPrep(string campaignID, string combatPrepID, string scenarioID, CancellationToken cancellationToken = default);
         /// <summary>
         /// Creates a combatant prep with the given statistics
         /// </summary>

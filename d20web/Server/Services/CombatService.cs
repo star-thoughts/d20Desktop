@@ -3,6 +3,7 @@ using d20Web.Models;
 using d20Web.Models.Combat;
 using d20Web.Storage;
 using Microsoft.AspNetCore.SignalR;
+using System.Diagnostics.CodeAnalysis;
 
 namespace d20Web.Services
 {
@@ -35,9 +36,10 @@ namespace d20Web.Services
         /// </summary>
         /// <param name="campaignID">ID of the campaign to create the combat in</param>
         /// <param name="cancellationToken">Token for cancelling the operation</param>
+        /// <param name="addPlayers">Whether or not to automatically add players to the scenario</param>
         /// <returns>ID of the combat that was created</returns>
         /// <exception cref="ArgumentNullException">One or more parameters was null or empty</exception>
-        public async Task<string> CreateCombatPrep(string campaignID, CancellationToken cancellationToken = default)
+        public async Task<string> CreateCombatPrep(string campaignID, bool addPlayers, CancellationToken cancellationToken = default)
         {
             ThrowIfInvalidCampaign(campaignID);
 
@@ -49,8 +51,15 @@ namespace d20Web.Services
             }
 
             string id = await _storage.CreateCombatPrep(campaignID, cancellationToken);
+            IEnumerable<string>? playerIDs = null;
+
+            if (addPlayers)
+                playerIDs = await _storage.AddPlayersToScenario(campaignID, id, cancellationToken);
 
             _ = _hub.CombatPrepCreated(campaignID, id);
+
+            if (playerIDs?.Any() == true)
+                _ = _hub.CombatantPrepCreated(campaignID, id, playerIDs);
 
             return id;
         }
@@ -68,6 +77,21 @@ namespace d20Web.Services
                 throw new ArgumentNullException(nameof(combatID));
 
             return await _storage.GetCombatPrep(campaignID, combatID, cancellationToken);
+        }
+        /// <summary>
+        /// Gets information for a combat prep
+        /// </summary>
+        /// <param name="campaignID">ID of the campaign to create combat in</param>
+        /// <param name="combatPrepID">ID of the combat to add combatants to</param>
+        /// <param name="scenarioID">ID of the scenario to add combatants from</param>
+        /// <param name="cancellationToken">Token for cancelling the operation</param>
+        /// <returns>Task for asynchronous completion</returns>
+        public async Task AddScenarioToPrep(string campaignID, string combatPrepID, string scenarioID, CancellationToken cancellationToken = default)
+        {
+            ThrowIfInvalidScenarioParameters(campaignID, scenarioID);
+            ThrowIfInvalidPrepParameters(campaignID, combatPrepID);
+
+            await _storage.AddScenarioToPrep(campaignID, combatPrepID, scenarioID, cancellationToken);
         }
         /// <summary>
         /// Gets a list of combat preps int he campaign
@@ -457,11 +481,18 @@ namespace d20Web.Services
             _ = _hub.CombatScenarioDeleted(campaignID, scenarioID);
         }
 
-        private void ThrowIfInvalidScenarioParameters(string campaignID, string scenarioID)
+        private void ThrowIfInvalidScenarioParameters([NotNull] string campaignID, [NotNull] string scenarioID)
         {
             ThrowIfInvalidCampaign(campaignID);
             if (string.IsNullOrWhiteSpace(scenarioID))
                 throw new ArgumentNullException(nameof(scenarioID));
+        }
+
+        private void ThrowIfInvalidPrepParameters([NotNull] string campaignID, [NotNull] string combatPrepID)
+        {
+            ThrowIfInvalidCampaign(campaignID);
+            if (string.IsNullOrWhiteSpace(combatPrepID))
+                throw new ArgumentNullException(nameof(combatPrepID));
         }
 
         /// <summary>

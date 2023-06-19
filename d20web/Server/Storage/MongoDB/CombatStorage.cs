@@ -25,6 +25,7 @@ namespace d20Web.Storage.MongoDB
         private const string CombatantPrepCollection = "combatantprep";
         private const string CombatScenarioCollection = "scenarios";
         private const string ScenarioCombatantsCollection = "scenariocombatants";
+        private const string PlayerCharacterCollection = "playercharacters";
 
         private async Task<IMongoCollection<MongoCombat>> GetCombatsCollection()
         {
@@ -163,6 +164,63 @@ namespace d20Web.Storage.MongoDB
 
             return result.ToCombatPrep();
         }
+        /// <summary>
+        /// Gets information for a combat prep
+        /// </summary>
+        /// <param name="campaignID">ID of the campaign to create combat in</param>
+        /// <param name="combatPrepID">ID of the combat to add combatants to</param>
+        /// <param name="scenarioID">ID of the scenario to add combatants from</param>
+        /// <param name="cancellationToken">Token for cancelling the operation</param>
+        /// <returns>Task for asynchronous completion</returns>
+        public async Task<IEnumerable<string>> AddScenarioToPrep(string campaignID, string combatPrepID, string scenarioID, CancellationToken cancellationToken = default)
+        {
+            if (string.IsNullOrWhiteSpace(campaignID))
+                throw new ArgumentNullException(nameof(campaignID));
+            if (!ObjectId.TryParse(campaignID, out ObjectId campaignObjectID))
+                throw new ArgumentException(nameof(campaignID));
+            if (string.IsNullOrWhiteSpace(combatPrepID))
+                throw new ArgumentNullException(nameof(combatPrepID));
+            if (!ObjectId.TryParse(combatPrepID, out ObjectId combatObjectID))
+                throw new ArgumentException(nameof(combatPrepID));
+            if (string.IsNullOrWhiteSpace(scenarioID))
+                throw new ArgumentNullException(nameof(scenarioID));
+            if (!ObjectId.TryParse(scenarioID, out ObjectId scenarioObjectID))
+                throw new ArgumentException(nameof(scenarioID));
+
+            IMongoCollection<MongoScenarioCombatant> scenarioCollection = await GetScenarioCombatantsCollection();
+            IMongoCollection<MongoCombatantPrep> combatantPrepCollection = await GetCombatantPrepCollection();
+
+            FilterDefinition<MongoScenarioCombatant> scenarioFilter = Builders<MongoScenarioCombatant>.Filter
+                .Eq(p => p.ScenarioID, scenarioObjectID);
+
+            List<MongoScenarioCombatant> combatants = await scenarioCollection.Find(scenarioFilter).ToListAsync();
+            IEnumerable<MongoCombatantPrep> preps = combatants.ToCombatPrep();
+
+            await CreateNamedObjects(CombatantPrepCollection, ItemType.CombatantPrep, campaignID, preps, cancellationToken);
+
+            return preps.Select(p => p.ID.ToString()).ToArray();
+        }
+        /// <summary>
+        /// Adds the campaign's players to the scenario
+        /// </summary>
+        /// <param name="campaignID">ID of the campaign</param>
+        /// <param name="scenarioID">ID of the combat scenario</param>
+        /// <param name="cancellationToken">Token for cancelling the operation</param>
+        /// <returns>Task for asynchronous completion</returns>
+        public async Task<IEnumerable<string>> AddPlayersToScenario(string campaignID, string scenarioID, CancellationToken cancellationToken = default)
+        {
+            if (string.IsNullOrWhiteSpace(scenarioID))
+                throw new ArgumentNullException(nameof(scenarioID));
+            if (!ObjectId.TryParse(scenarioID, out ObjectId scenarioObjectID))
+                throw new ArgumentException(nameof(scenarioID));
+
+            IEnumerable<MongoPlayerCharacter> players = await GetNamedObjectList<MongoPlayerCharacter>(PlayerCharacterCollection, campaignID, cancellationToken);
+
+            MongoCombatantPrep[] prep = players.Select(p => p.ToCombatantPrep()).ToArray();
+
+            return await CreateNamedObjects(PlayerCharacterCollection, ItemType.CombatantPrep, campaignID, prep, cancellationToken);
+        }
+
         /// <summary>
         /// Creates a combatant prep with the given statistics
         /// </summary>
@@ -679,7 +737,8 @@ namespace d20Web.Storage.MongoDB
         {
             await DeleteNamedObject<MongoCombatScenario>(CombatScenarioCollection, campaignID, scenarioID, cancellationToken);
 
-            if (ObjectId.TryParse(scenarioID, out ObjectId scenarioObjectID)) {
+            if (ObjectId.TryParse(scenarioID, out ObjectId scenarioObjectID))
+            {
                 IMongoCollection<MongoScenarioCombatant> combatantsCollection = await GetScenarioCombatantsCollection();
 
                 FilterDefinition<MongoScenarioCombatant> filter = Builders<MongoScenarioCombatant>.Filter

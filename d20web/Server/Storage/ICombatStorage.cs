@@ -41,6 +41,15 @@ namespace d20Web.Storage
         /// <returns>Combat information</returns>
         Task<CombatPrep> GetCombatPrep(string campaignID, string combatID, CancellationToken cancellationToken = default);
         /// <summary>
+        /// Gets information for a combat prep
+        /// </summary>
+        /// <param name="campaignID">ID of the campaign to create combat in</param>
+        /// <param name="combatPrepID">ID of the combat to add combatants to</param>
+        /// <param name="scenarioID">ID of the scenario to add combatants from</param>
+        /// <param name="cancellationToken">Token for cancelling the operation</param>
+        /// <returns>Task for asynchronous completion</returns>
+        Task<IEnumerable<string>> AddScenarioToPrep(string campaignID, string combatPrepID, string scenarioID, CancellationToken cancellationToken = default);
+        /// <summary>
         /// Creates a combatant prep with the given statistics
         /// </summary>
         /// <param name="campaignID">ID of the campaign containing the combat</param>
@@ -193,6 +202,16 @@ namespace d20Web.Storage
         /// <param name="cancellationToken">Token for cancelling the operation</param>
         /// <returns>Task for asynchronous completion</returns>
         Task DeleteCombatScenario(string campaignID, string scenarioID, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Adds the campaign's players to the scenario
+        /// </summary>
+        /// <param name="campaignID">ID of the campaign</param>
+        /// <param name="scenarioID">ID of the combat scenario</param>
+        /// <param name="cancellationToken">Token for cancelling the operation</param>
+        /// <returns>Task for asynchronous completion</returns>
+        Task<IEnumerable<string>> AddPlayersToScenario(string campaignID, string scenarioID, CancellationToken cancellationToken = default);
+
         /// <summary>
         /// Adds a combatant to a scenario
         /// </summary>

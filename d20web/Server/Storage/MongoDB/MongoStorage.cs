@@ -69,6 +69,30 @@ namespace d20Web.Storage.MongoDB
             return namedObject.ID.ToString();
         }
 
+        protected async Task<string[]> CreateNamedObjects<T>(string collectionName, ItemType itemType, string campaignID, IEnumerable<T> namedObjects, CancellationToken cancellationToken) where T : INamedObject
+        {
+            if (string.IsNullOrWhiteSpace(campaignID))
+                throw new ArgumentNullException(nameof(campaignID));
+            if (!ObjectId.TryParse(campaignID, out ObjectId campaignObjectID))
+                throw new ArgumentException("Invalid campaign ID", nameof(campaignID));
+
+            IMongoCollection<T> collection = (await GetDatabase()).GetCollection<T>(collectionName);
+
+            foreach (T namedObject in namedObjects)
+                namedObject.CampaignID = campaignObjectID;
+
+            try
+            {
+                await collection.InsertManyAsync(namedObjects, InsertManyOptions, cancellationToken);
+            }
+            catch (MongoDuplicateKeyException)
+            {
+                throw new ItemNameInUseException(itemType, string.Empty);
+            }
+
+            return namedObjects.Select(p => p.ID.ToString()).ToArray();
+        }
+
         protected async Task<string?> ReplaceNamedObject<T>(string collectionName, ItemType itemType, string campaignID, string objectID, T namedObject, CancellationToken cancellationToken) where T : INamedObject
         {
             if (string.IsNullOrWhiteSpace(campaignID))

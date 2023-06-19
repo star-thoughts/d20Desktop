@@ -5,7 +5,7 @@ using d20Web.Models.Combat;
 
 namespace d20Web.Storage.MongoDB.Models
 {
-    internal sealed class MongoCombatantPrep
+    internal sealed class MongoCombatantPrep : INamedObject
     {
         public MongoCombatantPrep() { }
         public MongoCombatantPrep(CombatantPreparer combatant, ObjectId campaignID, ObjectId combatID)
@@ -58,6 +58,10 @@ namespace d20Web.Storage.MongoDB.Models
         /// Gets or sets the ID of a monster in the bestiary this could be associated with, if any
         /// </summary>
         public ObjectId BestiaryID { get; set; }
+        /// <summary>
+        /// Gets or sets the ID of a player in the player database this could be associated with, if any
+        /// </summary>
+        public ObjectId PlayerID { get; set; }
 
 
         public CombatantPreparer ToCombatantPreparer()

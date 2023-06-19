@@ -1,4 +1,5 @@
-﻿using d20Web.Models;
+﻿using d20Web.Helpers;
+using d20Web.Models;
 using d20Web.Models.Combat;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
@@ -105,6 +106,51 @@ namespace d20Web.Storage.MongoDB.Models
                 Name = Name,
                 UnconsciousAt = UnconsciousAt,
             };
+        }
+    }
+
+    internal static class MongoScenarioCombatantExtensions
+    {
+        public static MongoCombatantPrep ToCombatPrep(this MongoScenarioCombatant combatant)
+        {
+            return new MongoCombatantPrep()
+            {
+                BestiaryID = combatant.SourceID,
+                CampaignID = combatant.CampaignID,
+                InitiativeModifier = combatant.InitiativeModifier,
+                IsPlayer = false,
+                Name = combatant.Name,
+            };
+        }
+
+        /// <summary>
+        /// Creates combat prep objects for combatants
+        /// </summary>
+        /// <param name="combatants">Combatants to create combat prep objects for</param>
+        /// <returns>Combat prep objects created.</returns>
+        /// <remarks>
+        /// If more than 1 is created of the same name, the ordinal is assigned starting at 1.  If there are existing combat prep objects
+        /// with this name, this should be incremented as necessary to continue the number.
+        /// </remarks>
+        public static IEnumerable<MongoCombatantPrep> ToCombatPrep(this IEnumerable<MongoScenarioCombatant> combatants)
+        {
+            foreach (MongoScenarioCombatant source in combatants)
+            {
+                if (!string.IsNullOrWhiteSpace(source.Count))
+                {
+                    //  Need to roll for count, creat that many prep objects for this source
+                    int count = Dice.Roll(source.Count, source.HitDieRollingStrategy);
+
+                    for (int i = 0; i < count; i++)
+                    {
+                        var prep = source.ToCombatPrep();
+                        if (count > 1)
+                            prep.Ordinal = i + 1;
+
+                        yield return prep;
+                    }
+                }
+            }
         }
     }
 }
