@@ -4,22 +4,18 @@
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {
+        "Identity__ConnectionString": "mongodb://mongoadmin:adminpassword@nas-home:27017/beta_secondsons_identity?authSource=admin",
         "Storage__ConnectionString": "mongodb://mongoadmin:adminpassword@nas-home:27017/admin",
         "Storage__Type": "MongoDB",
         "Storage__DatabaseName": "beta_d20web",
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "Certificate__Type": "Developer"
+        "Certificate__Type": "Developer",
+        "IdentityDefaults__AdminAccount": "siteadmin",
+        "IdentityDefaults__AdminPassword": "d20web-server",
+        "Identity__DatabaseName": "beta_d20web_identity"
       },
       "applicationUrl": "https://localhost:5001;http://localhost:5000",
       "inspectUri": "{wsProtocol}://{url.hostname}:{url.port}/_framework/debug/ws-proxy?browser={browserInspectUri}"
-    }
-  },
-  "iisSettings": {
-    "windowsAuthentication": false,
-    "anonymousAuthentication": true,
-    "iisExpress": {
-      "applicationUrl": "http://localhost:53585",
-      "sslPort": 0
     }
   }
 }
