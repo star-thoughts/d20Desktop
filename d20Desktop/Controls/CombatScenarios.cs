@@ -127,16 +127,16 @@ namespace Fiction.GameScreen.Controls
             e.CanExecute = SelectedScenario != null && Scenarios is IList;
         }
 
-        private void AddCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        private async void AddCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            Exceptions.FailSafeMethodCall(() =>
+            await Exceptions.FailSafeMethodCall(async () =>
             {
                 e.Handled = true;
                 if (Scenarios is IList scenarios)
                 {
                     CombatScenarioEditViewModel viewModel = new CombatScenarioEditViewModel(Factory, new CombatScenario(Factory.Campaign));
                     if (EditScenario(viewModel))
-                        scenarios.Add(viewModel.Save());
+                        scenarios.Add(await viewModel.Save());
                 }
             });
         }

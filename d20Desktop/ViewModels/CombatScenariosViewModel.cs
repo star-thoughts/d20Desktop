@@ -19,12 +19,12 @@ namespace Fiction.GameScreen.ViewModels
             : base(factory)
         {
             Campaign = campaign;
-            _scenarios = new ReadOnlyObservableCollection<CombatScenario>(Campaign.Combat.Scenarios);
+            _scenarios = Campaign.Combat.Scenarios;
             ((INotifyCollectionChanged)_scenarios).CollectionChanged += CombatScenariosViewModel_CollectionChanged;
         }
         #endregion
         #region Member Variables
-        private ReadOnlyObservableCollection<CombatScenario> _scenarios;
+        private ObservableCollection<CombatScenario> _scenarios;
         #endregion
         #region Properties
         /// <summary>
@@ -34,7 +34,7 @@ namespace Fiction.GameScreen.ViewModels
         /// <summary>
         /// Gets a collectio of combat scenarios
         /// </summary>
-        public ReadOnlyObservableCollection<CombatScenario> Scenarios { get { return _scenarios; } }
+        public ObservableCollection<CombatScenario> Scenarios { get { return _scenarios; } }
         /// <summary>
         /// Gets the category for this view model
         /// </summary>
