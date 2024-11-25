@@ -30,4 +30,7 @@ FROM mcr.microsoft.com/dotnet/aspnet:7.0-alpine-amd64
 
 WORKDIR /app
 COPY --from=build-env /app/Server/out .
+
+EXPOSE 80
+
 ENTRYPOINT ["dotnet", "d20web.Server.dll"]
